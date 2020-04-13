@@ -5,9 +5,9 @@ interface Scripts {
   src: string;
 }
 export const ScriptStore: Scripts[] = [
-  { name: 'jquerydataTablesminjs', src: '../assets/vendor/datatables/jquery.dataTables.min.js' },
-  { name: 'dataTablesbootstrap4minjs', src: '../assets/vendor/datatables/dataTables.bootstrap4.min.js' },
-  { name: 'datatablesdemojs', src: '../assets/js/demo/datatables-demo.js' },
+  { name: 'jquerydataTablesminjs', src: '../assets/vendor/datatables/jquery.dataTables.min.js'},
+  { name: 'dataTablesbootstrap4minjs', src: '../assets/vendor/datatables/dataTables.bootstrap4.min.js'},
+  { name: 'datatablesdemojs', src: '../assets/js/demo/datatables-demo.js'},
 ];
 
 declare var document: any;
