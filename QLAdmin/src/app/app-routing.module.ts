@@ -3,9 +3,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from './navigation/navigation.component';
 import { DasboardComponent } from './dasboard/dasboard.component';
+import { LoginComponent } from './Login/Login.component';
+import { AuthGuardService } from './auth-guard.service';
 
 const routes: Routes = [
-  {path:'',redirectTo:'/nv',pathMatch:'full'},
+  {path:'',redirectTo:'dangnhap',pathMatch:'full'},
+  {path:'dangnhap',component: LoginComponent},
   {
     path: 'nv',
     component: NavigationComponent,
@@ -14,7 +17,8 @@ const routes: Routes = [
         path: '',
         component: DasboardComponent
       }
-    ]
+    ],
+    canActivate: [AuthGuardService]
   }
 ];
 @NgModule({

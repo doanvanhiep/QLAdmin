@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // Service
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
+import { DasboardService } from '../service/dasboard.service';
 @Component({
   selector: 'app-dasboard',
   templateUrl: './dasboard.component.html',
@@ -8,7 +9,10 @@ import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-load
 })
 export class DasboardComponent implements OnInit {
 
-  constructor(private dynamicScriptLoader: DynamicScriptLoaderServiceService) { }
+  constructor(
+    private dynamicScriptLoader: DynamicScriptLoaderServiceService,
+    private dasboardService: DasboardService
+  ) { }
 
   ngOnInit() {
     // Just call your load scripts function with scripts you want to load
@@ -25,8 +29,13 @@ export class DasboardComponent implements OnInit {
       }).catch(error => console.log(error));
     }).catch(error => console.log(error));
   }
-  checkValue(a:any,n:number){
-    console.log(a.target.id,n);
-    console.log(a,n);
- }
+  checkValue(a: any, n: number) {
+    this.dasboardService.test()
+    .pipe()
+    .subscribe(data=>{
+      console.log(data);
+    });
+    console.log(a.target.id, n);
+    console.log(a, n);
+  }
 }

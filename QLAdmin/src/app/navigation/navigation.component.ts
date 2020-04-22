@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Login_serviceService } from '../service_auth/login_service.service'
 
 @Component({
   selector: 'app-navigation',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  TenTaiKhoan: string;
+  constructor(
+    private loginService: Login_serviceService) {
+    this.TenTaiKhoan = loginService.getTenTaiKhoan();
+  }
 
   ngOnInit(): void {
+  }
+  logout() {
+    this.loginService.logout();
   }
 
 }
