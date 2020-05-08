@@ -17,7 +17,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" [routerLink]="['/nv/a']">
+            <a class="nav-link" [routerLink]="['']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Danh sách chăm sóc KH</span>
             </a>
@@ -95,18 +95,25 @@
             </div>
         </li>
 
-        <!-- Nav Item - Charts -->
+        <!-- Nav Item -  -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" [routerLink]="['khoahoc']" routerLinkActive="router-link-active" >
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></a>
+                <span>Khóa học</span></a>
         </li>
 
-        <!-- Nav Item - Tables -->
+        <!-- Nav Item -  -->
         <li class="nav-item">
-            <a class="nav-link" href="tables.html">
+            <a class="nav-link" [routerLink]="['giangvien']" routerLinkActive="router-link-active" >
                 <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+                <span>Giảng viên</span></a>
+        </li>
+
+        <!-- Nav Item -  -->
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['phonghoc']" routerLinkActive="router-link-active" >
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Phòng học</span></a>
         </li>
 
         <!-- Divider -->

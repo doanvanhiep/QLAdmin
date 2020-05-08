@@ -1,0 +1,165 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Danh sách lớp học phần của khóa học: {{khoahoc ? khoahoc.TenKhoaHoc:""}}
+      </h1>
+      <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#lophocphanModal">Thêm lớp
+        học phần</button>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Mã LHP</th>
+                  <th>Tên LHP</th>
+                  <th>Học phí</th>
+                  <th>Số buổi</th>
+                  <th>Mô tả</th>
+                  <th>Hình ảnh</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Mã LHP</th>
+                  <th>Tên LHP</th>
+                  <th>Học phí</th>
+                  <th>Số buổi</th>
+                  <th>Mô tả</th>
+                  <th>Hình ảnh</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr *ngFor="let lhp of listLopHocPhan" (dblclick)="dbClick($event)">
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.MaLopHocPhan:""}}</td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.TenLopHocPhan:""}}</td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.HocPhi:""}}</td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.SoBuoi:""}}</td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.MoTa:""}}</td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}"><img height="100px" width="100px" src="https://drive.google.com/uc?id={{lhp ? lhp.HinhAnh:''}}">
+                  </td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.GhiChu:""}}</td>
+                  <td align="center">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="{{lhp ? lhp.IDLopHocPhan:-1}}">
+                      <label class="custom-control-label" for="{{lhp ? lhp.IDLopHocPhan:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center">
+                    <div>
+                      <a (click)="suaLopHocPhan($event)" id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal"
+                        data-target="#lophocphanModal">sửa</a> / <a (click)="xoaLopHocPhan($event)"
+                        id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal" data-target="#xoalophocphanModal">xóa</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->
+
+</div>
+<!-- them lớp học phần Modal -->
+<div class="modal fade" id="lophocphanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lớp học phần</h5>
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="lophocphanForm">
+          <div class="form-group">
+            <label for="txt-malhp-name">Mã lớp học phần: </label>
+            <input type="text" class="form-control" name="txt-malhp-name" formControlName="MaLopHocPhan">
+          </div>
+          <div class="form-group">
+            <label for="txt-tenlhp-name">Tên lớp học phần: </label>
+            <input type="text" class="form-control" name="txt-tenlhp-name" formControlName="TenLopHocPhan">
+          </div>
+          <div class="row">
+            <div class="form-group" class="col">
+              <label for="txt-hocphilhp-name">Học phí: </label>
+              <input type="number" class="form-control" name="txt-hocphilhp-name" formControlName="HocPhi">
+            </div>
+            <div class="form-group" class="col">
+              <label for="txt-sobuoilhp-name">Số buổi: </label>
+              <input type="number" class="form-control" name="txt-sobuoilhp-name" formControlName="SoBuoi">
+            </div>
+            <div class="form-group" class="col">
+              <label for="txt-siso-name">Sỉ số: </label>
+              <input type="number" class="form-control" name="txt-siso-name" formControlName="SiSo">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt-motalhp-name">Mô tả: </label>
+            <input type="text" class="form-control" name="txt-motalhp-name" formControlName="MoTa">
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Hình ảnh</span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)">
+                <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
+                  có tệp nào được chọn</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt-ghichulhp-name">Ghi chú: </label>
+            <input type="text" class="form-control" name="txt-ghichulhp-name" formControlName="GhiChu">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- xóa lop hoc phan -->
+<div class="modal fade" id="xoalophocphanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa lớp học phần</h5>
+        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có thật sự muốn xóa lớp học phần này. Nếu bạn xóa thì tất cả các lớp học thuộc lớp học phần này sẽ bị xóa
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-danger" (click)="xoa()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,198 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Danh sách lớp học của lớp học phần:
+        {{lophocphan ? lophocphan.TenLopHocPhan:""}}</h1>
+      <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#lophocModal">Thêm
+        lớp học</button>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Mã lớp học</th>
+                  <th>Ngày khai giảng</th>
+                  <th>Ngày bế giảng</th>
+                  <th>Thông tin lớp học</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Mã lớp học</th>
+                  <th>Ngày khai giảng</th>
+                  <th>Ngày bế giảng</th>
+                  <th>Thông tin lớp học</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr *ngFor="let lophoc of listLopHoc" (dblclick)="dbClick($event)">
+                  <td>{{lophoc ? lophoc.MaLopHoc:""}}</td>
+                  <td>{{lophoc ? lophoc.NgayKhaiGiang:""}}</td>
+                  <td>{{lophoc ? lophoc.NgayBeGiang:""}}</td>
+                  <td>
+                    <p class="multi_lines_text" [innerHTML]="lophoc ? lophoc.ThongTinLopHoc:''"></p>
+                  </td>
+                  <td>{{lophoc ? lophoc.GhiChu:""}}</td>
+                  <td align="center">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" [ngModel]="true">
+                      </label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="{{lophoc ? lophoc.IDLopHoc:-1}}"
+                        check="true">
+                      <label class="custom-control-label" for="{{lophoc ? lophoc.IDLopHoc:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center">
+                    <div>
+                      <a (click)="suaLopHoc($event)" id="{{lophoc ? lophoc.IDLopHoc:-1}}" data-toggle="modal" data-target="#lophocModal">sửa</a> / <a (click)="xoaLopHoc($event)" id="{{lophoc ? lophoc.IDLopHoc:-1}}" data-toggle="modal" data-target="#xoalophocModal">xóa</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->
+
+  <!-- them khoa hoc Modal-->
+  <div class="modal fade" id="lophocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Lớp học</h5>
+          <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="lophocForm">
+            <div class="row">
+              <div class="form-group" class="col">
+                <label for="txt-malh-name">Mã lớp học: </label>
+                <input type="text" class="form-control" name="txt-malh-name" formControlName="MaLopHoc" />
+              </div>
+              <div class="form-group" class="col">
+                <label for="txt-nkg-name">Ngày khai giảng: </label>
+                <input type="date" class="form-control" name="txt-nkg-name" formControlName="NgayKhaiGiang" />
+              </div>
+              <div class="form-group" class="col">
+                <label for="txt-nbg-name">Ngày bế giảng: </label>
+                <input type="date" class="form-control" name="txt-nbg-name" formControlName="NgayBeGiang" />
+              </div>
+            </div>
+            <div class="row" *ngIf="btnedit===false">
+              <div class="form-group" class="col">
+                <label for="txt-malh-name">Số buổi học: </label>
+                <input type="number" class="form-control" name="txt-malh-name" formControlName="SoBuoiHoc" />
+              </div>
+              <div class="form-group" class="col">
+                <label for="txt-nkg-name"></label>
+                <input type="checkbox" class="form-control" name="txt-nkg-name" />
+              </div>
+              <div class="form-group" class="col">
+                <label for="txt-nkg-name"></label>
+                <input type="checkbox" class="form-control" name="txt-nkg-name" />
+              </div>
+              <div class="form-group" class="col">
+                <label for="txt-nkg-name"></label>
+                <button (click)="createCaHoc()" class="form-control" name="txt-nkg-name">Thêm buổi
+                  học</button>
+              </div>
+            </div>
+            <div *ngIf="createCahoc==true">
+              <div *ngFor="let lophoc of t.controls; let i = index">
+                <div class="row" [formGroup]="lophoc">
+                  <div class="form-group" class="col-2">
+                    <div class="form-group" class="col">
+                      <input hidden type="text" class="form-control" name="txt-id-name" formControlName="idTTLH"/>
+                    </div>
+                    <label for="txt-thu-name">Buổi {{i + 1}}: Thứ </label>
+                    <select class="form-control input-lg" formControlName="thu">
+                      <option *ngFor="let thu of thus | keyvalue" value="{{thu.key}}">
+                        {{thu.value}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group" class="col-2">
+                    <label for="txt-ca-name">Ca</label>
+                    <select class="form-control input-lg" formControlName="ca">
+                      <option *ngFor="let ca of cas | keyvalue" value="{{ca.key}}">
+                        {{ca.value}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group" class="col-4">
+                    <label for="txt-phong-name">Phòng</label>
+                    <select class="form-control input-lg" formControlName="phong">
+                      <option *ngFor="let ph of phonghocs" value="{{ph.IDPhongHoc}}">
+                        {{ph.TenPhong}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group" class="col-4">
+                    <label for="txt-gv-name">Giảng viên</label>
+                    <select class="form-control input-lg" formControlName="giangvien" (onselect)="giangvienClick()">
+                      <option *ngFor="let gv of giangviens" value="{{gv.IDGiangVien}}">
+                        {{gv.HoTen}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="txt-ghichu-name">Ghi chú: </label>
+              <input type="text" class="form-control" name="txt-ghichu-name" formControlName="GhiChu">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+          <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+          <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- xóa lớp học -->
+<div class="modal fade" id="xoalophocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Xóa lớp học</h5>
+            <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có thật sự muốn xóa lớp học này.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+            <button class="btn btn-primary" (click)="xoa()">xóa</button>
+        </div>
+    </div>
+</div>
+</div>

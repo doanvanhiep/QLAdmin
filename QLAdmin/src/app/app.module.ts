@@ -10,12 +10,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { DasboardComponent } from './dasboard/dasboard.component';
 import { LoginComponent } from './Login/Login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { KhoahocComponent } from './khoahoc/khoahoc.component';
+import { LophocphanComponent } from './lophocphan/lophocphan.component';
+import { LophocComponent } from './lophoc/lophoc.component';
+import { GiangvienComponent } from './giangvien/giangvien.component';
+import { PhonghocComponent } from './phonghoc/phonghoc.component';
 @NgModule({
    declarations: [
       AppComponent,
       NavigationComponent,
       DasboardComponent,
-      LoginComponent
+      LoginComponent,
+      KhoahocComponent,
+      LophocphanComponent,
+      LophocComponent,
+      GiangvienComponent,
+      PhonghocComponent
    ],
    imports: [
       BrowserModule,
@@ -24,9 +34,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
       FormsModule,
       ReactiveFormsModule
    ],
-   providers: [ 
-      { provide: HTTP_INTERCEPTORS, useClass: AuthorServiceService, multi: true }
-   ],
+   providers: [],
    bootstrap: [
       AppComponent
    ]

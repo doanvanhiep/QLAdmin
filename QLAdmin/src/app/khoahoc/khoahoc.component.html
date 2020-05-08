@@ -1,0 +1,117 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">Danh sách khóa học</h1>
+            <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#khoahocModal">Thêm khóa học</button>
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Tên khóa học</th>
+                                    <th>Ghi chú</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Tên khóa học</th>
+                                    <th>Ghi chú</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr *ngFor="let khoahoc of listKhoaHoc" (dblclick)="dbClick($event)">
+                                    <td id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">{{khoahoc ? khoahoc.TenKhoaHoc:""}}</td>
+                                    <td id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}"><p>{{khoahoc ? khoahoc.GhiChu:""}}</p></td>
+                                    <td align="center" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                               <input type="checkbox" [ngModel]="true" >
+                                            </label>
+                                        </div>
+                                        <!-- <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" check="true">
+                                            <label class="custom-control-label"
+                                                for="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}"></label>
+                                        </div> -->
+                                    </td>
+                                    <td align="center" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">
+                                        <div>
+                                            <a (click)="suaKhoaHoc($event)" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" data-toggle="modal" data-target="#khoahocModal">sửa</a> / <a (click)="xoaKhoaHoc($event)" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" data-toggle="modal" data-target="#xoakhoahocModal">xóa</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+</div>
+<!-- them khoa hoc Modal-->
+<div class="modal fade" id="khoahocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Khóa học</h5>
+                <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="khoahocForm">
+                    <div class="form-group">
+                        <label for="txt-khoahoc-name">Tên khóa học: </label>
+                        <input type="text" class="form-control" name="txt-khoahoc-name" formControlName="TenKhoaHoc">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt-ghichu-name">Ghi chú: </label>
+                        <input type="text" class="form-control" name="txt-ghichu-name" formControlName="GhiChu">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+                <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- xóa khóa học -->
+<div class="modal fade" id="xoakhoahocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa khóa học</h5>
+                <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có thật sự muốn xóa khóa học này</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                <button class="btn btn-primary" (click)="xoa()">xóa</button>
+            </div>
+        </div>
+    </div>
+</div>

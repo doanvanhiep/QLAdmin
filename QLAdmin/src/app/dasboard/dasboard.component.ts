@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // Service
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
-import { DasboardService } from '../service/dasboard.service';
+import { DasboardService } from '../service/dasboard/dasboard.service';
 @Component({
   selector: 'app-dasboard',
   templateUrl: './dasboard.component.html',
@@ -21,14 +21,16 @@ export class DasboardComponent implements OnInit {
   private loadScripts() {
     // You can load multiple scripts by just providing the key as argument into load method of the service
     this.dynamicScriptLoader.load('jquerydataTablesminjs').then(data => {
-      // You can load multiple scripts by just providing the key as argument into load method of the service
-      this.dynamicScriptLoader.load('dataTablesbootstrap4minjs').then(data => {
         // You can load multiple scripts by just providing the key as argument into load method of the service
-        this.dynamicScriptLoader.load('datatablesdemojs').then(data => {
+        this.dynamicScriptLoader.load('dataTablesbootstrap4minjs').then(data => {
+            // You can load multiple scripts by just providing the key as argument into load method of the service
+            this.dynamicScriptLoader.load('datatablesdemojs').then(data => {
+                this.dynamicScriptLoader.load('sbadmin2minjs').then(data => {
+                }).catch(error => console.log(error));
+            }).catch(error => console.log(error));
         }).catch(error => console.log(error));
-      }).catch(error => console.log(error));
     }).catch(error => console.log(error));
-  }
+}
   checkValue(a: any, n: number) {
     this.dasboardService.test()
     .pipe()

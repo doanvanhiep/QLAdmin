@@ -8,6 +8,7 @@ export const ScriptStore: Scripts[] = [
   { name: 'jquerydataTablesminjs', src: '../assets/vendor/datatables/jquery.dataTables.min.js'},
   { name: 'dataTablesbootstrap4minjs', src: '../assets/vendor/datatables/dataTables.bootstrap4.min.js'},
   { name: 'datatablesdemojs', src: '../assets/js/demo/datatables-demo.js'},
+  { name: 'sbadmin2minjs', src: '../assets/js/sb-admin-2.min.js'},
 ];
 
 declare var document: any;
