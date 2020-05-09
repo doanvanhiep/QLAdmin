@@ -22,7 +22,7 @@ export class GiangvienComponent implements OnInit {
 		private dynamicScriptLoader: DynamicScriptLoaderServiceService,
 		private giangvienService: GiangvienService,
 		private uploadimage: UploadimageService
-	) { }
+	) {}
 
 	ngOnInit() {
 		this.loadScripts();

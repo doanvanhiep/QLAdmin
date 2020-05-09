@@ -10,7 +10,7 @@ import { LophocphanComponent } from './lophocphan/lophocphan.component';
 import { LophocComponent } from './lophoc/lophoc.component';
 import { GiangvienComponent } from './giangvien/giangvien.component';
 import { PhonghocComponent } from './phonghoc/phonghoc.component';
-
+import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
 const routes: Routes = [
   {path:'',redirectTo:'dangnhap',pathMatch:'full'},
   {path:'dangnhap',component: LoginComponent},
@@ -41,6 +41,10 @@ const routes: Routes = [
       {
         path: 'phonghoc',
         component: PhonghocComponent
+      },
+      {
+        path: 'thoikhoabieu',
+        component: ThoikhoabieuComponent
       }
     ],
     canActivate: [AuthGuardService]

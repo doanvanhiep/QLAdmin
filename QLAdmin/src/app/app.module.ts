@@ -15,6 +15,7 @@ import { LophocphanComponent } from './lophocphan/lophocphan.component';
 import { LophocComponent } from './lophoc/lophoc.component';
 import { GiangvienComponent } from './giangvien/giangvien.component';
 import { PhonghocComponent } from './phonghoc/phonghoc.component';
+import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
 @NgModule({
    declarations: [
       AppComponent,
@@ -25,7 +26,8 @@ import { PhonghocComponent } from './phonghoc/phonghoc.component';
       LophocphanComponent,
       LophocComponent,
       GiangvienComponent,
-      PhonghocComponent
+      PhonghocComponent,
+      ThoikhoabieuComponent
    ],
    imports: [
       BrowserModule,

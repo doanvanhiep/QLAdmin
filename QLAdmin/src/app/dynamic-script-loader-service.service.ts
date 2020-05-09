@@ -34,7 +34,7 @@ export class DynamicScriptLoaderServiceService {
 
   loadScript(name: string) {
     return new Promise((resolve, reject) => {
-      if (!this.scripts[name].loaded) {
+      if (true) {
         //load script
         let script = document.createElement('script');
         script.type = 'text/javascript';
@@ -56,6 +56,7 @@ export class DynamicScriptLoaderServiceService {
         script.onerror = (error: any) => resolve({ script: name, loaded: false, status: 'Loaded' });
         document.getElementsByTagName('head')[0].appendChild(script);
       } else {
+        console.log("Đã load rồi");
         resolve({ script: name, loaded: true, status: 'Already Loaded' });
       }
     });

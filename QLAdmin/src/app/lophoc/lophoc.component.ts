@@ -148,9 +148,6 @@ export class LophocComponent implements OnInit {
                 this.closebuttondelete.nativeElement.click();
             });
     }
-    giangvienClick() {
-        console.log("ahihi");
-    }
     getListLopHocByIDLopHocPhan(IDLopHocPhan) {
         this.lophocservice.getListLopHocByID(IDLopHocPhan)
             .pipe()
@@ -160,9 +157,6 @@ export class LophocComponent implements OnInit {
     }
     getDataLopHocPhan() {
         this.lophocphan = this.share.receiveDataLopHocPhan();
-    }
-    dbClick(event) {
-
     }
     createCaHoc() {
         var sobuoihoc = +this.f.SoBuoiHoc.value;

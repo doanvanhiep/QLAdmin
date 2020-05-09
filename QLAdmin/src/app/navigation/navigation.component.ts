@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Login_serviceService } from '../service_auth/login_service.service'
-
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -19,5 +18,4 @@ export class NavigationComponent implements OnInit {
   logout() {
     this.loginService.logout();
   }
-
 }

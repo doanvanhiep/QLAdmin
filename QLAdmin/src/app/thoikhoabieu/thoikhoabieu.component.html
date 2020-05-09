@@ -1,0 +1,50 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <div>
+              <label for="">Tuần: </label>
+              <select [(ngModel)]='numbercurrentofweek' name="" id="" class="selectpicker" #t (change)="getWeek(t.value)">
+                <option value="{{numberofweek+1}}" *ngFor="let numberofweek of numberweekofyear">{{numberofweek+1}}</option>
+              </select>
+              <label for="">Từ ngày: {{begindate |date :"dd/MM/yyyy"}} đến ngày: {{enddate |date :"dd/MM/yyyy"}}</label>
+
+            </div>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Thứ 2</th>
+                  <th scope="col">Thứ 3</th>
+                  <th scope="col">Thứ 4</th>
+                  <th scope="col">Thứ 5</th>
+                  <th scope="col">Thứ 6</th>
+                  <th scope="col">Thứ 7</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tkb of thoikhoabieu;let i=index">
+                  <th scope="row">Ca {{i+1}}</th>
+                  <td>{{tkb[i]}}</td>
+                  <td>{{tkb[1]}}</td>
+                  <td>{{tkb[2]}}</td>
+                  <td>{{tkb[3]}}</td>
+                  <td>{{tkb[4]}}</td>
+                  <td>{{tkb[5]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->

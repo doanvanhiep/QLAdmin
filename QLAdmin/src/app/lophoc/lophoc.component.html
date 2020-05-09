@@ -36,7 +36,7 @@
                 </tr>
               </tfoot>
               <tbody>
-                <tr *ngFor="let lophoc of listLopHoc" (dblclick)="dbClick($event)">
+                <tr *ngFor="let lophoc of listLopHoc" >
                   <td>{{lophoc ? lophoc.MaLopHoc:""}}</td>
                   <td>{{lophoc ? lophoc.NgayKhaiGiang:""}}</td>
                   <td>{{lophoc ? lophoc.NgayBeGiang:""}}</td>
@@ -151,7 +151,7 @@
                   </div>
                   <div class="form-group" class="col-4">
                     <label for="txt-gv-name">Giảng viên</label>
-                    <select class="form-control input-lg" formControlName="giangvien" (onselect)="giangvienClick()">
+                    <select class="form-control input-lg" formControlName="giangvien" >
                       <option *ngFor="let gv of giangviens" value="{{gv.IDGiangVien}}">
                         {{gv.HoTen}}
                       </option>
