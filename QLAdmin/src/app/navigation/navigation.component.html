@@ -16,37 +16,52 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" [routerLink]="['']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Danh sách chăm sóc KH</span>
             </a>
         </li>
         <!-- Nav Item - thời khóa biểu -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" [routerLink]="['thoikhoabieu']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Thời khóa biểu</span>
             </a>
         </li>
 
+        <!-- Nav Item - danh sách lớp học -->
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['danhsachlophoc']" routerLinkActive="router-link-active">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Danh sách lớp học</span>
+            </a>
+        </li>
+        <!-- Nav Item - học viên -->
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['hocvien']" routerLinkActive="router-link-active">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Học viên</span>
+            </a>
+        </li>
+
         <!-- Nav Item -  -->
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['khoahoc']" routerLinkActive="router-link-active" >
+            <a class="nav-link" [routerLink]="['khoahoc']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Khóa học</span></a>
         </li>
 
         <!-- Nav Item -  -->
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['giangvien']" routerLinkActive="router-link-active" >
+            <a class="nav-link" [routerLink]="['giangvien']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Giảng viên</span></a>
         </li>
 
         <!-- Nav Item -  -->
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['phonghoc']" routerLinkActive="router-link-active" >
+            <a class="nav-link" [routerLink]="['phonghoc']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Phòng học</span></a>
         </li>
@@ -107,7 +122,7 @@
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" >
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Đăng xuất
                         </a>

@@ -187,7 +187,7 @@ export class LophocphanComponent implements OnInit {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
         this.shareData(+idAttr);
-        this.router.navigate(['nv/lophoc']);
+        this.router.navigate(['admin/lophoc']);
     }
     shareData(IDLopHocPhan)
     {

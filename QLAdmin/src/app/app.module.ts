@@ -16,6 +16,10 @@ import { LophocComponent } from './lophoc/lophoc.component';
 import { GiangvienComponent } from './giangvien/giangvien.component';
 import { PhonghocComponent } from './phonghoc/phonghoc.component';
 import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
+import { DatePipe } from '@angular/common';
+import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.component';
+import { HocvienComponent } from './hocvien/hocvien.component';
+import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
 @NgModule({
    declarations: [
       AppComponent,
@@ -27,7 +31,10 @@ import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
       LophocComponent,
       GiangvienComponent,
       PhonghocComponent,
-      ThoikhoabieuComponent
+      ThoikhoabieuComponent,
+      DanhsachlophocComponent,
+      HocvienComponent,
+      NotFoundComponentComponent
    ],
    imports: [
       BrowserModule,
@@ -36,7 +43,9 @@ import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
       FormsModule,
       ReactiveFormsModule
    ],
-   providers: [],
+   providers: [
+      DatePipe
+   ],
    bootstrap: [
       AppComponent
    ]

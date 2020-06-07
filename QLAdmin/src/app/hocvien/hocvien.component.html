@@ -1,0 +1,193 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Danh sách học viên
+      </h1>
+      <pre>
+        1. Vấn đề chuyển lớp của học viên
+        2. Xem học viên từ lớp học và xem học viên từ tab học viên
+        3. Double click để xem thông tin học viên
+        4. Sẽ chuyển được lớp học giữa các lớp trong lớp học phần.
+            Nếu muốn chuyển qua 1 lớp học phần mới thì sẽ xóa bên này và qua bên lớp học phần khác 
+        5. Giảng viên không được xem trực tiếp học viên. Nếu muốn xem phải thông qua lớp học 
+            Nhớ routing về lại lớp học khi giảng viên cố tình routing tới học viên
+        6. Trang học viên có thể load học viên theo lớp với combobox
+          </pre>
+      <button *ngIf=!isGiangVien style="margin-right: 5px;"(click)="themHocVien()" class="btn btn-success" 
+      data-toggle="modal" data-target="#hocvienModal" >Thêm học viên</button>
+      <button  (click)="guiMailLop()" class="btn btn-success" 
+      data-toggle="modal" data-target="#hocvienModal" >Gửi mail</button>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Tên học viên</th>
+                  <th>Số điện thoại</th>
+                  <th>Email</th>
+                  <th *ngIf=!isGiangVien>Thời gian đăng kí</th>
+                  <th *ngIf=!isGiangVien>Hình thức thanh toán</th>
+                  <th *ngIf=!isGiangVien>Số tiền</th>
+                  <th *ngIf=!isGiangVien>Trạng thái thanh toán</th>
+                  <th *ngIf=!isGiangVien>Trạng thái</th>
+                  <th *ngIf=!isGiangVien>Hành động</th>
+                  <th >Gửi mail</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Tên học viên</th>
+                  <th>Số điện thoại</th>
+                  <th>Email</th>
+                  <th *ngIf=!isGiangVien>Thời gian đăng kí</th>
+                  <th *ngIf=!isGiangVien>Hình thức thanh toán</th>
+                  <th *ngIf=!isGiangVien>Số tiền</th>
+                  <th *ngIf=!isGiangVien>Trạng thái thanh toán</th>
+                  <th *ngIf=!isGiangVien>Trạng thái</th>
+                  <th *ngIf=!isGiangVien>Hành động</th>
+                  <th >Gửi mail</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr *ngFor="let hv of listHocVien" >
+                  <td >{{hv ? hv.TenHocVien:""}}</td>
+                  <td >{{hv ? hv.SoDienThoai:""}}</td>
+                  <td >{{hv ? hv.Email:""}}</td>
+                  <td *ngIf=!isGiangVien>{{hv ? hv.ThoiGianDangKi:""}}</td>
+                  <td *ngIf=!isGiangVien>{{hv ? hv.HinhThucThanhToan:""}}</td>
+                  <td *ngIf=!isGiangVien>{{hv ? hv.SoTien:""}}</td>
+                  <td align="center" *ngIf=!isGiangVien>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="{{hv ? hv.IDHocVien:-1}}"
+                        checked="true">
+                      <label class="custom-control-label" for="{{hv ? hv.IDHocVien:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center" *ngIf=!isGiangVien>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="{{hv ? hv.IDHocVien:-1}}"
+                        checked="true">
+                      <label class="custom-control-label" for="{{hv ? hv.IDHocVien:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center" id="{{hv ? hv.IDHocVien:-1}}" *ngIf=!isGiangVien >
+                    <div>
+                      <a (click)="xemHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
+                        data-target="#hocvienModal" class="fas fa-clipboard marginicon"></a>
+                      <a (click)="suaHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
+                        data-target="#hocvienModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
+                        data-target="#xoahocvienModal" class="fas fa-trash-alt marginicon"></a>
+                    </div>
+                  </td>
+                  <td align="center" >
+                    <button id="{{hv ? hv.IDHocVien:-1}}" (click)="guiMailCaNhan($event)" class="btn btn-success" 
+                    data-toggle="modal" data-target="#hocvienModal">Gửi mail</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->
+</div>
+
+<!-- them lớp học phần Modal -->
+<div class="modal fade" id="hocvienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Học viên</h5>
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="hocvienForm">
+          <div class="form-group">
+            <label for="txt-tenhocvien-name">Tên học viên: </label>
+            <input type="text" class="form-control" name="txt-tenhocvien-name" formControlName="TenHocVien">
+          </div>
+          <div class="form-group">
+            <label for="txt-sdt-name">Số điện thoại: </label>
+            <input type="number" class="form-control" name="txt-sdt-name" formControlName="SoDienThoai">
+          </div>
+          <div class="form-group">
+            <label for="txt-email-name">Email: </label>
+            <input type="email" class="form-control" name="txt-email-name" formControlName="Email">
+          </div>
+          <div class="form-group">
+            <label for="txt-khoahoc-name">Khóa học: </label>
+            <select class="form-control" name="txt-khoahoc-name" formControlName="KhoaHoc" #t
+              (change)="changeIDKhoaHoc(t.value)" name="something1">
+              <option *ngFor="let kh of listKhoaHoc" value="{{kh.IDKhoaHoc}}">
+                {{ kh.TenKhoaHoc }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txt-tenlophoc-name">Tên lớp học: </label>
+            <select class="form-control" name="txt-tenlophoc-name" formControlName="TenLopHoc"
+              #lhp (change)="changeIDLopHocPhan(lhp.value)" name="something12" >
+              <option *ngFor="let lhp of listLopHocPhan" value="{{ lhp.IDLopHocPhan }}">
+                {{ lhp.TenLopHocPhan }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group" style="overflow-x: auto;">
+            <label for="txt-lophoc-name">Lớp học: </label>
+            <select class="form-control" name="txt-lophoc-name" formControlName="LopHoc">
+              <option *ngFor="let lh of listLopHoc" value="{{ lh.IDLopHoc }}">
+                {{ lh.ThongTinLopHoc }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txt-hocphi-name">Học phí: </label>
+            <input type="text" class="form-control" name="txt-hocphi-name" formControlName="HocPhi"
+              value={{HocPhiLopHoc}}>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- xóa giang vien -->
+<div class="modal fade" id="xoahocvienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa học viên</h5>
+        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có thật sự muốn xóa học viên này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến học viên này sẽ bị xóa
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-primary" (click)="xoa()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>

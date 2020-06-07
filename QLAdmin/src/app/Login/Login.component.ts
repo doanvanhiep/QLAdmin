@@ -16,14 +16,18 @@ export class LoginComponent implements OnInit {
         private loginService: Login_serviceService
     ) {
         if (loginService.isLogin) {
-            this.router.navigate(['/nv']);
+            var Quyen=this.loginService.getQuyen();
+            if(Quyen==0)this.router.navigate(['/admin']);
+            else if(Quyen==1) this.router.navigate(['/nv']);
+            else this.router.navigate(['/gv']);
+
         }
     }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
-            taikhoan: '',
-            matkhau: ''
+            taikhoan: 'admin',
+            matkhau: 'admin'
         });
     }
     // convenience getter for easy access to form fields
@@ -33,7 +37,7 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    //this.router.navigate(['/nv']);
+                    //this.router.navigate(['']);
                     window.location.reload();
                     // if (data == 0 || data == 1) {
                     //   this.router.navigate(['/nv']);

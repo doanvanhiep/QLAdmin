@@ -162,7 +162,7 @@ export class GiangvienComponent implements OnInit {
 		document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
 		this.fileSelected = null;
 	}
-
+ 
 	//load script
 	private loadScripts() {
 		// You can load multiple scripts by just providing the key as argument into load method of the service

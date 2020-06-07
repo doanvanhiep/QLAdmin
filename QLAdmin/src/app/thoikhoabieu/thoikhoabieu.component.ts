@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ThoikhoabieuService } from '../service/thoikhoabieu/thoikhoabieu.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
+import { DatePipe } from '@angular/common'
+
 @Component({
     selector: 'app-thoikhoabieu',
     templateUrl: './thoikhoabieu.component.html',
@@ -14,6 +16,7 @@ export class ThoikhoabieuComponent implements OnInit {
     enddate: any;
     thoikhoabieu: any;
     constructor(
+        private datepipe: DatePipe,
         private thoikhoabieuServer: ThoikhoabieuService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
     ) { }
@@ -22,12 +25,13 @@ export class ThoikhoabieuComponent implements OnInit {
         this.numberweekofyear = Array.from(Array(52).keys());
         this.getCurrentNumberofWeek();
         this.getBeginAndEndDate(this.numbercurrentofweek);
-        this.getThoiKhoaBieu(1);
+        this.getThoiKhoaBieu(1,this.begindate,this.enddate);
         this.loadScripts();
     }
     getWeek(event) {
         this.numbercurrentofweek = +event;
         this.getBeginAndEndDate(this.numbercurrentofweek);
+        this.getThoiKhoaBieu(1,this.begindate,this.enddate);
     }
     getCurrentNumberofWeek() {
         var date = new Date();
@@ -47,8 +51,9 @@ export class ThoikhoabieuComponent implements OnInit {
         beinDate.setDate(beinDate.getDate() - 6)
         this.begindate = beinDate;
     }
-    getThoiKhoaBieu(IDGiangVien) {
-        this.thoikhoabieuServer.getThoiKhoaBieu(IDGiangVien)
+    getThoiKhoaBieu(IDGiangVien,begindate,enddate) {
+        console.log();
+        this.thoikhoabieuServer.getThoiKhoaBieu(IDGiangVien,this.datepipe.transform(begindate,"yyyy-MM-dd"),this.datepipe.transform(enddate,"yyyy-MM-dd"))
             .pipe()
             .subscribe(res => {
                 this.thoikhoabieu = res.result.data;
@@ -57,16 +62,7 @@ export class ThoikhoabieuComponent implements OnInit {
     }
     //load script
     private loadScripts() {
-        // You can load multiple scripts by just providing the key as argument into load method of the service
-        this.dynamicScriptLoader.load('jquerydataTablesminjs').then(data => {
-            // You can load multiple scripts by just providing the key as argument into load method of the service
-            this.dynamicScriptLoader.load('dataTablesbootstrap4minjs').then(data => {
-                // You can load multiple scripts by just providing the key as argument into load method of the service
-                this.dynamicScriptLoader.load('datatablesdemojs').then(data => {
-                    this.dynamicScriptLoader.load('sbadmin2minjs').then(data => {
-                    }).catch(error => console.log(error));
-                }).catch(error => console.log(error));
-            }).catch(error => console.log(error));
+        this.dynamicScriptLoader.load('sbadmin2minjs').then(data => {
         }).catch(error => console.log(error));
     }
 }

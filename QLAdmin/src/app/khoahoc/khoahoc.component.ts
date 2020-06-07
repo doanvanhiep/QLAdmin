@@ -99,7 +99,7 @@ export class KhoahocComponent implements OnInit {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
         this.shareData(+idAttr);
-        this.router.navigate(['nv/lophocphan']);
+        this.router.navigate(['admin/lophocphan']);
     }
     suaKhoaHoc(event) {
         var target = event.target || event.srcElement || event.currentTarget;

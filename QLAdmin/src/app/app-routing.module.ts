@@ -11,11 +11,14 @@ import { LophocComponent } from './lophoc/lophoc.component';
 import { GiangvienComponent } from './giangvien/giangvien.component';
 import { PhonghocComponent } from './phonghoc/phonghoc.component';
 import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
+import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.component';
+import { HocvienComponent } from './hocvien/hocvien.component';
+import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
 const routes: Routes = [
-  {path:'',redirectTo:'dangnhap',pathMatch:'full'},
-  {path:'dangnhap',component: LoginComponent},
+  { path: '', redirectTo: 'dangnhap', pathMatch: 'full' },
+  { path: 'dangnhap', component: LoginComponent },
   {
-    path: 'nv',
+    path: 'admin',
     component: NavigationComponent,
     children: [
       {
@@ -43,12 +46,59 @@ const routes: Routes = [
         component: PhonghocComponent
       },
       {
-        path: 'thoikhoabieu',
-        component: ThoikhoabieuComponent
+        path: 'danhsachlophoc',
+        component: DanhsachlophocComponent
+      },
+      {
+        path: 'hocvien',
+        component: HocvienComponent
       }
     ],
     canActivate: [AuthGuardService]
-  }
+  },
+  {
+    path: 'gv',
+    component: NavigationComponent,
+    children: [
+      {
+        path: '', redirectTo: 'thoikhoabieu', pathMatch: 'full'
+      },
+      {
+        path: 'thoikhoabieu',
+        component: ThoikhoabieuComponent
+      },
+      {
+        path: 'danhsachlophoc',
+        component: DanhsachlophocComponent
+      },
+      {
+        path: 'hocvien',
+        component: HocvienComponent
+      }
+    ],
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'nv',
+    component: NavigationComponent,
+    children: [
+      {
+        path: '',
+        component: DasboardComponent
+      },
+      {
+        path: 'danhsachlophoc',
+        component: DanhsachlophocComponent
+      },
+      {
+        path: 'hocvien',
+        component: HocvienComponent
+      }
+    ],
+    canActivate: [AuthGuardService]
+  },
+  { path: '404', component: NotFoundComponentComponent },
+  { path: '**', redirectTo: '/404' }
 ];
 @NgModule({
   // declarations: [],
