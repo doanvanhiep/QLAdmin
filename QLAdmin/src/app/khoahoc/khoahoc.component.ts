@@ -38,10 +38,9 @@ export class KhoahocComponent implements OnInit {
   }
   createForm() {
     this.btnedit = false;
-    this.khoahocForm = this.formBuilder.group({
+    this.khoahocForm = new FormGroup({
       TenKhoaHoc: new FormControl("", Validators.required),
-      GhiChu: "",
-      TrangThai: new FormControl(false),
+      GhiChu: new FormControl("")
     });
   }
   editForm(tenkhoahoc, ghichu) {

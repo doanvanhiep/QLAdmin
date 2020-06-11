@@ -75,6 +75,7 @@ export class GiangvienComponent implements OnInit {
       MoTa: "",
       HinhAnh: "",
       GhiChu: "",
+      TrangThai: "",
     });
     document.getElementById("nameoffile").innerHTML =
       "Không có tệp nào được chọn";

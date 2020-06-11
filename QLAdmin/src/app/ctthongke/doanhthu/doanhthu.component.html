@@ -1,0 +1,55 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800 d-inline">Thống kê doanh thu</h1>
+      <button
+        class="btn btn-primary backBtn btn-md pull-left d-inline float-right"
+        type="button"
+        [routerLink]="['/nv/thongke']"
+        routerLinkActive="router-link-active"
+      >
+        <i class="fa fa-arrow-left"></i>
+        Back
+      </button>
+      <div class="row">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search Here"
+            [(ngModel)]="form"
+          />
+        </div>
+
+        <table class="table table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th *ngFor="let item of header">{{ item }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of filterData
+                  | filter: form
+                  | paginate: { itemsPerPage: 10, currentPage: p };
+                let i = index
+              "
+            >
+              <td>{{ item.firstName }}</td>
+              <td>{{ item.lastName }}</td>
+              <td>{{ item.address }}</td>
+            </tr>
+          </tbody>
+          <pagination-controls
+            (pageChange)="p = $event"
+            class="float-right"
+          ></pagination-controls>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

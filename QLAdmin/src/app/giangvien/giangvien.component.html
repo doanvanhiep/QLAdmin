@@ -88,7 +88,6 @@
                         id="status"
                         class="custom-control-input"
                         name="{{ gv ? gv.IDGiangVien : -1 }}"
-                        formControlName="TrangThai"
                         (change)="checkValue($event)"
                         checked
                       />
@@ -303,6 +302,20 @@
               name="txt-ghichulhp-name"
               formControlName="GhiChu"
             />
+          </div>
+          <div class="form-group">
+            <div class="d-inline">
+              <label>Trạng Thái: </label>
+              <div class="custom-control custom-checkbox mb-3 ml-1 d-inline">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="cb-trangthai"
+                  formControlName="TrangThai"
+                />
+                <label class="custom-control-label" for="cb-trangthai"> </label>
+              </div>
+            </div>
           </div>
         </form>
       </div>

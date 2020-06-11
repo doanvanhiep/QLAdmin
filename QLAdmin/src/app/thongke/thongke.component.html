@@ -122,6 +122,7 @@
                   [plugins]="barChartPlugins"
                   [legend]="barChartLegend"
                   [chartType]="barChartType"
+                  (chartClick)="chartKhoaHocClicked($event)"
                 >
                 </canvas>
               </div>
@@ -178,6 +179,7 @@
                   [legend]="lineChartLegend"
                   [chartType]="lineChartType"
                   [plugins]="lineChartPlugins"
+                  (chartClick)="chartDoanhThuClicked($event)"
                 >
                 </canvas>
               </div>

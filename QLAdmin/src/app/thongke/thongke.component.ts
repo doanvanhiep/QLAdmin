@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { ChartOptions, ChartType, ChartDataSets } from "chart.js";
 import { SingleDataSet, Color, Label } from "ng2-charts";
 
@@ -62,14 +63,7 @@ export class ThongkeComponent implements OnInit {
   public lineChartData: ChartDataSets[] = [
     { data: [10, 20, 35, 40, 56, 48, 40], label: "Doanh thu tháng" },
   ];
-  public lineChartLabels: Label[] = [
-    "Tháng 1",
-    "Tháng 2",
-    "Tháng 3",
-    "Tháng 4",
-    "Tháng 5",
-    "Tháng 6",
-  ];
+  public lineChartLabels: Label[] = [];
 
   public lineChartOptions: ChartOptions = {
     responsive: true,
@@ -120,7 +114,13 @@ export class ThongkeComponent implements OnInit {
   public pieChartType: ChartType = "pie";
   public pieChartLegend = true;
   public pieChartPlugins = [];
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+  chartKhoaHocClicked(e: any) {
+    this.router.navigate(["/nv/thongke/khoahoc"]);
+  }
+  chartDoanhThuClicked(e: any) {
+    this.router.navigate(["/nv/thongke/doanhthu"]);
+  }
 }

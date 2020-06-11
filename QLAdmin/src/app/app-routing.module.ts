@@ -12,6 +12,8 @@ import { GiangvienComponent } from "./giangvien/giangvien.component";
 import { PhonghocComponent } from "./phonghoc/phonghoc.component";
 import { ThoikhoabieuComponent } from "./thoikhoabieu/thoikhoabieu.component";
 import { ThongkeComponent } from "./thongke/thongke.component";
+import { CackhoahocComponent } from "./ctthongke/cackhoahoc/cackhoahoc.component";
+import { DoanhthuComponent } from "./ctthongke/doanhthu/doanhthu.component";
 const routes: Routes = [
   { path: "", redirectTo: "dangnhap", pathMatch: "full" },
   { path: "dangnhap", component: LoginComponent },
@@ -50,6 +52,14 @@ const routes: Routes = [
       {
         path: "thongke",
         component: ThongkeComponent,
+      },
+      {
+        path: "thongke/khoahoc",
+        component: CackhoahocComponent,
+      },
+      {
+        path: "thongke/doanhthu",
+        component: DoanhthuComponent,
       },
     ],
     canActivate: [AuthGuardService],

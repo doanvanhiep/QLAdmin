@@ -17,7 +17,10 @@ import { GiangvienComponent } from "./giangvien/giangvien.component";
 import { PhonghocComponent } from "./phonghoc/phonghoc.component";
 import { ThoikhoabieuComponent } from "./thoikhoabieu/thoikhoabieu.component";
 import { ThongkeComponent } from "./thongke/thongke.component";
-
+import { CackhoahocComponent } from "./ctthongke/cackhoahoc/cackhoahoc.component";
+import { DoanhthuComponent } from "./ctthongke/doanhthu/doanhthu.component";
+import { NgxPaginationModule } from "ngx-pagination";
+import { Ng2SearchPipeModule } from "ng2-search-filter";
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +34,8 @@ import { ThongkeComponent } from "./thongke/thongke.component";
     PhonghocComponent,
     ThoikhoabieuComponent,
     ThongkeComponent,
+    CackhoahocComponent,
+    DoanhthuComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +44,8 @@ import { ThongkeComponent } from "./thongke/thongke.component";
     FormsModule,
     ReactiveFormsModule,
     ChartsModule,
+    NgxPaginationModule,
+    Ng2SearchPipeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
