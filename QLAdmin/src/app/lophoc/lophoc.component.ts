@@ -27,8 +27,8 @@ export class LophocComponent implements OnInit {
     cas: { [key: string]: string } = { 'Ca 1': 'Ca 1', 'Ca 2': 'Ca 2', 'Ca 3': 'Ca 3', 'Ca 4': 'Ca 4', 'Ca 5': 'Ca 5' };
     giangviens: any;
     phonghocs: any;
-    lophocByID:any;
-    IDLopHoc:any;
+    lophocByID: any;
+    IDLopHoc: any;
     constructor(
         private phonghocService: PhonghocService,
         private giangvienService: GiangvienService,
@@ -37,7 +37,7 @@ export class LophocComponent implements OnInit {
         private share: SharedataService,
         private router: Router,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
-        private formBuilder: FormBuilder, ) { }
+        private formBuilder: FormBuilder,) { }
 
     ngOnInit() {
         this.IDLopHocPhan = localStorage.getItem("idLopHocPhan");
@@ -69,7 +69,7 @@ export class LophocComponent implements OnInit {
         this.createCahoc = false;
         this.lophocForm = this.formBuilder.group({
             MaLopHoc: "",
-            SoBuoiHoc: "",
+            SoBuoiHoc: { value: 0, disabled: true },
             NgayKhaiGiang: "",
             NgayBeGiang: "",
             GhiChu: "",
@@ -92,23 +92,53 @@ export class LophocComponent implements OnInit {
     get f() { return this.lophocForm.controls; }
     get t() { return this.f.buoihocs as FormArray; }
     them() {
-        this.lophocservice.themLopHoc(this.IDLopHocPhan, JSON.stringify(this.lophocForm.value, null, 4))
-            .pipe()
-            .subscribe(res => {
-                if (res.TrangThai.error === true) {
-                    alert(res.TrangThai.message);
-                    return;
-                }
-                alert("Thêm thành công");
-                this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
-                this.closebutton.nativeElement.click();
-            });
+        if (this.f.SoBuoiHoc.value <= 0) {
+            alert("Vui lòng thêm ca học. Ít nhất là 1 ca");
+            return;
+        }
+        if (!this.checkThongTinCaHoc()) {
+            return;
+        }
+        if (this.f.SoBuoiHoc.value > 0) {
+            var tempCaHoc = this.t.at(this.f.SoBuoiHoc.value - 1);
+            this.lophocservice.checkPhongHocGiangVien(this.f.NgayKhaiGiang.value, this.f.NgayBeGiang.value,
+                +tempCaHoc.value.phong, +tempCaHoc.value.giangvien, tempCaHoc.value.ca, tempCaHoc.value.thu)
+                .pipe()
+                .subscribe(res => {
+                    if (res.result.error) {
+                        alert(res.result.message);
+                        return;
+                    }
+                    else {
+                        if (res.result.statusGV) {
+                            alert("Hiện tại với " + tempCaHoc.value.thu + " và " + tempCaHoc.value.ca + " thì giảng viên đã dạy lớp khác.")
+                            return;
+                        }
+                        if (res.result.statusPH) {
+                            alert("Hiện tại với " + tempCaHoc.value.thu + " và " + tempCaHoc.value.ca + " thì phòng học có lớp khác.")
+                            return;
+                        }
+                    }
+
+                    this.t.enable();
+                    this.lophocservice.themLopHoc(this.IDLopHocPhan, JSON.stringify(this.lophocForm.value, null, 4))
+                        .pipe()
+                        .subscribe(res => {
+                            if (res.TrangThai.error === true) {
+                                alert(res.TrangThai.message);
+                                return;
+                            }
+                            alert("Thêm thành công");
+                            this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
+                            this.closebutton.nativeElement.click();
+                        });
+                });
+        }
     }
     sua() {
         this.lophocservice.suaLopHoc(this.lophocByID.IDLopHoc, JSON.stringify(this.lophocForm.value, null, 4))
             .pipe()
             .subscribe(res => {
-                console.log(res);
                 if (res.TrangThai.error === true) {
                     alert(res.TrangThai.message);
                     return;
@@ -124,21 +154,18 @@ export class LophocComponent implements OnInit {
         this.getPhongHocByID(+idAttr);
         this.editForm(this.lophocByID);
     }
-    getPhongHocByID(idLopHoc)
-    {
+    getPhongHocByID(idLopHoc) {
         this.lophocByID = this.listLopHoc.filter(item => item.IDLopHoc === +idLopHoc)[0];
-        console.log(this.lophocByID);
     }
     xoaLopHoc(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
-        this.IDLopHoc=+idAttr;
+        this.IDLopHoc = +idAttr;
     }
-    xoa(){
+    xoa() {
         this.lophocservice.xoaLopHoc(this.IDLopHoc)
             .pipe()
             .subscribe(res => {
-                console.log(res);
                 if (res.TrangThai.error === true) {
                     alert(res.TrangThai.message);
                     return;
@@ -158,17 +185,104 @@ export class LophocComponent implements OnInit {
     getDataLopHocPhan() {
         this.lophocphan = this.share.receiveDataLopHocPhan();
     }
+    removeCaHoc(index) {
+        this.t.removeAt(index);
+        this.f.SoBuoiHoc.setValue(+this.f.SoBuoiHoc.value - 1);
+        if (+this.f.SoBuoiHoc.value === index && index != 0) {
+            this.t.at(index - 1).enable();
+        }
+    }
+    isFullThongTinCaHoc(FormAt) {
+        if (!FormAt.value.thu || !FormAt.value.ca || !FormAt.value.phong || !FormAt.value.giangvien) {
+            alert("Vui lòng điền đầy đủ thông tin cho buổi học");
+            return false;
+        }
+        return true;
+    }
+    isTrungCaHocVaThu(FormAt) {
+        for (let i = 0; i < this.f.SoBuoiHoc.value - 1; i++) {
+            var tempCaHoc = this.t.at(i)
+            if (tempCaHoc.value.ca == FormAt.value.ca && tempCaHoc.value.thu == FormAt.value.thu) {
+                alert("Vui lòng kiểm tra lại. Một lớp không thể có 2 ca học trùng nhau!");
+                return true;
+            }
+        }
+        return false;
+    }
+    isFullNgayKhaiGiangNgayBeGiang() {
+        if (this.f.NgayKhaiGiang.value == "") {
+            alert("Vui lòng nhập ngày khai giảng");
+            return false;
+        }
+        if (this.f.NgayBeGiang.value == "") {
+            alert("Vui lòng nhập ngày bế giảng");
+            return false;
+        }
+        if (this.f.NgayKhaiGiang.value >= this.f.NgayBeGiang.value) {
+            alert("Ngày khai giảng không thể sau ngày bế giảng hoặc trùng ngày bế giảng");
+            return false;
+        }
+        return true;
+    }
+    checkThongTinCaHoc() {
+        if (this.f.SoBuoiHoc.value > 0) {
+            var tempCaHoc = this.t.at(this.f.SoBuoiHoc.value - 1);
+            if (!this.isFullThongTinCaHoc(tempCaHoc)) {
+                return false;
+            }
+            if (this.isTrungCaHocVaThu(tempCaHoc)) {
+                return false;
+            }
+            if (!this.isFullNgayKhaiGiangNgayBeGiang()) {
+                return false;
+            }
+        }
+        return true;
+    }
     createCaHoc() {
-        var sobuoihoc = +this.f.SoBuoiHoc.value;
-        this.addForm(sobuoihoc);
-        this.sobuoihocs = Array.from(Array(sobuoihoc).keys());
-        this.createCahoc = true;
+        if (!this.checkThongTinCaHoc()) {
+            return;
+        }
+        if (this.f.SoBuoiHoc.value > 0) {
+            var tempCaHoc = this.t.at(this.f.SoBuoiHoc.value - 1);
+            this.lophocservice.checkPhongHocGiangVien(this.f.NgayKhaiGiang.value, this.f.NgayBeGiang.value,
+                +tempCaHoc.value.phong, +tempCaHoc.value.giangvien, tempCaHoc.value.ca, tempCaHoc.value.thu)
+                .pipe()
+                .subscribe(res => {
+                    if (res.result.error) {
+                        alert(res.result.message);
+                        return;
+                    }
+                    else {
+                        if (res.result.statusGV) {
+                            alert("Hiện tại với " + tempCaHoc.value.thu + " và " + tempCaHoc.value.ca + " thì giảng viên đã dạy lớp khác.")
+                            return;
+                        }
+                        if (res.result.statusPH) {
+                            alert("Hiện tại với " + tempCaHoc.value.thu + " và " + tempCaHoc.value.ca + " thì phòng học có lớp khác.")
+                            return;
+                        }
+                    }
+                    this.f.SoBuoiHoc.setValue(+this.f.SoBuoiHoc.value + 1);
+                    var sobuoihoc = +this.f.SoBuoiHoc.value;
+                    this.addForm(sobuoihoc);
+                    this.sobuoihocs = Array.from(Array(sobuoihoc).keys());
+                    this.createCahoc = true;
+                });
+        }
+        else {
+            this.f.SoBuoiHoc.setValue(+this.f.SoBuoiHoc.value + 1);
+            var sobuoihoc = +this.f.SoBuoiHoc.value;
+            this.addForm(sobuoihoc);
+            this.sobuoihocs = Array.from(Array(sobuoihoc).keys());
+            this.createCahoc = true;
+        }
     }
     addForm(sobuoihoc) {
         if (this.t.length < sobuoihoc) {
             for (let i = this.t.length; i < sobuoihoc; i++) {
                 this.t.push(this.formBuilder.group({
-                    idTTLH:'',
+                    idTTLH: '',
                     thu: '',
                     ca: '',
                     phong: '',
@@ -180,12 +294,14 @@ export class LophocComponent implements OnInit {
                 this.t.removeAt(i);
             }
         }
+        if (sobuoihoc > 1) {
+            this.t.at(sobuoihoc - 2).disable();
+        }
     }
-    modifyForm(cahocs)
-    {
+    modifyForm(cahocs) {
         cahocs.forEach(cahoc => {
             this.t.push(this.formBuilder.group({
-                idTTLH:cahoc.IDThongTinLopHoc,
+                idTTLH: cahoc.IDThongTinLopHoc,
                 thu: cahoc.Thu,
                 ca: cahoc.CaHoc,
                 phong: cahoc.IDPhongHoc,

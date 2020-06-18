@@ -33,23 +33,24 @@
                             </tfoot>
                             <tbody>
                                 <tr *ngFor="let ph of listPhongHoc">
-                                    <td >{{ph ? ph.TenPhong:""}}</td>
-                                    <td >{{ph ? ph.SoChoNgoi:""}}</td>
-                                    <td >{{ph ? ph.GhiChu:""}}</td>
+                                    <td>{{ph ? ph.TenPhong:""}}</td>
+                                    <td>{{ph ? ph.SoChoNgoi:""}}</td>
+                                    <td>{{ph ? ph.GhiChu:""}}</td>
                                     <td align="center">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input"
                                                 name="{{ph ? ph.IDPhongHoc:-1}}" checked="true">
-                                            <label class="custom-control-label"
-                                                for="{{ph ? ph.IDPhongHoc:-1}}"></label>
+                                            <label class="custom-control-label" for="{{ph ? ph.IDPhongHoc:-1}}"></label>
                                         </div>
                                     </td>
                                     <td align="center" id="{{ph ? ph.IDPhongHoc:-1}}">
                                         <div>
                                             <a (click)="suaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}"
-                                                data-toggle="modal" data-target="#phonghocModal">sửa</a> / <a
-                                                (click)="xoaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}"
-                                                data-toggle="modal" data-target="#xoaphonghocModal">xóa</a>
+                                                data-toggle="modal" data-target="#phonghocModal"
+                                                class="fas fa-edit marginicon"></a>
+                                            <a (click)="xoaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}"
+                                                data-toggle="modal" data-target="#xoaphonghocModal"
+                                                class="fas fa-trash-alt marginicon"></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -111,12 +112,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Bạn có thật sự muốn xóa phòng học này. Nếu bạn xóa thì toàn bộ lớp học ở phòng học này sẽ bị xóa
+                <p>Bạn có thật sự muốn xóa phòng học này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến phòng học này sẽ bị xóa
                 </p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                <button class="btn btn-primary" (click)="xoa()">xóa</button>
+                <button class="btn btn-danger" (click)="xoa()">Xóa</button>
             </div>
         </div>
     </div>

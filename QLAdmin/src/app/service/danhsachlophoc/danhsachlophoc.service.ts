@@ -14,4 +14,10 @@ export class DanhsachlophocService {
         return res;
       }));
   }
+  danhsachlophocbyidgiangvien(IDGiangVien) {
+    return this.http.get<any>(`${environment.apiUrl}/lophoc/danhsachlophocbyidgiangvien/${IDGiangVien}`)
+      .pipe(map(res => {
+        return res;
+      }));
+  }
 }

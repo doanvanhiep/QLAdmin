@@ -13,6 +13,7 @@ import { PhonghocComponent } from './phonghoc/phonghoc.component';
 import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
 import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.component';
 import { HocvienComponent } from './hocvien/hocvien.component';
+import { QuantrivienComponent } from './quantrivien/quantrivien.component';
 import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
 const routes: Routes = [
   { path: '', redirectTo: 'dangnhap', pathMatch: 'full' },
@@ -52,6 +53,10 @@ const routes: Routes = [
       {
         path: 'hocvien',
         component: HocvienComponent
+      },
+      {
+        path: 'quantrivien',
+        component: QuantrivienComponent
       }
     ],
     canActivate: [AuthGuardService]

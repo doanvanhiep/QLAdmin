@@ -2,13 +2,20 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-
+import {Login_serviceService} from '../../service_auth/login_service.service';
 @Injectable({
   providedIn: 'root'
 })
 export class GiangvienService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private loginService:Login_serviceService) { }
+  getGiangVienByTenTaiKhoan() {
+    return this.http.get<any>(`${environment.apiUrl}/giangvien/getgiangvienbytentaikhoan/${this.loginService.getTenTaiKhoan()}`)
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   getListGiangVien() {
     return this.http.get<any>(`${environment.apiUrl}/giangvien/danhsach`)
       .pipe(map(res => {

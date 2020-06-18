@@ -20,6 +20,7 @@ import { DatePipe } from '@angular/common';
 import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.component';
 import { HocvienComponent } from './hocvien/hocvien.component';
 import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
+import { QuantrivienComponent } from './quantrivien/quantrivien.component';
 @NgModule({
    declarations: [
       AppComponent,
@@ -34,7 +35,8 @@ import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponen
       ThoikhoabieuComponent,
       DanhsachlophocComponent,
       HocvienComponent,
-      NotFoundComponentComponent
+      NotFoundComponentComponent,
+      QuantrivienComponent
    ],
    imports: [
       BrowserModule,

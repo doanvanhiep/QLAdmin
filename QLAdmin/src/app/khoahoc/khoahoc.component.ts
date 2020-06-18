@@ -84,6 +84,12 @@ export class KhoahocComponent implements OnInit {
             })
         this.closebuttondelete.nativeElement.click();
     }
+    changeStatus(event)
+    {
+        // var target = event.target || event.srcElement || event.currentTarget;
+        // var idAttr = target.attributes.id.value;
+        // alert(idAttr);
+    }
     getListKhoaHoc() {
         this.khoahocService.getListKhoaHoc()
             .pipe()

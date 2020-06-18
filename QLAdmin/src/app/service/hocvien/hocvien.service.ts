@@ -13,5 +13,31 @@ export class HocvienService {
         return res;
       }));
   }
-
+  getListHocVienByIDLopHoc(IDLopHoc) {
+    return this.http.get<any>(`${environment.apiUrl}/hocvien/danhsachbyidlophoc/${IDLopHoc}`)
+      .pipe(map(res => {
+        return res;
+      }));
+  }
+  themHocVien( IDLopHoc,TenHocVien, Email, SoDienThoai,SoTien,NguoiThem)
+  {
+    return this.http.post<any>(`${environment.apiUrl}/hocvien/them`,{ IDLopHoc,TenHocVien, Email, SoDienThoai,SoTien,NguoiThem})
+    .pipe(map(res => {
+      return res;
+    }));
+  }
+  xoaHocVien( IDHocVien,IDLopHoc)
+  {
+    return this.http.delete<any>(`${environment.apiUrl}/hocvien/xoa/${IDHocVien}/${IDLopHoc}`)
+    .pipe(map(res => {
+      return res;
+    }));
+  }
+  suaHocVien(IDHocVien,IDLopHoc,TenHocVien, SoDienThoai, Email,IDLopHocCu)
+    {
+        return this.http.put<any>(`${environment.apiUrl}/hocvien/sua`,{IDHocVien,IDLopHoc,TenHocVien, SoDienThoai, Email,IDLopHocCu})
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
 } 

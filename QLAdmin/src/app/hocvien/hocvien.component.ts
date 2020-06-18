@@ -7,6 +7,8 @@ import { LophocphanService } from '../service/lophocphan/lophocphan.service';
 import { LophocService } from '../service/lophoc/lophoc.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import { SendmailService } from '../service/sendmail/sendmail.service';
+import { Login_serviceService } from '../service_auth/login_service.service';
 @Component({
     selector: 'app-hocvien',
     templateUrl: './hocvien.component.html',
@@ -14,7 +16,14 @@ import { CheckrouteService } from '../service/checkroute/checkroute.service';
 })
 export class HocvienComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
+    @ViewChild('closebutton1') closebutton1;
     @ViewChild('closebuttonDelete') closebuttondelete;
+    idLopHocTemp: any = -1;
+    allhocvien: any = true;
+    hasFile: any = false;
+    fileSelected: File = null;
+    idHocVien: any = -1;
+    idLopHoc: any = -1;
     idLopHocPhan: any;
     idKhoaHoc: any;
     listKhoaHoc: any;
@@ -24,10 +33,14 @@ export class HocvienComponent implements OnInit {
     listHocVien: any;
     btnedit: any = false;
     hocvienForm: FormGroup;
+    sendMailForm: FormGroup;
     HocPhiLopHoc: any;
     hocvienByID: any;
     parentRouter: any = "admin";
+    isSendMailCaNhan: any = false;
     constructor(
+        private loginService: Login_serviceService,
+        private sendMailService: SendmailService,
         private checkrouteService: CheckrouteService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -36,7 +49,7 @@ export class HocvienComponent implements OnInit {
         private khoahocService: KhoahocService,
         private formBuilder: FormBuilder,
         private hocvienService: HocvienService,
-        private dynamicScriptLoader: DynamicScriptLoaderServiceService, ) {
+        private dynamicScriptLoader: DynamicScriptLoaderServiceService,) {
         this.checkRoute();
         this.listHocVien = window.history.state.DSHV;
         if (!this.listHocVien) {
@@ -46,25 +59,34 @@ export class HocvienComponent implements OnInit {
             this.getListHocVien();
         }
         else {
+            this.idLopHoc = +window.history.state.IDLopHoc;
             this.idLopHocPhan = +window.history.state.IDLopHocPhan;
             this.idKhoaHoc = +window.history.state.IDKhoaHoc;
         }
     }
 
     ngOnInit() {
+        this.createSendMailForm();
         this.createForm();
         this.loadScripts();
+        if (!this.isGiangVien) {
+            if (this.idLopHoc != -1) {
+                this.allhocvien = true;
+            }
+            else {
+                this.allhocvien = false;
+            }
+        } else {
+            this.allhocvien = false;
+        }
     }
-    checkRoute() {
-        this.parentRouter = this.checkrouteService.getParentRouter();
-        this.isGiangVien = this.checkrouteService.getIsGiangVien();
-        this.activatedRoute.parent.url.subscribe((urlPath) => {
-            const url = urlPath[urlPath.length - 1].path;
-            if (this.parentRouter != url)
-                this.router.navigate([this.parentRouter]);
-        })
+    createSendMailForm() {
+        this.sendMailForm = this.formBuilder.group({
+            TieuDe: "",
+            NoiDung: "",
+            File: "",
+        });
     }
-
     createForm() {
         this.btnedit = false;
         this.hocvienForm = this.formBuilder.group({
@@ -88,6 +110,10 @@ export class HocvienComponent implements OnInit {
             HocPhi: HocvienByID.SoTien
         });
     }
+    changeAllHocVien() {
+        this.allhocvien = false;
+        this.getListHocVien();
+    }
     changeIDKhoaHoc(IDKhoaHoc) {
         this.HocPhiLopHoc = "";
         this.listLopHoc = null;
@@ -99,6 +125,17 @@ export class HocvienComponent implements OnInit {
     }
     getListHocVien() {
         this.hocvienService.getListHocVien()
+            .pipe()
+            .subscribe(res => {
+                if (res.result.error === true) {
+                    alert(res.result.message);
+                    return;
+                }
+                this.listHocVien = res.result.data;
+            });
+    }
+    getListHocVienByIDLopHoc() {
+        this.hocvienService.getListHocVienByIDLopHoc(this.idLopHoc)
             .pipe()
             .subscribe(res => {
                 if (res.result.error === true) {
@@ -141,23 +178,119 @@ export class HocvienComponent implements OnInit {
                 this.listLopHoc = res.result.data;
             });
     }
+    onSelectedFile(event) {
+        this.fileSelected = <File>event.target.files;
+        if (event.target.files.length > 0) {
+            //this.fileSelected.name
+            document.getElementById('nameoffile').innerHTML = "áddsasda";
+            return;
+        }
+        document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
+        this.fileSelected = null;
+    }
+    changeDinhKem(event) {
+        if (!this.hasFile) {
+            this.hasFile = !this.hasFile;
+            event.target.innerText = "Hủy đính kèm";
+        }
+        else {
+            this.hasFile = !this.hasFile;
+            event.target.innerText = "Đính kèm";
+            this.fileSelected = null;
+            document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
+        }
+    }
+    get fSendMail() { return this.sendMailForm.controls; }
+    sendMail() {
+        this.sendMailService.sendMail(this.fSendMail.TieuDe, this.fSendMail.NoiDung, this.fileSelected, null)
+            .pipe()
+            .subscribe(res => {
+                if (res.result.error === true) {
+                    alert(res.result.message);
+                    return;
+                }
+                this.listLopHocPhan = res.result.data;
+            });
+
+        alert(this.isSendMailCaNhan ? "Gửi cá nhân" : "Gửi tập thể");
+        alert(this.fileSelected == null ? "Không đính kèm" : "Có đính kèm");
+
+        console.log(this.fileSelected)
+        this.closebutton1.nativeElement.click();
+    }
+
     guiMailLop() {
-        alert("Gửi mail lớp");
+        this.createSendMailForm();
+        this.isSendMailCaNhan = false;
+        this.hasFile = false;
     }
     guiMailCaNhan(event) {
+        this.createSendMailForm();
+        this.isSendMailCaNhan = true;
+        this.hasFile = false;
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
         alert(idAttr);
-        alert("Gửi mail cá nhân");
+    }
+    checkRoute() {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        this.isGiangVien = this.checkrouteService.getIsGiangVien();
+        this.activatedRoute.parent.url.subscribe((urlPath) => {
+            const url = urlPath[urlPath.length - 1].path;
+            if (this.parentRouter != url)
+                this.router.navigate([this.parentRouter]);
+        })
     }
     get f() { return this.hocvienForm.controls; }
     them() {
+        this.hocvienService.themHocVien(this.f.LopHoc.value, this.f.TenHocVien.value,
+            this.f.Email.value, this.f.SoDienThoai.value, this.HocPhiLopHoc,
+            this.loginService.getTenTaiKhoan())
+            .pipe()
+            .subscribe(res => {
+                if (res.TrangThai.error === true) {
+                    alert(res.TrangThai.message);
+                    return;
+                }
+                alert("Thêm thành công");
+                if (this.idLopHoc == -1)
+                    this.getListHocVien();
+                else
+                    this.getListHocVienByIDLopHoc();
+            });
         this.closebutton.nativeElement.click();
     }
     sua() {
+        this.hocvienService.suaHocVien(+this.idHocVien, +this.f.LopHoc.value, this.f.TenHocVien.value
+            , this.f.SoDienThoai.value, this.f.Email.value, +this.idLopHocTemp)
+            .pipe()
+            .subscribe(res => {
+                if (res.TrangThai.error === true) {
+                    alert(res.TrangThai.message);
+                    return;
+                }
+                alert("Sửa thành công");
+                if (this.idLopHoc == -1)
+                    this.getListHocVien();
+                else
+                    this.getListHocVienByIDLopHoc();
+            });
         this.closebutton.nativeElement.click();
     }
     xoa() {
+        this.hocvienService.xoaHocVien(this.idHocVien, this.idLopHocTemp)
+            .pipe()
+            .subscribe(res => {
+                if (res.TrangThai.error === true) {
+                    alert(res.TrangThai.message);
+                    return;
+                }
+                alert("Xóa thành công");
+                if (this.idLopHoc == -1)
+                    this.getListHocVien();
+                else
+                    this.getListHocVienByIDLopHoc();
+            });
         this.closebuttondelete.nativeElement.click();
     }
     xemHocVien(event) {
@@ -176,6 +309,8 @@ export class HocvienComponent implements OnInit {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
         this.xemsuahocvien(idAttr);
+        this.idHocVien = +idAttr;
+        this.idLopHocTemp = this.listHocVien.filter(hv => hv.IDHocVien == this.idHocVien)[0].IDLopHoc;
     }
     xemsuahocvien(IDHocVien) {
         this.hocvienByID = this.listHocVien.filter(hv => hv.IDHocVien == IDHocVien)[0];
@@ -199,6 +334,8 @@ export class HocvienComponent implements OnInit {
     xoaHocVien(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
+        this.idHocVien = +idAttr;
+        this.idLopHocTemp = this.listHocVien.filter(hv => hv.IDHocVien == this.idHocVien)[0].IDLopHoc;
     }
     //load script
     private loadScripts() {

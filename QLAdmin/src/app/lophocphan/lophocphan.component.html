@@ -46,7 +46,8 @@
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.HocPhi:""}}</td>
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.SoBuoi:""}}</td>
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.MoTa:""}}</td>
-                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}"><img height="100px" width="100px" src="https://drive.google.com/uc?id={{lhp ? lhp.HinhAnh:''}}">
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}"><img height="100px" width="100px"
+                      src="https://drive.google.com/uc?id={{lhp ? lhp.HinhAnh:''}}">
                   </td>
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.GhiChu:""}}</td>
                   <td align="center">
@@ -55,11 +56,12 @@
                       <label class="custom-control-label" for="{{lhp ? lhp.IDLopHocPhan:-1}}"></label>
                     </div>
                   </td>
-                  <td align="center">
+                  <td align="center" id="{{lhp ? lhp.IDLopHocPhan:-1}}">
                     <div>
                       <a (click)="suaLopHocPhan($event)" id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal"
-                        data-target="#lophocphanModal">sửa</a> / <a (click)="xoaLopHocPhan($event)"
-                        id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal" data-target="#xoalophocphanModal">xóa</a>
+                        data-target="#lophocphanModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaLopHocPhan($event)" id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal"
+                        data-target="#xoalophocphanModal" class="fas fa-trash-alt marginicon"></a>
                     </div>
                   </td>
                 </tr>

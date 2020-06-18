@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Login_serviceService } from '../service_auth/login_service.service';
 import { first } from 'rxjs/operators';
+import {CheckrouteService} from '../service/checkroute/checkroute.service'
 @Component({
     selector: 'app-Login',
     templateUrl: './Login.component.html',
@@ -11,16 +12,17 @@ import { first } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     constructor(
+        private checkroute:CheckrouteService,
         private router: Router,
         private formBuilder: FormBuilder,
         private loginService: Login_serviceService
     ) {
         if (loginService.isLogin) {
-            var Quyen=this.loginService.getQuyen();
-            if(Quyen==0)this.router.navigate(['/admin']);
-            else if(Quyen==1) this.router.navigate(['/nv']);
-            else this.router.navigate(['/gv']);
-
+            this.router.navigate([`/${this.checkroute.getParentRouter()}`]);
+            // var Quyen=this.loginService.getQuyen();
+            // if(Quyen==0)this.router.navigate(['/admin']);
+            // else if(Quyen==1) this.router.navigate(['/nv']);
+            // else this.router.navigate(['/gv']);
         }
     }
 

@@ -16,14 +16,14 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="quyen=='admin'||quyen=='nv'">
             <a class="nav-link" [routerLink]="['']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Danh sách chăm sóc KH</span>
             </a>
         </li>
         <!-- Nav Item - thời khóa biểu -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="quyen=='gv'">
             <a class="nav-link" [routerLink]="['thoikhoabieu']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Thời khóa biểu</span>
@@ -38,32 +38,38 @@
             </a>
         </li>
         <!-- Nav Item - học viên -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="quyen=='admin'||quyen=='nv'">
             <a class="nav-link" [routerLink]="['hocvien']" routerLinkActive="router-link-active">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-graduation-cap"></i>
                 <span>Học viên</span>
             </a>
         </li>
 
         <!-- Nav Item -  -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="quyen=='admin'">
             <a class="nav-link" [routerLink]="['khoahoc']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Khóa học</span></a>
         </li>
 
         <!-- Nav Item -  -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="quyen=='admin'">
             <a class="nav-link" [routerLink]="['giangvien']" routerLinkActive="router-link-active">
-                <i class="fas fa-fw fa-table"></i>
+                <i class="fas fa-book-reader"></i>
                 <span>Giảng viên</span></a>
         </li>
 
         <!-- Nav Item -  -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="quyen=='admin'">
             <a class="nav-link" [routerLink]="['phonghoc']" routerLinkActive="router-link-active">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Phòng học</span></a>
+        </li>
+        <!-- Nav Item -  -->
+        <li class="nav-item" *ngIf="quyen=='admin'">
+            <a class="nav-link" [routerLink]="['quantrivien']" routerLinkActive="router-link-active">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Quản trị viên</span></a>
         </li>
 
         <!-- Divider -->

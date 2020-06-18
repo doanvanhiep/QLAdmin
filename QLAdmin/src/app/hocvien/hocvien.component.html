@@ -4,22 +4,15 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
-      <h1 class="h3 mb-2 text-gray-800">Danh sách học viên
-      </h1>
-      <pre>
-        1. Vấn đề chuyển lớp của học viên
-        2. Xem học viên từ lớp học và xem học viên từ tab học viên
-        3. Double click để xem thông tin học viên
-        4. Sẽ chuyển được lớp học giữa các lớp trong lớp học phần.
-            Nếu muốn chuyển qua 1 lớp học phần mới thì sẽ xóa bên này và qua bên lớp học phần khác 
-        5. Giảng viên không được xem trực tiếp học viên. Nếu muốn xem phải thông qua lớp học 
-            Nhớ routing về lại lớp học khi giảng viên cố tình routing tới học viên
-        6. Trang học viên có thể load học viên theo lớp với combobox
-          </pre>
+      <h1 class="h3 mb-2 text-gray-800">Danh sách học viên </h1>
+      <div>
       <button *ngIf=!isGiangVien style="margin-right: 5px;"(click)="themHocVien()" class="btn btn-success" 
       data-toggle="modal" data-target="#hocvienModal" >Thêm học viên</button>
       <button  (click)="guiMailLop()" class="btn btn-success" 
-      data-toggle="modal" data-target="#hocvienModal" >Gửi mail</button>
+      data-toggle="modal" data-target="#sendMailModal"style="margin-right: 5px;" >Gửi mail</button>
+        <input type="checkbox" name="allhv" id="" style="margin-right: 5px;" (change)="changeAllHocVien()" *ngIf=allhocvien>
+        <label for="allhv" *ngIf=allhocvien >Tất cả học viên</label>
+      </div>
       <!-- DataTales Example -->
       <div class="card shadow mb-4">
         <div class="card-body">
@@ -87,7 +80,7 @@
                   </td>
                   <td align="center" >
                     <button id="{{hv ? hv.IDHocVien:-1}}" (click)="guiMailCaNhan($event)" class="btn btn-success" 
-                    data-toggle="modal" data-target="#hocvienModal">Gửi mail</button>
+                    data-toggle="modal" data-target="#sendMailModal">Gửi mail</button>
                   </td>
                 </tr>
               </tbody>
@@ -121,7 +114,7 @@
           </div>
           <div class="form-group">
             <label for="txt-sdt-name">Số điện thoại: </label>
-            <input type="number" class="form-control" name="txt-sdt-name" formControlName="SoDienThoai">
+            <input type="text" class="form-control" name="txt-sdt-name" formControlName="SoDienThoai">
           </div>
           <div class="form-group">
             <label for="txt-email-name">Email: </label>
@@ -186,7 +179,51 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-        <button class="btn btn-primary" (click)="xoa()">Xóa</button>
+        <button class="btn btn-danger" (click)="xoa()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sendmail -->
+<div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Gửi mail</h5>
+        <button class="close" type="button" #closebutton1 data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="sendMailForm">
+          <div class="form-group">
+            <label for="txt-tieude-name">Tiêu đề: </label>
+            <input type="text" class="form-control" name="txt-tieude-name" formControlName="TieuDe">
+          </div>
+          <div class="form-group">
+            <label for="txt-noidung-name">Nội dung: </label>
+            <input type="text" class="form-control" name="txt-noidung-name" formControlName="NoiDung">
+          </div>
+          <button class="btn btn-primary" (click)="changeDinhKem($event)">Đính kèm</button>
+          <div class="form-group" *ngIf="hasFile">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Tệp đính kèm</span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)"formControlName="File">
+                <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
+                  có tệp nào được chọn</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-primary" (click)="sendMail()">Gửi</button>
       </div>
     </div>
   </div>

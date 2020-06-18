@@ -8,20 +8,37 @@ export class CheckrouteService {
     private loginService: Login_serviceService
   ) { }
   getParentRouter() {
-    if (this.loginService.getQuyen() == 2) {
+    let res = this.loginService.getQuyen();
+
+    if (+res == 2) {
       return "gv";
     }
     else {
-      if (this.loginService.getQuyen() == 1) {
+      if (+res == 1) {
         return "nv";
       }
       else {
         return "admin"
       }
     }
+    // this.loginService.getQuyen().pipe().subscribe(quyen=>{
+    //   if ( quyen== 2) {
+    //     return "gv";
+    //   }
+    //   else {
+    //     if (quyen == 1) {
+    //       return "nv";
+    //     }
+    //     else {
+    //       return "admin"
+    //     }
+    //   }
+    // });
+
   }
   getIsGiangVien() {
-    if (this.loginService.getQuyen() == 2) {
+    let quyen = +this.loginService.getQuyen();
+    if (quyen == 2) {
       return true;
     }
     else {

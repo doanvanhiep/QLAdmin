@@ -1,37 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { ThoikhoabieuService } from '../service/thoikhoabieu/thoikhoabieu.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
-import { DatePipe } from '@angular/common'
-
+import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import {GiangvienService} from '../service/giangvien/giangvien.service';
 @Component({
     selector: 'app-thoikhoabieu',
     templateUrl: './thoikhoabieu.component.html',
     styleUrls: ['./thoikhoabieu.component.css']
 })
 export class ThoikhoabieuComponent implements OnInit {
-
+    idGiangVien:any=-1;
+    parentRouter: any = "admin";
     numberweekofyear: any;
     numbercurrentofweek: any;
     begindate: any;
     enddate: any;
     thoikhoabieu: any;
     constructor(
+        private giangvienService:GiangvienService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private checkrouteService: CheckrouteService,
         private datepipe: DatePipe,
         private thoikhoabieuServer: ThoikhoabieuService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
-    ) { }
+    ) { this.checkRoute(); }
 
     ngOnInit() {
         this.numberweekofyear = Array.from(Array(52).keys());
         this.getCurrentNumberofWeek();
         this.getBeginAndEndDate(this.numbercurrentofweek);
-        this.getThoiKhoaBieu(1,this.begindate,this.enddate);
+        this.giangvienService.getGiangVienByTenTaiKhoan()
+        .pipe()
+        .subscribe(res=>{
+            if(res.result.error)
+            {
+                alert("Hiện tại không thể truy cập thời khóa biểu.Liên hệ quản trị để được xử lý");
+                return;
+            }
+            else
+            {
+                this.idGiangVien=res.result.data[0].IDGiangVien;
+                this.getThoiKhoaBieu(this.idGiangVien, this.begindate, this.enddate);
+            }
+        });
         this.loadScripts();
     }
     getWeek(event) {
         this.numbercurrentofweek = +event;
         this.getBeginAndEndDate(this.numbercurrentofweek);
-        this.getThoiKhoaBieu(1,this.begindate,this.enddate);
+        this.getThoiKhoaBieu(this.idGiangVien, this.begindate, this.enddate);
     }
     getCurrentNumberofWeek() {
         var date = new Date();
@@ -51,14 +71,22 @@ export class ThoikhoabieuComponent implements OnInit {
         beinDate.setDate(beinDate.getDate() - 6)
         this.begindate = beinDate;
     }
-    getThoiKhoaBieu(IDGiangVien,begindate,enddate) {
-        console.log();
-        this.thoikhoabieuServer.getThoiKhoaBieu(IDGiangVien,this.datepipe.transform(begindate,"yyyy-MM-dd"),this.datepipe.transform(enddate,"yyyy-MM-dd"))
+    getThoiKhoaBieu(IDGiangVien, begindate, enddate) {
+        if(IDGiangVien<1)
+        return;
+        this.thoikhoabieuServer.getThoiKhoaBieu(IDGiangVien, this.datepipe.transform(begindate, "yyyy-MM-dd"), this.datepipe.transform(enddate, "yyyy-MM-dd"))
             .pipe()
             .subscribe(res => {
                 this.thoikhoabieu = res.result.data;
-                console.log(this.thoikhoabieu);
             })
+    }
+    checkRoute() {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        this.activatedRoute.parent.url.subscribe((urlPath) => {
+            const url = urlPath[urlPath.length - 1].path;
+            if (this.parentRouter != url)
+                this.router.navigate([this.parentRouter]);
+        })
     }
     //load script
     private loadScripts() {

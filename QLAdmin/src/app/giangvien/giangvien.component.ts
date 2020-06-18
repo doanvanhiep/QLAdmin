@@ -22,7 +22,7 @@ export class GiangvienComponent implements OnInit {
 		private dynamicScriptLoader: DynamicScriptLoaderServiceService,
 		private giangvienService: GiangvienService,
 		private uploadimage: UploadimageService
-	) {}
+	) { }
 
 	ngOnInit() {
 		this.loadScripts();
@@ -128,22 +128,22 @@ export class GiangvienComponent implements OnInit {
 	}
 	xoa() {
 		this.giangvienService.xoaGiangVien(this.IDGiangVien)
-        .pipe()
-            .subscribe(res => {
-                if (res.TrangThai.error === true) {
-                    alert(res.TrangThai.message);
-                    return;
-                }
-                alert("Xóa thành công");
-                this.getListGiangVien();
-            })
-        this.closebuttondelete.nativeElement.click();
-    }
-    xoaGiangVien(event) {
-        var target = event.target || event.srcElement || event.currentTarget;
-        var idAttr = target.attributes.id.value;
-        this.IDGiangVien=+idAttr;
-    }
+			.pipe()
+			.subscribe(res => {
+				if (res.TrangThai.error === true) {
+					alert(res.TrangThai.message);
+					return;
+				}
+				alert("Xóa thành công");
+				this.getListGiangVien();
+			})
+		this.closebuttondelete.nativeElement.click();
+	}
+	xoaGiangVien(event) {
+		var target = event.target || event.srcElement || event.currentTarget;
+		var idAttr = target.attributes.id.value;
+		this.IDGiangVien = +idAttr;
+	}
 	suaGiangVien(event) {
 		var target = event.target || event.srcElement || event.currentTarget;
 		var idAttr = target.attributes.id.value;
@@ -162,7 +162,7 @@ export class GiangvienComponent implements OnInit {
 		document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
 		this.fileSelected = null;
 	}
- 
+
 	//load script
 	private loadScripts() {
 		// You can load multiple scripts by just providing the key as argument into load method of the service

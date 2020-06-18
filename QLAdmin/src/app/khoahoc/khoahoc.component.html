@@ -34,25 +34,23 @@
                   <td id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">
                     <p>{{khoahoc ? khoahoc.GhiChu:""}}</p>
                   </td>
-                  <td align="center" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input type="checkbox" [ngModel]="true">
+                  <!-- Checkbox -->
+                  <td align="center" id="{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}">
+                    <div class="custom-control custom-checkbox mb-3">
+                      <input type="checkbox" class="custom-control-input"  id="{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}"
+                        (change)="changeStatus($event)" [checked]="true" />
+                      <label class="custom-control-label" for="{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}" >
                       </label>
+                      <!-- [(ngModel)]="option" -->
                     </div>
-                    <!-- <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                name="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" check="true">
-                                            <label class="custom-control-label"
-                                                for="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}"></label>
-                                        </div> -->
                   </td>
+
                   <td align="center" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">
                     <div>
                       <a (click)="suaKhoaHoc($event)" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" data-toggle="modal"
-                        data-target="#khoahocModal">sửa</a> / <a (click)="xoaKhoaHoc($event)"
-                        id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" data-toggle="modal"
-                        data-target="#xoakhoahocModal">xóa</a>
+                        data-target="#khoahocModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaKhoaHoc($event)" id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}" data-toggle="modal"
+                        data-target="#xoakhoahocModal" class="fas fa-trash-alt marginicon"></a>
                     </div>
                   </td>
                 </tr>
@@ -112,11 +110,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Bạn có thật sự muốn xóa khóa học này</p>
+        <p>Bạn có thật sự muốn xóa khóa học này? Khi bạn xóa thì tất cả các lớp học và thông tin liên quan đến khóa học này sẽ bị xóa!</p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-        <button class="btn btn-primary" (click)="xoa()">xóa</button>
+        <button class="btn btn-danger" (click)="xoa()">Xóa</button>
       </div>
     </div>
   </div>

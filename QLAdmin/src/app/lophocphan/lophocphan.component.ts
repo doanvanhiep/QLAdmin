@@ -21,8 +21,8 @@ export class LophocphanComponent implements OnInit {
     listLopHocPhan: any;
     IDKhoaHoc: any;
     fileSelected: File = null;
-    lophocphanByID:any;
-    IDLopHocPhan:any;
+    lophocphanByID: any;
+    IDLopHocPhan: any;
     constructor(
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private share: SharedataService,
@@ -97,7 +97,7 @@ export class LophocphanComponent implements OnInit {
     get f() { return this.lophocphanForm.controls; }
     them() {
         this.uploadimage.uploadimage(this.fileSelected)
-            .pipe() 
+            .pipe()
             .subscribe(res => {
                 this.lophocphanservice.themLopHocPhan(
                     this.IDKhoaHoc, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
@@ -112,13 +112,12 @@ export class LophocphanComponent implements OnInit {
                         alert("Thêm thành công");
                         this.getListLopHocPhan(this.IDKhoaHoc);
                     });
-                this.closebutton.nativeElement.click();
             });
+        this.closebutton.nativeElement.click();
     }
     sua() {
-        var idImg=document.getElementById('nameoffile').textContent;
-        if(idImg===this.lophocphanByID.HinhAnh)
-        {
+        var idImg = document.getElementById('nameoffile').textContent;
+        if (idImg === this.lophocphanByID.HinhAnh) {
             this.lophocphanservice.suaLopHocPhan(
                 this.lophocphanByID.IDLopHocPhan, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
                 +this.f.HocPhi.value, +this.f.SoBuoi.value, +this.f.SiSo.value,
@@ -134,30 +133,30 @@ export class LophocphanComponent implements OnInit {
                     this.closebutton.nativeElement.click();
                 });
         }
-        else{
+        else {
             this.uploadimage.uploadimage(this.fileSelected)
-            .pipe()
-            .subscribe(res => {
-                this.lophocphanservice.suaLopHocPhan(
-                    this.lophocphanByID.IDLopHocPhan, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
-                    +this.f.HocPhi.value, +this.f.SoBuoi.value, +this.f.SiSo.value,
-                    this.f.MoTa.value, res.id, this.f.GhiChu.value)
-                    .pipe()
-                    .subscribe(res => {
-                        if (res.TrangThai.error === true) {
-                            alert(res.TrangThai.message);
-                            return;
-                        }
-                        alert("Sửa thành công");
-                        this.getListLopHocPhan(this.IDKhoaHoc);
-                    });
-                this.closebutton.nativeElement.click();
-            });
+                .pipe()
+                .subscribe(res => {
+                    this.lophocphanservice.suaLopHocPhan(
+                        this.lophocphanByID.IDLopHocPhan, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
+                        +this.f.HocPhi.value, +this.f.SoBuoi.value, +this.f.SiSo.value,
+                        this.f.MoTa.value, res.id, this.f.GhiChu.value)
+                        .pipe()
+                        .subscribe(res => {
+                            if (res.TrangThai.error === true) {
+                                alert(res.TrangThai.message);
+                                return;
+                            }
+                            alert("Sửa thành công");
+                            this.getListLopHocPhan(this.IDKhoaHoc);
+                        });
+                    this.closebutton.nativeElement.click();
+                });
         }
     }
     xoa() {
         this.lophocphanservice.xoaLopHocPhan(this.IDLopHocPhan)
-        .pipe()
+            .pipe()
             .subscribe(res => {
                 if (res.TrangThai.error === true) {
                     alert(res.TrangThai.message);
@@ -171,7 +170,7 @@ export class LophocphanComponent implements OnInit {
     xoaLopHocPhan(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
-        this.IDLopHocPhan=+idAttr;
+        this.IDLopHocPhan = +idAttr;
     }
     suaLopHocPhan(event) {
         var target = event.target || event.srcElement || event.currentTarget;
@@ -179,9 +178,8 @@ export class LophocphanComponent implements OnInit {
         this.getLopHocPhanByID(+idAttr);
         this.editForm(this.lophocphanByID);
     }
-    getLopHocPhanByID(idLopHocPhan)
-    {
-        this.lophocphanByID=this.listLopHocPhan.filter(item=>item.IDLopHocPhan===+idLopHocPhan)[0];
+    getLopHocPhanByID(idLopHocPhan) {
+        this.lophocphanByID = this.listLopHocPhan.filter(item => item.IDLopHocPhan === +idLopHocPhan)[0];
     }
     dbClick(event) {
         var target = event.target || event.srcElement || event.currentTarget;
@@ -189,9 +187,8 @@ export class LophocphanComponent implements OnInit {
         this.shareData(+idAttr);
         this.router.navigate(['admin/lophoc']);
     }
-    shareData(IDLopHocPhan)
-    {
-        this.share.shareDataLopHocPhan(IDLopHocPhan,this.listLopHocPhan.filter(item=>item.IDLopHocPhan===IDLopHocPhan)[0]);
+    shareData(IDLopHocPhan) {
+        this.share.shareDataLopHocPhan(IDLopHocPhan, this.listLopHocPhan.filter(item => item.IDLopHocPhan === IDLopHocPhan)[0]);
     }
     onSelectedFile(event) {
         this.fileSelected = <File>event.target.files[0];

@@ -4,10 +4,10 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
-      <h1 class="h3 mb-2 text-gray-800">Danh sách giảng viên
+      <h1 class="h3 mb-2 text-gray-800">Danh sách quản trị viên
       </h1>
-      <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#giangvienModal">Thêm
-        giảng viên</button>
+      <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#quantrivienModal">Thêm
+        quản trị viên</button>
       <!-- DataTales Example -->
       <div class="card shadow mb-4">
         <div class="card-body">
@@ -19,7 +19,6 @@
                   <th>Địa chỉ</th>
                   <th>Số điện thoại</th>
                   <th>Email</th>
-                  <th>Mô tả</th>
                   <th>Hình ảnh</th>
                   <th>Ghi chú</th>
                   <th>Trạng thái</th>
@@ -32,7 +31,6 @@
                   <th>Địa chỉ</th>
                   <th>Số điện thoại</th>
                   <th>Email</th>
-                  <th>Mô tả</th>
                   <th>Hình ảnh</th>
                   <th>Ghi chú</th>
                   <th>Trạng thái</th>
@@ -40,28 +38,27 @@
                 </tr>
               </tfoot>
               <tbody>
-                <tr *ngFor="let gv of listGiangVien">
-                  <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.HoTen:""}}</td>
-                  <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.DiaChi:""}}</td>
-                  <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.SoDienThoai:""}}</td>
-                  <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.Email:""}}</td>
-                  <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.MoTa:""}}</td>
-                  <td id="{{gv ? gv.IDGiangVien:-1}}"><img height="100px" width="100px"
-                      src="https://drive.google.com/uc?id={{gv ? gv.HinhAnh:''}}">
-                  <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.GhiChu:""}}</td>
+                <tr *ngFor="let qtv of listQuanTriVien">
+                  <td >{{qtv ? qtv.HoTen:""}}</td>
+                  <td >{{qtv ? qtv.DiaChi:""}}</td>
+                  <td >{{qtv ? qtv.SoDienThoai:""}}</td>
+                  <td >{{qtv ? qtv.Email:""}}</td>
+                  <td ><img height="100px" width="100px"
+                      src="https://drive.google.com/uc?id={{qtv ? qtv.HinhAnh:''}}">
+                  <td >{{qtv ? qtv.GhiChu:""}}</td>
                   <td align="center">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="{{gv ? gv.IDGiangVien:-1}}"
+                      <input type="checkbox" class="custom-control-input" name="{{qtv ? qtv.IDQuanTri:-1}}"
                         checked="true">
-                      <label class="custom-control-label" for="{{gv ? gv.IDGiangVien:-1}}"></label>
+                      <label class="custom-control-label" for="{{qtv ? qtv.IDQuanTri:-1}}"></label>
                     </div>
                   </td>
-                  <td align="center" id="{{gv ? gv.IDGiangVien:-1}}">
+                  <td align="center" >
                     <div>
-                      <a (click)="suaGiangVien($event)" id="{{gv ? gv.IDGiangVien:-1}}" data-toggle="modal"
-                        data-target="#giangvienModal" class="fas fa-edit marginicon"></a>
-                      <a (click)="xoaGiangVien($event)" id="{{gv ? gv.IDGiangVien:-1}}" data-toggle="modal"
-                        data-target="#xoagiangvienModal" class="fas fa-trash-alt marginicon"></a>
+                      <a (click)="suaQuanTriVien($event)" id="{{qtv ? qtv.IDQuanTri:-1}}" data-toggle="modal"
+                        data-target="#quantrivienModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaQuanTriVien($event)" id="{{qtv ? qtv.IDQuanTri:-1}}" data-toggle="modal"
+                        data-target="#xoaquantrivienModal" class="fas fa-trash-alt marginicon"></a>
                     </div>
                   </td>
                 </tr>
@@ -72,23 +69,22 @@
       </div>
     </div>
     <!-- /.container-fluid -->
-
   </div>
   <!-- End of Main Content -->
 </div>
 <!-- them lớp học phần Modal -->
-<div class="modal fade" id="giangvienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="quantrivienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Giảng viên</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Quản trị viên</h5>
         <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="giangvienForm">
+        <form [formGroup]="quantrivienForm">
           <div class="form-group">
             <label for="txt-hoten-name">Họ tên: </label>
             <input type="text" class="form-control" name="txt-hoten-name" formControlName="HoTen">
@@ -104,10 +100,6 @@
           <div class="form-group">
             <label for="txt-diachi-name">Địa chỉ: </label>
             <input type="text" class="form-control" name="txt-diachi-name" formControlName="DiaChi">
-          </div>
-          <div class="form-group">
-            <label for="txt-mota-name">Mô tả: </label>
-            <input type="text" class="form-control" name="txt-mota-name" formControlName="MoTa">
           </div>
           <div class="form-group">
             <div class="input-group">
@@ -137,18 +129,18 @@
 </div>
 
 <!-- xóa giang vien -->
-<div class="modal fade" id="xoagiangvienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="xoaquantrivienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Xóa giảng viên</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Xóa quản trị viên</h5>
         <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Bạn có thật sự muốn xóa giảng viên này. Nếu bạn xóa thì toàn bộ những thông tin liên quan đến giảng viên này
+        <p>Bạn có thật sự muốn xóa quản trị viên này. Nếu bạn xóa thì toàn bộ những thông tin liên quan đến quản trị viên này
           sẽ bị xóa</p>
       </div>
       <div class="modal-footer">

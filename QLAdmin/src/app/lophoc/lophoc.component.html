@@ -36,7 +36,7 @@
                 </tr>
               </tfoot>
               <tbody>
-                <tr *ngFor="let lophoc of listLopHoc" >
+                <tr *ngFor="let lophoc of listLopHoc">
                   <td>{{lophoc ? lophoc.MaLopHoc:""}}</td>
                   <td>{{lophoc ? lophoc.NgayKhaiGiang:""}}</td>
                   <td>{{lophoc ? lophoc.NgayBeGiang:""}}</td>
@@ -58,7 +58,10 @@
                   </td>
                   <td align="center">
                     <div>
-                      <a (click)="suaLopHoc($event)" id="{{lophoc ? lophoc.IDLopHoc:-1}}" data-toggle="modal" data-target="#lophocModal">sửa</a> / <a (click)="xoaLopHoc($event)" id="{{lophoc ? lophoc.IDLopHoc:-1}}" data-toggle="modal" data-target="#xoalophocModal">xóa</a>
+                      <a (click)="suaLopHoc($event)" id="{{lophoc ? lophoc.IDLopHoc:-1}}" data-toggle="modal"
+                        data-target="#lophocModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaLopHoc($event)" id="{{lophoc ? lophoc.IDLopHoc:-1}}" data-toggle="modal"
+                        data-target="#xoalophocModal" class="fas fa-trash-alt marginicon"></a>
                     </div>
                   </td>
                 </tr>
@@ -100,31 +103,37 @@
                 <input type="date" class="form-control" name="txt-nbg-name" formControlName="NgayBeGiang" />
               </div>
             </div>
+
+
             <div class="row" *ngIf="btnedit===false">
-              <div class="form-group" class="col">
+              <div class="form-group" class="col-2">
                 <label for="txt-malh-name">Số buổi học: </label>
-                <input type="number" class="form-control" name="txt-malh-name" formControlName="SoBuoiHoc" />
+                <input type="number" min="1" class="form-control" name="txt-malh-name" formControlName="SoBuoiHoc" />
+
+              </div>
+              <!-- <div class="col">
+                <label for="txt-nkg1-name">Chung phòng </label>
+                <input type="checkbox" name="txt-nkg1-name"
+                  style=" width: 38px; height: 38px; margin-top: 32px;margin-right: 20px;" />
               </div>
               <div class="form-group" class="col">
-                <label for="txt-nkg-name"></label>
-                <input type="checkbox" class="form-control" name="txt-nkg-name" />
-              </div>
-              <div class="form-group" class="col">
-                <label for="txt-nkg-name"></label>
-                <input type="checkbox" class="form-control" name="txt-nkg-name" />
-              </div>
-              <div class="form-group" class="col">
-                <label for="txt-nkg-name"></label>
-                <button (click)="createCaHoc()" class="form-control" name="txt-nkg-name">Thêm buổi
-                  học</button>
+                <label for="txt-nkg2-name">Chung giảng viên</label>
+                <input type="checkbox" name="txt-nkg2-name"
+                  style=" width: 38px; height: 38px; margin-top: 32px;" />
+              </div> -->
+              <div class="form-group" class="col-3">
+                <i class="fa fa-plus-circle" (click)="createCaHoc()" aria-hidden="true" style="margin-top:42px;"></i>
+                <!-- <label for="txt-nkg3-name"></label> -->
+                <!-- <button (click)="createCaHoc()" class="btn btn-success" name="txt-nkg3-name">Thêm buổi học</button> -->
               </div>
             </div>
+
             <div *ngIf="createCahoc==true">
               <div *ngFor="let lophoc of t.controls; let i = index">
                 <div class="row" [formGroup]="lophoc">
                   <div class="form-group" class="col-2">
                     <div class="form-group" class="col">
-                      <input hidden type="text" class="form-control" name="txt-id-name" formControlName="idTTLH"/>
+                      <input hidden type="text" class="form-control" name="txt-id-name" formControlName="idTTLH" />
                     </div>
                     <label for="txt-thu-name">Buổi {{i + 1}}: Thứ </label>
                     <select class="form-control input-lg" formControlName="thu">
@@ -141,7 +150,7 @@
                       </option>
                     </select>
                   </div>
-                  <div class="form-group" class="col-4">
+                  <div class="form-group" class="col-3">
                     <label for="txt-phong-name">Phòng</label>
                     <select class="form-control input-lg" formControlName="phong">
                       <option *ngFor="let ph of phonghocs" value="{{ph.IDPhongHoc}}">
@@ -151,19 +160,24 @@
                   </div>
                   <div class="form-group" class="col-4">
                     <label for="txt-gv-name">Giảng viên</label>
-                    <select class="form-control input-lg" formControlName="giangvien" >
+                    <select class="form-control input-lg" formControlName="giangvien">
                       <option *ngFor="let gv of giangviens" value="{{gv.IDGiangVien}}">
                         {{gv.HoTen}}
                       </option>
                     </select>
                   </div>
+                  <div class="form-group" class="col-1" *ngIf="btnedit===false">
+                    <i class="fas fa-trash-alt" style="margin-top: 42px;" (click)="removeCaHoc(i)"></i>
+                  </div>
                 </div>
               </div>
             </div>
+
             <div class="form-group">
               <label for="txt-ghichu-name">Ghi chú: </label>
               <input type="text" class="form-control" name="txt-ghichu-name" formControlName="GhiChu">
             </div>
+
           </form>
         </div>
         <div class="modal-footer">
@@ -176,23 +190,23 @@
   </div>
 
   <!-- xóa lớp học -->
-<div class="modal fade" id="xoalophocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
+  <div class="modal fade" id="xoalophocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Xóa lớp học</h5>
-            <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
+          <h5 class="modal-title" id="exampleModalLabel">Xóa lớp học</h5>
+          <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
         <div class="modal-body">
-            <p>Bạn có thật sự muốn xóa lớp học này.</p>
+          <p>Bạn có thật sự muốn xóa lớp học này.</p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-            <button class="btn btn-primary" (click)="xoa()">xóa</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+          <button class="btn btn-primary" (click)="xoa()">xóa</button>
         </div>
+      </div>
     </div>
-</div>
-</div>
+  </div>
