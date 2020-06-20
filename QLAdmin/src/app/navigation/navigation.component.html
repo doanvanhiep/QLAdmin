@@ -51,6 +51,18 @@
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Khóa học</span></a>
         </li>
+        <!-- Nav Item -  -->
+        <li class="nav-item" *ngIf="quyen=='admin'">
+            <a class="nav-link" [routerLink]="['lophocphan']" routerLinkActive="router-link-active">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Lớp học phần</span></a>
+        </li>
+        <!-- Nav Item -  -->
+        <li class="nav-item" *ngIf="quyen=='admin'">
+            <a class="nav-link" [routerLink]="['lophoc']" routerLinkActive="router-link-active">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Lớp học</span></a>
+        </li>
 
         <!-- Nav Item -  -->
         <li class="nav-item" *ngIf="quyen=='admin'">

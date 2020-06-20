@@ -3,21 +3,22 @@ import { DanhsachlophocService } from "../service/danhsachlophoc/danhsachlophoc.
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
-import {GiangvienService} from '../service/giangvien/giangvien.service';
+import { GiangvienService } from '../service/giangvien/giangvien.service';
 @Component({
   selector: 'app-danhsachlophoc',
   templateUrl: './danhsachlophoc.component.html',
   styleUrls: ['./danhsachlophoc.component.css']
 })
 export class DanhsachlophocComponent implements OnInit {
-  idGiangVien:any=-1;
+  idGiangVien: any = -1;
   isGiangVien: boolean = false;
   parentRouter: any = "admin";
   ListLopHoc: any;
-  trangthai: any = "-1";
+  trangthaithanhtoan: any = "-1";
   phuongthuc: any = "tatca";
+  trangthaikichhoat: any = 'tatcakichhoat';
   constructor(
-    private giangvienService:GiangvienService,
+    private giangvienService: GiangvienService,
     private checkrouteService: CheckrouteService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -31,17 +32,15 @@ export class DanhsachlophocComponent implements OnInit {
     if (this.isGiangVien) {
       this.giangvienService.getGiangVienByTenTaiKhoan()
         .pipe()
-        .subscribe(res=>{
-            if(res.result.error)
-            {
-                alert("Hiện tại không thể truy cập danh sách lớp học.Liên hệ quản trị để được xử lý");
-                return;
-            }
-            else
-            {
-                this.idGiangVien=res.result.data[0].IDGiangVien;
-                this.getDSLopHocByIDGiangVien(this.idGiangVien);
-            }
+        .subscribe(res => {
+          if (res.result.error) {
+            alert("Hiện tại không thể truy cập danh sách lớp học.Liên hệ quản trị để được xử lý");
+            return;
+          }
+          else {
+            this.idGiangVien = res.result.data[0].IDGiangVien;
+            this.getDSLopHocByIDGiangVien(this.idGiangVien);
+          }
         });
     }
     else {
@@ -63,12 +62,11 @@ export class DanhsachlophocComponent implements OnInit {
     var target = event.target || event.srcElement || event.currentTarget;
     var idAttr = target.attributes.id.value;
     let lophoc = this.ListLopHoc.filter(lh => lh.IDLopHoc == idAttr)[0];
-    if(this.isGiangVien &&lophoc.HV.length <= 0)
-    {
+    if (this.isGiangVien && lophoc.HV.length <= 0) {
       return;
     }
     this.router.navigate([this.parentRouter + '/hocvien'],
-    { state: { IDLopHoc: idAttr, DSHV: lophoc.HV, IDLopHocPhan: lophoc.LHP.IDLopHocPhan, IDKhoaHoc: lophoc.LHP.IDKhoaHoc } });
+      { state: { IDLopHoc: idAttr, DSHV: lophoc.HV, IDLopHocPhan: lophoc.LHP.IDLopHocPhan, IDKhoaHoc: lophoc.LHP.IDKhoaHoc } });
     return;
     // if (lophoc.HV.length <= 0) {
     //   alert("Lớp học chưa có học viên nên không thể xem được.");
@@ -82,18 +80,20 @@ export class DanhsachlophocComponent implements OnInit {
     this.dsLopHocService.danhsachlophoc()
       .pipe()
       .subscribe(res => {
+        let ttkh = this.trangthaikichhoat;
         this.ListLopHoc = res.result.data.filter(function (lh) {
           lh.HV = lh.HV.filter(function (hv) {
-            if (hv.TrangThai == 1) {
+            if (ttkh == "tatcakichhoat")
               return true;
-            }
-            else {
-              return false;
-            }
+            if (hv.TrangThai == 1 && ttkh == "kichhoat")
+              return true;
+            if (hv.TrangThai == 0 && ttkh == "chuakichhoat")
+              return true;
+            return false;
           });
           return true;
         });
-        this.loadLopHoc(this.trangthai, this.phuongthuc);
+        this.loadLopHoc(this.trangthaithanhtoan, this.phuongthuc);
       });
   }
   getDSLopHocByIDGiangVien(IDGiangVien) {
@@ -102,33 +102,42 @@ export class DanhsachlophocComponent implements OnInit {
       .subscribe(res => {
         this.ListLopHoc = res.result.data.filter(function (lh) {
           lh.HV = lh.HV.filter(function (hv) {
-            if (hv.TrangThai == 1) {
+            if (hv.TrangThai == 1)
               return true;
-            }
-            else {
-              return false;
-            }
+            return false;
           });
           return true;
         });
-        this.loadLopHoc(this.trangthai, this.phuongthuc);
+        this.loadLopHoc(this.trangthaithanhtoan, this.phuongthuc);
       });
   }
-  trangthaithanhtoan(event) {
-    this.trangthai = event.target.value;
-    this.getDSLopHoc();
+  ReloadDS() {
+    if (this.isGiangVien) {
+      this.getDSLopHocByIDGiangVien(this.idGiangVien);
+    }
+    else {
+      this.getDSLopHoc();
+    }
   }
-  phuongthucthanhtoan(event) {
+  TrangThaiThanhToan(event) {
+    this.trangthaithanhtoan = event.target.value;
+    this.ReloadDS();
+  }
+  PhuongThucThanhToan(event) {
     this.phuongthuc = event.target.value;
-    this.getDSLopHoc();
+    this.ReloadDS();
   }
-  loadLopHoc(trangthai, phuongthuc) {
-    if (!(trangthai === "-1" && phuongthuc === "tatca")) {
-      let tempTrangThai = -1 === +trangthai ? true : false;
+  TrangThaiKichHoat(event) {
+    this.trangthaikichhoat = event.target.value;
+    this.ReloadDS();
+  }
+  loadLopHoc(trangthaithanhtoan, phuongthuc) {
+    if (!(trangthaithanhtoan === "-1" && phuongthuc === "tatca")) {
+      let tempTrangThaiThanhToan = -1 === +trangthaithanhtoan ? true : false;
       let tempPhuongThuc = "tatca" === phuongthuc ? true : false;
       this.ListLopHoc = this.ListLopHoc.filter(function (lh) {
         lh.HV = lh.HV.filter(function (hv) {
-          if ((hv.TrangThaiThanhToan === +trangthai || tempTrangThai) && (hv.HinhThucThanhToan === phuongthuc || tempPhuongThuc)) {
+          if ((hv.TrangThaiThanhToan === +trangthaithanhtoan || tempTrangThaiThanhToan) && (hv.HinhThucThanhToan === phuongthuc || tempPhuongThuc)) {
             return true;
           }
           else {

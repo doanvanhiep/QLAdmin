@@ -40,4 +40,18 @@ export class HocvienService {
             return res;
         }));
     }
+    suaTrangThaiThanhToan(IDHocVien,IDLopHoc,TrangThaiThanhToan)
+    {
+      return this.http.put<any>(`${environment.apiUrl}/hocvien/suatrangthaithanhtoan`,{IDHocVien,IDLopHoc,TrangThaiThanhToan})
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
+    suaTrangThai(IDHocVien,IDLopHoc,TrangThai)
+    {
+      return this.http.put<any>(`${environment.apiUrl}/hocvien/suatrangthai`,{IDHocVien,IDLopHoc,TrangThai})
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
 } 

@@ -86,9 +86,9 @@ export class KhoahocComponent implements OnInit {
     }
     changeStatus(event)
     {
-        // var target = event.target || event.srcElement || event.currentTarget;
-        // var idAttr = target.attributes.id.value;
-        // alert(idAttr);
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value;
+        alert(idAttr);
     }
     getListKhoaHoc() {
         this.khoahocService.getListKhoaHoc()

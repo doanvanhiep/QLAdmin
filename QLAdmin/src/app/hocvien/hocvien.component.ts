@@ -38,6 +38,9 @@ export class HocvienComponent implements OnInit {
     hocvienByID: any;
     parentRouter: any = "admin";
     isSendMailCaNhan: any = false;
+    trangthaithanhtoan: any = "-1";
+    phuongthuc: any = "tatca";
+    trangthaikichhoat: any = 'tatcakichhoat';
     constructor(
         private loginService: Login_serviceService,
         private sendMailService: SendmailService,
@@ -114,6 +117,18 @@ export class HocvienComponent implements OnInit {
         this.allhocvien = false;
         this.getListHocVien();
     }
+    TrangThaiThanhToan(event) {
+        this.trangthaithanhtoan = event.target.value;
+        this.getListHocVien();
+    }
+    PhuongThucThanhToan(event) {
+        this.phuongthuc = event.target.value;
+        this.getListHocVien();
+    }
+    TrangThaiKichHoat(event) {
+        this.trangthaikichhoat = event.target.value;
+        this.getListHocVien();
+    }
     changeIDKhoaHoc(IDKhoaHoc) {
         this.HocPhiLopHoc = "";
         this.listLopHoc = null;
@@ -123,6 +138,33 @@ export class HocvienComponent implements OnInit {
         this.HocPhiLopHoc = this.listLopHocPhan.filter(lhp => lhp.IDLopHocPhan == IDLopHocPhan)[0].HocPhi;
         this.getListLopHoc(IDLopHocPhan);
     }
+    getHocVienByIDHocVien(IDHocVien) {
+        this.hocvienByID = this.listHocVien.filter(hv => hv.IDHocVien == +IDHocVien)[0];
+        this.idHocVien = this.hocvienByID.IDHocVien;
+        this.idLopHoc = this.hocvienByID.IDLopHoc;
+    }
+    changeTrangThaiThanhToan(event) {
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value.split("-")[1];
+        this.getHocVienByIDHocVien(idAttr);
+        let TrangThaiThanhToan = target.checked ? 1 : 0;
+        this.hocvienService.suaTrangThaiThanhToan(this.idHocVien, this.idLopHoc, TrangThaiThanhToan)
+            .pipe()
+            .subscribe(res => {
+                //console.log(res);
+            });
+    }
+    changeTrangThai(event) {
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value.split("-")[1];
+        this.getHocVienByIDHocVien(idAttr);
+        let TrangThai = target.checked ? 1 : 0;
+        this.hocvienService.suaTrangThai(this.idHocVien, this.idLopHoc, TrangThai)
+            .pipe()
+            .subscribe(res => {
+                //console.log(res);
+            });
+    }
     getListHocVien() {
         this.hocvienService.getListHocVien()
             .pipe()
@@ -131,8 +173,32 @@ export class HocvienComponent implements OnInit {
                     alert(res.result.message);
                     return;
                 }
-                this.listHocVien = res.result.data;
+                let ttkh = this.trangthaikichhoat;
+                this.listHocVien = res.result.data.filter(hv => {
+                    if (ttkh == "tatcakichhoat")
+                        return true;
+                    if (hv.TrangThai == 1 && ttkh == "kichhoat")
+                        return true;
+                    if (hv.TrangThai == 0 && ttkh == "chuakichhoat")
+                        return true;
+                    return false;
+                });
+                this.loadLopHoc(this.trangthaithanhtoan, this.phuongthuc);
             });
+    }
+    loadLopHoc(trangthaithanhtoan, phuongthuc) {
+        if (!(trangthaithanhtoan === "-1" && phuongthuc === "tatca")) {
+            let tempTrangThaiThanhToan = -1 === +trangthaithanhtoan ? true : false;
+            let tempPhuongThuc = "tatca" === phuongthuc ? true : false;
+            this.listHocVien = this.listHocVien.filter(function (hv) {
+                if ((hv.TrangThaiThanhToan === +trangthaithanhtoan || tempTrangThaiThanhToan) && (hv.HinhThucThanhToan === phuongthuc || tempPhuongThuc)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
     }
     getListHocVienByIDLopHoc() {
         this.hocvienService.getListHocVienByIDLopHoc(this.idLopHoc)

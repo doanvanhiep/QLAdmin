@@ -34,14 +34,12 @@
                   <td id="{{khoahoc ? khoahoc.IDKhoaHoc:-1}}">
                     <p>{{khoahoc ? khoahoc.GhiChu:""}}</p>
                   </td>
-                  <!-- Checkbox -->
                   <td align="center" id="{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}">
                     <div class="custom-control custom-checkbox mb-3">
-                      <input type="checkbox" class="custom-control-input"  id="{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}"
-                        (change)="changeStatus($event)" [checked]="true" />
-                      <label class="custom-control-label" for="{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}" >
+                      <input type="checkbox" class="custom-control-input"  id="S{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}"
+                        (change)="changeStatus($event)" [checked]="false" />
+                      <label class="custom-control-label" for="S{{ khoahoc ? khoahoc.IDKhoaHoc : -1 }}" >
                       </label>
-                      <!-- [(ngModel)]="option" -->
                     </div>
                   </td>
 

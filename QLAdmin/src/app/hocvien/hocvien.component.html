@@ -5,13 +5,67 @@
     <div class="container-fluid">
       <!-- Page Heading -->
       <h1 class="h3 mb-2 text-gray-800">Danh sách học viên </h1>
+      <div class="row" *ngIf="!isGiangVien && !allhocvien">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="tatcakichhoat" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="kichhoat" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="chuakichhoat" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="-1"
+              id="trangthaitatca" name="trangthaithanhtoan" checked>
+            <label class="custom-control-label" for="trangthaitatca">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="0"
+              id="chuathanhtoan" name="trangthaithanhtoan">
+            <label class="custom-control-label" for="chuathanhtoan">Chưa thanh toán</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="1"
+              id="dathanhtoan" name="trangthaithanhtoan">
+            <label class="custom-control-label" for="dathanhtoan">Đã thanh toán</label>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="tatca"
+              value="tatca" name="phuongthuc" checked>
+            <label class="custom-control-label" for="tatca">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="momo"
+              value="momo" name="phuongthuc">
+            <label class="custom-control-label" for="momo">Thanh toán momo</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="trungtam"
+              value="trungtam" name="phuongthuc">
+            <label class="custom-control-label" for="trungtam">Thanh toán trung tâm</label>
+          </div>
+        </div>
+      </div>
       <div>
-      <button *ngIf=!isGiangVien style="margin-right: 5px;"(click)="themHocVien()" class="btn btn-success" 
-      data-toggle="modal" data-target="#hocvienModal" >Thêm học viên</button>
-      <button  (click)="guiMailLop()" class="btn btn-success" 
-      data-toggle="modal" data-target="#sendMailModal"style="margin-right: 5px;" >Gửi mail</button>
-        <input type="checkbox" name="allhv" id="" style="margin-right: 5px;" (change)="changeAllHocVien()" *ngIf=allhocvien>
-        <label for="allhv" *ngIf=allhocvien >Tất cả học viên</label>
+        <button *ngIf=!isGiangVien style="margin-right: 5px;" (click)="themHocVien()" class="btn btn-success"
+          data-toggle="modal" data-target="#hocvienModal">Thêm học viên</button>
+        <button (click)="guiMailLop()" class="btn btn-success" data-toggle="modal" data-target="#sendMailModal"
+          style="margin-right: 5px;">Gửi mail</button>
+        <input type="checkbox" name="allhv" id="" style="margin-right: 5px;" (change)="changeAllHocVien()"
+          *ngIf=allhocvien>
+        <label for="allhv" *ngIf=allhocvien>Tất cả học viên</label>
       </div>
       <!-- DataTales Example -->
       <div class="card shadow mb-4">
@@ -29,7 +83,7 @@
                   <th *ngIf=!isGiangVien>Trạng thái thanh toán</th>
                   <th *ngIf=!isGiangVien>Trạng thái</th>
                   <th *ngIf=!isGiangVien>Hành động</th>
-                  <th >Gửi mail</th>
+                  <th>Gửi mail</th>
                 </tr>
               </thead>
               <tfoot>
@@ -43,32 +97,32 @@
                   <th *ngIf=!isGiangVien>Trạng thái thanh toán</th>
                   <th *ngIf=!isGiangVien>Trạng thái</th>
                   <th *ngIf=!isGiangVien>Hành động</th>
-                  <th >Gửi mail</th>
+                  <th>Gửi mail</th>
                 </tr>
               </tfoot>
               <tbody>
-                <tr *ngFor="let hv of listHocVien" >
-                  <td >{{hv ? hv.TenHocVien:""}}</td>
-                  <td >{{hv ? hv.SoDienThoai:""}}</td>
-                  <td >{{hv ? hv.Email:""}}</td>
+                <tr *ngFor="let hv of listHocVien">
+                  <td>{{hv ? hv.TenHocVien:""}}</td>
+                  <td>{{hv ? hv.SoDienThoai:""}}</td>
+                  <td>{{hv ? hv.Email:""}}</td>
                   <td *ngIf=!isGiangVien>{{hv ? hv.ThoiGianDangKi:""}}</td>
                   <td *ngIf=!isGiangVien>{{hv ? hv.HinhThucThanhToan:""}}</td>
                   <td *ngIf=!isGiangVien>{{hv ? hv.SoTien:""}}</td>
                   <td align="center" *ngIf=!isGiangVien>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="{{hv ? hv.IDHocVien:-1}}"
-                        checked="true">
-                      <label class="custom-control-label" for="{{hv ? hv.IDHocVien:-1}}"></label>
+                      <input (change)="changeTrangThaiThanhToan($event)" type="checkbox" class="custom-control-input"
+                        id="tttt-{{hv ? hv.IDHocVien:-1}}" [checked]="hv ? (hv.TrangThaiThanhToan==1?true:false):false">
+                      <label class="custom-control-label" for="tttt-{{hv ? hv.IDHocVien:-1}}"></label>
                     </div>
                   </td>
                   <td align="center" *ngIf=!isGiangVien>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="{{hv ? hv.IDHocVien:-1}}"
-                        checked="true">
-                      <label class="custom-control-label" for="{{hv ? hv.IDHocVien:-1}}"></label>
+                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+                        id="tt-{{hv ? hv.IDHocVien:-1}}" [checked]="hv ? (hv.TrangThai==1?true:false):false">
+                      <label class="custom-control-label" for="tt-{{hv ? hv.IDHocVien:-1}}"></label>
                     </div>
                   </td>
-                  <td align="center" id="{{hv ? hv.IDHocVien:-1}}" *ngIf=!isGiangVien >
+                  <td align="center" id="{{hv ? hv.IDHocVien:-1}}" *ngIf=!isGiangVien>
                     <div>
                       <a (click)="xemHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
                         data-target="#hocvienModal" class="fas fa-clipboard marginicon"></a>
@@ -78,9 +132,9 @@
                         data-target="#xoahocvienModal" class="fas fa-trash-alt marginicon"></a>
                     </div>
                   </td>
-                  <td align="center" >
-                    <button id="{{hv ? hv.IDHocVien:-1}}" (click)="guiMailCaNhan($event)" class="btn btn-success" 
-                    data-toggle="modal" data-target="#sendMailModal">Gửi mail</button>
+                  <td align="center">
+                    <button id="{{hv ? hv.IDHocVien:-1}}" (click)="guiMailCaNhan($event)" class="btn btn-success"
+                      data-toggle="modal" data-target="#sendMailModal">Gửi mail</button>
                   </td>
                 </tr>
               </tbody>
@@ -131,8 +185,8 @@
           </div>
           <div class="form-group">
             <label for="txt-tenlophoc-name">Tên lớp học: </label>
-            <select class="form-control" name="txt-tenlophoc-name" formControlName="TenLopHoc"
-              #lhp (change)="changeIDLopHocPhan(lhp.value)" name="something12" >
+            <select class="form-control" name="txt-tenlophoc-name" formControlName="TenLopHoc" #lhp
+              (change)="changeIDLopHocPhan(lhp.value)" name="something12">
               <option *ngFor="let lhp of listLopHocPhan" value="{{ lhp.IDLopHocPhan }}">
                 {{ lhp.TenLopHocPhan }}
               </option>
@@ -174,7 +228,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Bạn có thật sự muốn xóa học viên này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến học viên này sẽ bị xóa
+        <p>Bạn có thật sự muốn xóa học viên này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến học viên này sẽ bị
+          xóa
         </p>
       </div>
       <div class="modal-footer">
@@ -213,7 +268,8 @@
                 <span class="input-group-text" id="inputGroupFileAddon01">Tệp đính kèm</span>
               </div>
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)"formControlName="File">
+                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)"
+                  formControlName="File">
                 <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
                   có tệp nào được chọn</label>
               </div>
