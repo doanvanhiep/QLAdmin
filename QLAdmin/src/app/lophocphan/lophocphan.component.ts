@@ -15,14 +15,17 @@ import { UploadimageService } from '../service/upload/uploadimage.service';
 export class LophocphanComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
+    trangthaikichhoat: any = -1;
     khoahoc: any;
     btnedit: boolean = true;
     lophocphanForm: FormGroup;
     listLopHocPhan: any;
-    IDKhoaHoc: any;
+    IDKhoaHoc: any = -1;
     fileSelected: File = null;
     lophocphanByID: any;
     IDLopHocPhan: any;
+    selectedKhoaHoc: any = -1;
+    listKhoaHoc: any = [];
     constructor(
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private share: SharedataService,
@@ -34,26 +37,15 @@ export class LophocphanComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.IDKhoaHoc = localStorage.getItem("idKhoaHoc");
-        if (!this.IDKhoaHoc) {
-            this.router.navigate(['nv/khoahoc']);
-            return;
-        }
-
         this.getDataKhoaHoc();
-        if (this.khoahoc == null) {
-            this.khoahocService.getKhoaHocByID(this.IDKhoaHoc)
-                .pipe()
-                .subscribe(res => {
-                    if (res.result.error === true) {
-                        alert(res.result.message);
-                        return;
-                    }
-                    this.khoahoc = res.result.data[0];
-                });
+        if (this.khoahoc != null) {
+            this.IDKhoaHoc = this.khoahoc.IDKhoaHoc;
+            this.selectedKhoaHoc = this.IDKhoaHoc;
         }
+        this.getListKhoaHoc();
+        if (this.IDKhoaHoc != -1)
+            this.getListLopHocPhan(this.IDKhoaHoc);
         this.createForm();
-        this.getListLopHocPhan(this.IDKhoaHoc);
         this.loadScripts();
     }
     createForm() {
@@ -91,7 +83,13 @@ export class LophocphanComponent implements OnInit {
         this.lophocphanservice.getListLopHocPhan(IDKhoaHoc)
             .pipe()
             .subscribe(res => {
-                this.listLopHocPhan = res.result.data;
+                if (this.trangthaikichhoat == -1) {
+                    this.listLopHocPhan = res.result.data;
+                }
+                else {
+                    let TrangThai = this.trangthaikichhoat;
+                    this.listLopHocPhan = res.result.data.filter(lh => lh.TrangThai == TrangThai);
+                }
             });
     }
     get f() { return this.lophocphanForm.controls; }
@@ -198,6 +196,37 @@ export class LophocphanComponent implements OnInit {
         }
         document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
         this.fileSelected = null;
+    }
+    TrangThaiKichHoat(event) {
+        this.trangthaikichhoat = event.target.value;
+        this.getListLopHocPhan(this.IDKhoaHoc);
+    }
+    changeTrangThai(event) {
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value.split("-")[1];
+        let TrangThai = target.checked ? 1 : 0;
+        this.lophocphanservice.suaTrangThaiLopHocPhan(+idAttr, TrangThai)
+            .pipe()
+            .subscribe(res => {
+                //console.log(res);
+            });
+    }
+    changeIDKhoaHoc(IDKhoaHoc) {
+        this.IDKhoaHoc = IDKhoaHoc;
+        this.getListLopHocPhan(this.IDKhoaHoc);
+    }
+    getListKhoaHoc() {
+        this.khoahocService.getAllKhoaHocKichHoat()
+            .pipe()
+            .subscribe(res => {
+                this.listKhoaHoc = res.result.data;
+                if (this.IDKhoaHoc == -1 && this.listKhoaHoc.length > 0) {
+                    this.khoahoc = this.listKhoaHoc[0];
+                    this.IDKhoaHoc = this.khoahoc.IDKhoaHoc;
+                    this.selectedKhoaHoc = this.IDKhoaHoc;
+                    this.changeIDKhoaHoc(this.IDKhoaHoc);
+                }
+            });
     }
     //load script
     private loadScripts() {

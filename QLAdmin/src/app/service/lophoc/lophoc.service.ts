@@ -32,6 +32,12 @@ export class LophocService {
         return res;
       }));
   }
+  suaTrangThaiLopHoc(IDLopHoc, TrangThai) {
+    return this.http.put<any>(`${environment.apiUrl}/lophoc/suatrangthai`, { IDLopHoc, TrangThai })
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   xoaLopHoc(IDLopHoc) {
     return this.http.delete<any>(`${environment.apiUrl}/lophoc/xoa/${IDLopHoc}`)
       .pipe(map(res => {

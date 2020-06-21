@@ -41,4 +41,18 @@ export class LophocphanService {
             return res;
         }));
     }
+    getAllLopHocPhanKichHoat()
+    {
+        return this.http.get<any>(`${environment.apiUrl}/lophocphan/getalllophocphandangkichhoat`)
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
+    suaTrangThaiLopHocPhan(IDLopHocPhan,TrangThai)
+    {
+        return this.http.put<any>(`${environment.apiUrl}/lophocphan/suatrangthai`,{IDLopHocPhan,TrangThai})
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
 }

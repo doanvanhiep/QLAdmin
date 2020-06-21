@@ -16,10 +16,12 @@ import { PhonghocService } from '../service/phonghoc/phonghoc.service';
 export class LophocComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
+    selectedLopHocPhan:any=-1;
+    listLopHocPhan:any=[];
     btnedit: any = false;
     lophocForm: FormGroup;
     lophocphan: any;
-    IDLopHocPhan: any;
+    IDLopHocPhan: any=-1;
     listLopHoc: any;
     createCahoc: any = false;
     sobuoihocs: any;
@@ -29,6 +31,7 @@ export class LophocComponent implements OnInit {
     phonghocs: any;
     lophocByID: any;
     IDLopHoc: any;
+    trangthaikichhoat: any = -1;
     constructor(
         private phonghocService: PhonghocService,
         private giangvienService: GiangvienService,
@@ -40,23 +43,13 @@ export class LophocComponent implements OnInit {
         private formBuilder: FormBuilder,) { }
 
     ngOnInit() {
-        this.IDLopHocPhan = localStorage.getItem("idLopHocPhan");
-        if (!this.IDLopHocPhan) {
-            this.router.navigate(['nv/lophocphan']);
-            return;
-        }
         this.getDataLopHocPhan();
-        if (this.lophocphan == null) {
-            this.lophocphanservice.getLopHocPhanByID(this.IDLopHocPhan)
-                .pipe()
-                .subscribe(res => {
-                    if (res.result.error === true) {
-                        alert(res.result.message);
-                        return;
-                    }
-                    this.lophocphan = res.result.data[0];
-                });
+        if (this.lophocphan != null) {
+            this.IDLopHocPhan=this.lophocphan.IDLopHocPhan;
+            this.selectedLopHocPhan=this.IDLopHocPhan;
         }
+        this.getListLopHocPhan();
+        if(this.IDLopHocPhan!=-1)
         this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
         this.loadScripts();
         this.createForm()
@@ -179,8 +172,31 @@ export class LophocComponent implements OnInit {
         this.lophocservice.getListLopHocByID(IDLopHocPhan)
             .pipe()
             .subscribe(res => {
-                this.listLopHoc = res.result.data;
+                if(this.trangthaikichhoat==-1)
+                {
+                    this.listLopHoc = res.result.data;
+                }
+                else
+                {
+                    let TrangThai=this.trangthaikichhoat;
+                    this.listLopHoc = res.result.data.filter(lh=>lh.TrangThai==TrangThai);
+                }
             });
+    }
+    getListLopHocPhan()
+    {
+        this.lophocphanservice.getAllLopHocPhanKichHoat()
+        .pipe()
+        .subscribe(res=>{
+            this.listLopHocPhan = res.result.data;
+            if(this.IDLopHocPhan==-1 && this.listLopHocPhan.length>0)
+            {
+                this.lophocphan=this.listLopHocPhan[0];
+                this.IDLopHocPhan=this.lophocphan.IDLopHocPhan;
+                this.selectedLopHocPhan=this.IDLopHocPhan;
+                this.changeIDLopHocPhan(this.IDLopHocPhan);
+            }
+        });
     }
     getDataLopHocPhan() {
         this.lophocphan = this.share.receiveDataLopHocPhan();
@@ -239,7 +255,7 @@ export class LophocComponent implements OnInit {
         }
         return true;
     }
-    createCaHoc() {
+    createNewCaHoc() {
         if (!this.checkThongTinCaHoc()) {
             return;
         }
@@ -322,6 +338,25 @@ export class LophocComponent implements OnInit {
             .subscribe(res => {
                 this.phonghocs = res.result.data;
             })
+    }
+    TrangThaiKichHoat(event) {
+        this.trangthaikichhoat = event.target.value;
+        this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
+    }
+    changeTrangThai(event) {
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value.split("-")[1];
+        let TrangThai = target.checked ? 1 : 0;
+        this.lophocservice.suaTrangThaiLopHoc(+idAttr,TrangThai)
+        .pipe()
+        .subscribe(res => {
+                //console.log(res);
+        });
+    }
+    changeIDLopHocPhan(IDLopHocPhan)
+    {
+        this.IDLopHocPhan=IDLopHocPhan;
+        this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
     }
     //load script
     private loadScripts() {

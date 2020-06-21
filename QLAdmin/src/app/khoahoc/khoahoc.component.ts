@@ -17,6 +17,7 @@ export class KhoahocComponent implements OnInit {
     khoahocByID: any;
     btnedit: any = false;
     IDKhoaHoc:number;
+    trangthaikichhoat:any=-1;
     constructor(
         private share:SharedataService,
         private router:Router,
@@ -98,7 +99,15 @@ export class KhoahocComponent implements OnInit {
                     alert(res.result.message);
                     return;
                 }
-                this.listKhoaHoc = res.result.data;
+                if(this.trangthaikichhoat==-1)
+                {
+                    this.listKhoaHoc = res.result.data;
+                }
+                else
+                {
+                    let TrangThai=this.trangthaikichhoat;
+                    this.listKhoaHoc = res.result.data.filter(lh=>lh.TrangThai==TrangThai);
+                }
             });
     }
     dbClick(event) {
@@ -126,7 +135,20 @@ export class KhoahocComponent implements OnInit {
     {
         this.share.shareDataKhoaHoc(IDKhoaHoc,this.listKhoaHoc.filter(item=>item.IDKhoaHoc===IDKhoaHoc)[0]);
     }
-
+    changeTrangThai(event) {
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value.split("-")[1];
+        let TrangThai = target.checked ? 1 : 0;
+        this.khoahocService.suaTrangThaiKhoaHoc(+idAttr, TrangThai)
+            .pipe()
+            .subscribe(res => {
+                //console.log(res);
+            });
+    }
+    TrangThaiKichHoat(event) {
+        this.trangthaikichhoat = event.target.value;
+        this.getListKhoaHoc();
+    }
     //load script
     private loadScripts() {
         // You can load multiple scripts by just providing the key as argument into load method of the service

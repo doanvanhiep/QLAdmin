@@ -9,7 +9,6 @@ export class SharedataService {
     constructor() { }
     public shareDataKhoaHoc(IDKhoaHoc,dataKhoaHoc)
     {
-        localStorage.setItem('idKhoaHoc',IDKhoaHoc);
         this.khoahoc=dataKhoaHoc;
     }
     public receiveDataKhoaHoc()
@@ -19,7 +18,6 @@ export class SharedataService {
 
     public shareDataLopHocPhan(IDLopHocPhan,dataLopHocPhan)
     {
-        localStorage.setItem('idLopHocPhan',IDLopHocPhan);
         this.lophocphan=dataLopHocPhan;
     }
     public receiveDataLopHocPhan()
