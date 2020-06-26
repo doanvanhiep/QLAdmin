@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { KhoahocService } from '../service/khoahoc/khoahoc.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { SharedataService } from '../service/sharedata/sharedata.service';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
 @Component({
     selector: 'app-khoahoc',
     templateUrl: './khoahoc.component.html',
@@ -16,15 +17,21 @@ export class KhoahocComponent implements OnInit {
     listKhoaHoc: any;
     khoahocByID: any;
     btnedit: any = false;
-    IDKhoaHoc:number;
-    trangthaikichhoat:any=-1;
+    IDKhoaHoc: number;
+    trangthaikichhoat: any = -1;
+    parentRouter: any;
     constructor(
-        private share:SharedataService,
-        private router:Router,
+        private checkrouteService: CheckrouteService,
+        private share: SharedataService,
+        private router: Router,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private formBuilder: FormBuilder,
         private khoahocService: KhoahocService
-    ) { }
+    ) {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        if (this.parentRouter != "admin")
+            this.router.navigate([this.parentRouter]);
+    }
 
     ngOnInit() {
         this.loadScripts();
@@ -72,9 +79,9 @@ export class KhoahocComponent implements OnInit {
             })
         this.closebutton.nativeElement.click();
     }
-    xoa(){
+    xoa() {
         this.khoahocService.xoaKhoaHoc(this.IDKhoaHoc)
-        .pipe()
+            .pipe()
             .subscribe(res => {
                 if (res.TrangThai.error === true) {
                     alert(res.TrangThai.message);
@@ -85,8 +92,7 @@ export class KhoahocComponent implements OnInit {
             })
         this.closebuttondelete.nativeElement.click();
     }
-    changeStatus(event)
-    {
+    changeStatus(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
         alert(idAttr);
@@ -99,14 +105,12 @@ export class KhoahocComponent implements OnInit {
                     alert(res.result.message);
                     return;
                 }
-                if(this.trangthaikichhoat==-1)
-                {
+                if (this.trangthaikichhoat == -1) {
                     this.listKhoaHoc = res.result.data;
                 }
-                else
-                {
-                    let TrangThai=this.trangthaikichhoat;
-                    this.listKhoaHoc = res.result.data.filter(lh=>lh.TrangThai==TrangThai);
+                else {
+                    let TrangThai = this.trangthaikichhoat;
+                    this.listKhoaHoc = res.result.data.filter(lh => lh.TrangThai == TrangThai);
                 }
             });
     }
@@ -125,15 +129,14 @@ export class KhoahocComponent implements OnInit {
     xoaKhoaHoc(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
-        this.IDKhoaHoc=+idAttr;
+        this.IDKhoaHoc = +idAttr;
     }
     getKhoaHocByID(idKhoaHoc) {
-        this.khoahocByID=this.listKhoaHoc.filter(item=>item.IDKhoaHoc==+idKhoaHoc)[0];
+        this.khoahocByID = this.listKhoaHoc.filter(item => item.IDKhoaHoc == +idKhoaHoc)[0];
     }
-    
-    shareData(IDKhoaHoc)
-    {
-        this.share.shareDataKhoaHoc(IDKhoaHoc,this.listKhoaHoc.filter(item=>item.IDKhoaHoc===IDKhoaHoc)[0]);
+
+    shareData(IDKhoaHoc) {
+        this.share.shareDataKhoaHoc(IDKhoaHoc, this.listKhoaHoc.filter(item => item.IDKhoaHoc === IDKhoaHoc)[0]);
     }
     changeTrangThai(event) {
         var target = event.target || event.srcElement || event.currentTarget;

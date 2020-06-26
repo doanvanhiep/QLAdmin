@@ -238,7 +238,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> 
 
 <!-- sendmail -->
 <div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -261,7 +261,7 @@
             <label for="txt-noidung-name">Nội dung: </label>
             <input type="text" class="form-control" name="txt-noidung-name" formControlName="NoiDung">
           </div>
-          <button class="btn btn-primary" (click)="changeDinhKem($event)">Đính kèm</button>
+          <button class="btn btn-primary" (click)="changeDinhKem($event)" id="btnDinhKem">Đính kèm</button>
           <div class="form-group" *ngIf="hasFile">
             <div class="input-group">
               <div class="input-group-prepend">
@@ -269,7 +269,7 @@
               </div>
               <div class="custom-file">
                 <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)"
-                  formControlName="File">
+                  formControlName="File" multiple>
                 <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
                   có tệp nào được chọn</label>
               </div>

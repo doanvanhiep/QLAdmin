@@ -8,6 +8,7 @@ import { LophocphanService } from '../service/lophocphan/lophocphan.service';
 import { Router } from '@angular/router';
 import { GiangvienService } from '../service/giangvien/giangvien.service';
 import { PhonghocService } from '../service/phonghoc/phonghoc.service';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
 @Component({
     selector: 'app-lophoc',
     templateUrl: './lophoc.component.html',
@@ -16,12 +17,12 @@ import { PhonghocService } from '../service/phonghoc/phonghoc.service';
 export class LophocComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
-    selectedLopHocPhan:any=-1;
-    listLopHocPhan:any=[];
+    selectedLopHocPhan: any = -1;
+    listLopHocPhan: any = [];
     btnedit: any = false;
     lophocForm: FormGroup;
     lophocphan: any;
-    IDLopHocPhan: any=-1;
+    IDLopHocPhan: any = -1;
     listLopHoc: any;
     createCahoc: any = false;
     sobuoihocs: any;
@@ -29,10 +30,18 @@ export class LophocComponent implements OnInit {
     cas: { [key: string]: string } = { 'Ca 1': 'Ca 1', 'Ca 2': 'Ca 2', 'Ca 3': 'Ca 3', 'Ca 4': 'Ca 4', 'Ca 5': 'Ca 5' };
     giangviens: any;
     phonghocs: any;
+    regiangviens: any;
+    rephonghocs: any;
     lophocByID: any;
     IDLopHoc: any;
     trangthaikichhoat: any = -1;
+    parentRouter: any;
+    caRecommend:any;
+    thuRecommend:any;
+    bdRecommend:any;
+    ktRecommend:any;
     constructor(
+        private checkrouteService: CheckrouteService,
         private phonghocService: PhonghocService,
         private giangvienService: GiangvienService,
         private lophocservice: LophocService,
@@ -40,17 +49,21 @@ export class LophocComponent implements OnInit {
         private share: SharedataService,
         private router: Router,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
-        private formBuilder: FormBuilder,) { }
+        private formBuilder: FormBuilder,) {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        if (this.parentRouter != "admin")
+            this.router.navigate([this.parentRouter]);
+    }
 
     ngOnInit() {
         this.getDataLopHocPhan();
         if (this.lophocphan != null) {
-            this.IDLopHocPhan=this.lophocphan.IDLopHocPhan;
-            this.selectedLopHocPhan=this.IDLopHocPhan;
+            this.IDLopHocPhan = this.lophocphan.IDLopHocPhan;
+            this.selectedLopHocPhan = this.IDLopHocPhan;
         }
         this.getListLopHocPhan();
-        if(this.IDLopHocPhan!=-1)
-        this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
+        if (this.IDLopHocPhan != -1)
+            this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
         this.loadScripts();
         this.createForm()
         //
@@ -172,31 +185,27 @@ export class LophocComponent implements OnInit {
         this.lophocservice.getListLopHocByID(IDLopHocPhan)
             .pipe()
             .subscribe(res => {
-                if(this.trangthaikichhoat==-1)
-                {
+                if (this.trangthaikichhoat == -1) {
                     this.listLopHoc = res.result.data;
                 }
-                else
-                {
-                    let TrangThai=this.trangthaikichhoat;
-                    this.listLopHoc = res.result.data.filter(lh=>lh.TrangThai==TrangThai);
+                else {
+                    let TrangThai = this.trangthaikichhoat;
+                    this.listLopHoc = res.result.data.filter(lh => lh.TrangThai == TrangThai);
                 }
             });
     }
-    getListLopHocPhan()
-    {
+    getListLopHocPhan() {
         this.lophocphanservice.getAllLopHocPhanKichHoat()
-        .pipe()
-        .subscribe(res=>{
-            this.listLopHocPhan = res.result.data;
-            if(this.IDLopHocPhan==-1 && this.listLopHocPhan.length>0)
-            {
-                this.lophocphan=this.listLopHocPhan[0];
-                this.IDLopHocPhan=this.lophocphan.IDLopHocPhan;
-                this.selectedLopHocPhan=this.IDLopHocPhan;
-                this.changeIDLopHocPhan(this.IDLopHocPhan);
-            }
-        });
+            .pipe()
+            .subscribe(res => {
+                this.listLopHocPhan = res.result.data;
+                if (this.IDLopHocPhan == -1 && this.listLopHocPhan.length > 0) {
+                    this.lophocphan = this.listLopHocPhan[0];
+                    this.IDLopHocPhan = this.lophocphan.IDLopHocPhan;
+                    this.selectedLopHocPhan = this.IDLopHocPhan;
+                    this.changeIDLopHocPhan(this.IDLopHocPhan);
+                }
+            });
     }
     getDataLopHocPhan() {
         this.lophocphan = this.share.receiveDataLopHocPhan();
@@ -208,9 +217,49 @@ export class LophocComponent implements OnInit {
             this.t.at(index - 1).enable();
         }
     }
+    getRecommendGiangVienPhongHoc(BatDau,KetThuc,CaHoc,Thu)
+    {
+        this.lophocservice.PhongHocGiangVien(BatDau,KetThuc,CaHoc,Thu)
+        .pipe()
+        .subscribe(res=>{
+            if (res.result.error === true) {
+                alert(res.TrangThai.message);
+                return;
+            }
+            this.rephonghocs=res.result.ListPhongHoc;
+            this.regiangviens=res.result.ListGiangVien;
+            console.log(this.rephonghocs);
+            console.log(this.regiangviens);
+        })
+    }
+    recommendCaHoc(index) {
+        var tempCaHoc = this.t.at(index);
+        if (!this.isFullCaHocThu(tempCaHoc)) {
+            return false;
+        }
+        if (this.isTrungCaHocVaThu(tempCaHoc)) {
+            return false;
+        }
+        if (!this.isFullNgayKhaiGiangNgayBeGiang()) {
+            return false;
+        }
+        this.bdRecommend=this.f.NgayKhaiGiang.value;
+        this.ktRecommend=this.f.NgayBeGiang.value;
+        this.thuRecommend=tempCaHoc.value.thu;
+        this.caRecommend=tempCaHoc.value.ca;
+        this.getRecommendGiangVienPhongHoc(this.bdRecommend,this.ktRecommend,this.caRecommend,this.thuRecommend)
+        return;
+    }
     isFullThongTinCaHoc(FormAt) {
         if (!FormAt.value.thu || !FormAt.value.ca || !FormAt.value.phong || !FormAt.value.giangvien) {
             alert("Vui lòng điền đầy đủ thông tin cho buổi học");
+            return false;
+        }
+        return true;
+    }
+    isFullCaHocThu(FormAt) {
+        if (!FormAt.value.thu || !FormAt.value.ca) {
+            alert("Vui lòng điền đầy đủ thông tin cho ca học và thứ cho buổi học");
             return false;
         }
         return true;
@@ -347,15 +396,14 @@ export class LophocComponent implements OnInit {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value.split("-")[1];
         let TrangThai = target.checked ? 1 : 0;
-        this.lophocservice.suaTrangThaiLopHoc(+idAttr,TrangThai)
-        .pipe()
-        .subscribe(res => {
+        this.lophocservice.suaTrangThaiLopHoc(+idAttr, TrangThai)
+            .pipe()
+            .subscribe(res => {
                 //console.log(res);
-        });
+            });
     }
-    changeIDLopHocPhan(IDLopHocPhan)
-    {
-        this.IDLopHocPhan=IDLopHocPhan;
+    changeIDLopHocPhan(IDLopHocPhan) {
+        this.IDLopHocPhan = IDLopHocPhan;
         this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
     }
     //load script

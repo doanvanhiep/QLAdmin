@@ -3,10 +3,10 @@ import { SharedataService } from '../service/sharedata/sharedata.service';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KhoahocService } from '../service/khoahoc/khoahoc.service';
-import { from } from 'rxjs';
 import { LophocphanService } from '../service/lophocphan/lophocphan.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { UploadimageService } from '../service/upload/uploadimage.service';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
 @Component({
     selector: 'app-lophocphan',
     templateUrl: './lophocphan.component.html',
@@ -15,6 +15,7 @@ import { UploadimageService } from '../service/upload/uploadimage.service';
 export class LophocphanComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
+    idFile:any=-1;
     trangthaikichhoat: any = -1;
     khoahoc: any;
     btnedit: boolean = true;
@@ -26,7 +27,9 @@ export class LophocphanComponent implements OnInit {
     IDLopHocPhan: any;
     selectedKhoaHoc: any = -1;
     listKhoaHoc: any = [];
+    parentRouter: any;
     constructor(
+        private checkrouteService: CheckrouteService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private share: SharedataService,
         private router: Router,
@@ -34,7 +37,11 @@ export class LophocphanComponent implements OnInit {
         private formBuilder: FormBuilder,
         private lophocphanservice: LophocphanService,
         private uploadimage: UploadimageService
-    ) { }
+    ) {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        if (this.parentRouter != "admin")
+            this.router.navigate([this.parentRouter]);
+    }
 
     ngOnInit() {
         this.getDataKhoaHoc();

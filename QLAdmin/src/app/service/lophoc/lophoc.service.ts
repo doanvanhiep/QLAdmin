@@ -14,6 +14,12 @@ export class LophocService {
         return res;
       }));
   }
+  PhongHocGiangVien(BatDau, KetThuc,CaHoc, Thu) {
+    return this.http.post<any>(`${environment.apiUrl}/lophoc/recommendphonghocgiangvien/`,{BatDau, KetThuc, CaHoc, Thu})
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   getListLopHocByID(IDLopHocPhan) {
     return this.http.get<any>(`${environment.apiUrl}/lophoc/danhsach/${IDLopHocPhan}`)
       .pipe(map(res => {

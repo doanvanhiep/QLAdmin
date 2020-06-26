@@ -195,8 +195,9 @@
                       </option>
                     </select>
                   </div>
-                  <div class="form-group" class="col-1" *ngIf="btnedit===false">
-                    <i class="fas fa-trash-alt" style="margin-top: 42px;" (click)="removeCaHoc(i)"></i>
+                  <div class="form-group" class="col-1" >
+                    <i *ngIf="btnedit===false" class="fas fa-trash-alt" style="margin-top: 42px;" (click)="removeCaHoc(i)"></i>
+                    <i class="fas fa-list" style="margin-top: 42px;margin-left: 5px;" (click)="recommendCaHoc(i)" data-toggle="modal" data-target="#recommendModal"></i>
                   </div>
                 </div>
               </div>
@@ -235,6 +236,46 @@
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
           <button class="btn btn-primary" (click)="xoa()">xóa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- recommend phòng học và giảng viên-->
+  <div class="modal fade" id="recommendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Danh sách phòng học và giảng viên có thể chọn <br>{{thuRecommend}} {{caRecommend}} từ ngày {{bdRecommend}} đến ngày {{ktRecommend}}</h5>
+          <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group" class="col-6">
+              <label for="txt-phong-name">Phòng</label>
+              <select class="form-control input-lg">
+                <option *ngFor="let ph of rephonghocs" value="{{ph.IDPhongHoc}}">
+                  {{ph.TenPhong}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group" class="col-6">
+              <label for="txt-gv-name">Giảng viên</label>
+              <select class="form-control input-lg" >
+                <option *ngFor="let gv of regiangviens" value="{{gv.IDGiangVien}}">
+                  {{gv.HoTen}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Đóng</button>
         </div>
       </div>
     </div>

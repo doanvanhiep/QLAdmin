@@ -60,6 +60,13 @@ export class Login_serviceService {
     //   }));
     //this.getQuyenTenTaiKhoan();
   }
+  changePassword(TenTaiKhoan, MatKhauCu,MatKhauMoi)
+  {
+    return this.http.put<any>(`${environment.apiUrl}/taikhoan/doimatkhau`, { TenTaiKhoan,  MatKhauCu,MatKhauMoi })
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   login(TenTaiKhoan: string, MatKhau: string) {
     return this.http.post<any>(`${environment.apiUrl}/taikhoan/dangnhap`, { TenTaiKhoan, MatKhau })
       .pipe(map(res => {
@@ -70,9 +77,9 @@ export class Login_serviceService {
           localStorage.setItem('Quyen', res.TrangThai.data.datas.Quyen);
           // this.TenTaiKhoan = res.TrangThai.data.datas.TenTaiKhoan;
           // this.Quyen = res.TrangThai.data.datas.Quyen;
-          return res.TrangThai.data.datas.Quyen;
+          return res;
         }
-        return res.TrangThai.message;
+        return res;
       }));
   }
   logout() {

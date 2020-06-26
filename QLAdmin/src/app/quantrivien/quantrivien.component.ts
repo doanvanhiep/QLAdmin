@@ -3,6 +3,8 @@ import { QuantrivienService } from '../service/quantrivien/quantrivien.service';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { UploadimageService } from '../service/upload/uploadimage.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-quantrivien',
   templateUrl: './quantrivien.component.html',
@@ -11,16 +13,24 @@ import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-load
 export class QuantrivienComponent implements OnInit {
   @ViewChild('closebutton') closebutton;
   @ViewChild('closebuttonDelete') closebuttondelete;
-  listQuanTriVien: any;
+  listQuanTriVien: any = [];
   btnedit: any = false;
   quantrivienForm: FormGroup;
   quantrivienByID: any;
   fileSelected: File = null;
   IDQuanTriVien: any;
-  constructor(private formBuilder: FormBuilder,
+  parentRouter: any;
+  constructor(
+    private checkrouteService: CheckrouteService,
+    private router: Router,
+    private formBuilder: FormBuilder,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
     private quantrivienService: QuantrivienService,
-    private uploadimage: UploadimageService) { }
+    private uploadimage: UploadimageService) {
+    this.parentRouter = this.checkrouteService.getParentRouter();
+    if (this.parentRouter != "admin")
+      this.router.navigate([this.parentRouter]);
+  }
 
   ngOnInit() {
     this.loadScripts();

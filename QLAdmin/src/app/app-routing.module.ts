@@ -15,6 +15,7 @@ import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.compone
 import { HocvienComponent } from './hocvien/hocvien.component';
 import { QuantrivienComponent } from './quantrivien/quantrivien.component';
 import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
+import { ThongtincanhanComponent } from './thongtincanhan/thongtincanhan.component';
 const routes: Routes = [
   { path: '', redirectTo: 'dangnhap', pathMatch: 'full' },
   { path: 'dangnhap', component: LoginComponent },
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: 'quantrivien',
         component: QuantrivienComponent
+      },
+      {
+        path: 'thongtincanhan',
+        component: ThongtincanhanComponent
       }
     ],
     canActivate: [AuthGuardService]
@@ -79,6 +84,10 @@ const routes: Routes = [
       {
         path: 'hocvien',
         component: HocvienComponent
+      },
+      {
+        path: 'thongtincanhan',
+        component: ThongtincanhanComponent
       }
     ],
     canActivate: [AuthGuardService]
@@ -98,6 +107,10 @@ const routes: Routes = [
       {
         path: 'hocvien',
         component: HocvienComponent
+      },
+      {
+        path: 'thongtincanhan',
+        component: ThongtincanhanComponent
       }
     ],
     canActivate: [AuthGuardService]

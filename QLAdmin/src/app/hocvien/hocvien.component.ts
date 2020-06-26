@@ -37,10 +37,10 @@ export class HocvienComponent implements OnInit {
     HocPhiLopHoc: any;
     hocvienByID: any;
     parentRouter: any = "admin";
-    isSendMailCaNhan: any = false;
     trangthaithanhtoan: any = "-1";
     phuongthuc: any = "tatca";
     trangthaikichhoat: any = 'tatcakichhoat';
+    mailList:any=[];
     constructor(
         private loginService: Login_serviceService,
         private sendMailService: SendmailService,
@@ -89,6 +89,9 @@ export class HocvienComponent implements OnInit {
             NoiDung: "",
             File: "",
         });
+        this.fileSelected = null;
+        this.hasFile = false;
+        document.getElementById('btnDinhKem').innerText = "Đính kèm";
     }
     createForm() {
         this.btnedit = false;
@@ -247,11 +250,15 @@ export class HocvienComponent implements OnInit {
     onSelectedFile(event) {
         this.fileSelected = <File>event.target.files;
         if (event.target.files.length > 0) {
-            //this.fileSelected.name
-            document.getElementById('nameoffile').innerHTML = "áddsasda";
+            let filename = "";
+            for (let i = 0; i < event.target.files.length - 1; i++) {
+                filename += this.fileSelected[i].name + " - ";
+            }
+            filename += this.fileSelected[event.target.files.length - 1].name;
+            document.getElementById('nameoffile').innerText = filename;
             return;
         }
-        document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
+        document.getElementById('nameoffile').innerText = "Không có tệp nào được chọn";
         this.fileSelected = null;
     }
     changeDinhKem(event) {
@@ -263,40 +270,53 @@ export class HocvienComponent implements OnInit {
             this.hasFile = !this.hasFile;
             event.target.innerText = "Đính kèm";
             this.fileSelected = null;
-            document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
+            document.getElementById('nameoffile').innerText = "Không có tệp nào được chọn";
         }
     }
     get fSendMail() { return this.sendMailForm.controls; }
     sendMail() {
-        this.sendMailService.sendMail(this.fSendMail.TieuDe, this.fSendMail.NoiDung, this.fileSelected, null)
+        if(this.mailList.length<=0)
+        {
+            alert("Không thể gửi mail vì danh sách học viên hiện tại trống");
+            this.closebutton1.nativeElement.click();
+            return;
+        }
+        this.sendMailService.sendMail(this.fSendMail.TieuDe.value, this.fSendMail.NoiDung.value, this.fileSelected, this.mailList)
             .pipe()
             .subscribe(res => {
                 if (res.result.error === true) {
                     alert(res.result.message);
                     return;
                 }
-                this.listLopHocPhan = res.result.data;
+                alert("Đã gửi mail thành công");
             });
-
-        alert(this.isSendMailCaNhan ? "Gửi cá nhân" : "Gửi tập thể");
-        alert(this.fileSelected == null ? "Không đính kèm" : "Có đính kèm");
-
-        console.log(this.fileSelected)
         this.closebutton1.nativeElement.click();
     }
 
     guiMailLop() {
+        this.mailList=[];
+        if(this.listHocVien.length>0)
+        {
+            for(let i =0;i<this.listHocVien.length;i++)
+            {
+                this.mailList.push(this.listHocVien[i].Email);
+            }
+        }
+        else
+        {
+            alert("Hiện tại danh sách học viên trống");
+            this.closebutton1.nativeElement.click();
+            return;
+        }
         this.createSendMailForm();
-        this.isSendMailCaNhan = false;
         this.hasFile = false;
     }
     guiMailCaNhan(event) {
         this.createSendMailForm();
-        this.isSendMailCaNhan = true;
         this.hasFile = false;
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
-        alert(idAttr);
+        this.mailList=[this.listHocVien.filter(hv=>hv.IDHocVien==+idAttr)[0].Email];
     }
     checkRoute() {
         this.parentRouter = this.checkrouteService.getParentRouter();

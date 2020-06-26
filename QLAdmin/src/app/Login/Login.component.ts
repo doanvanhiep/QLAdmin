@@ -39,6 +39,12 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
+                    console.log(data);
+                    if(data.TrangThai.error)
+                    {
+                        alert(data.TrangThai.message);
+                        return;
+                    }
                     //this.router.navigate(['']);
                     window.location.reload();
                     // if (data == 0 || data == 1) {
@@ -50,7 +56,7 @@ export class LoginComponent implements OnInit {
                     // }
                     //else
                     //{
-                    alert(data);
+                    //alert(data);
                     //}
                 },
                 error => {

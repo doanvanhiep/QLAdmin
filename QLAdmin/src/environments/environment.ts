@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
   apiuploadimage:'https://uploadfileimage.herokuapp.com/uploadfileimage',
-  apisendmail:'http://localhost:3000/api/sendmail/sent'
+  apisendmail:'http://localhost:3000/api/sendmail/send'
 };
 
 /*

@@ -3,6 +3,8 @@ import { GiangvienService } from '../service/giangvien/giangvien.service';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { UploadimageService } from '../service/upload/uploadimage.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import { Router } from '@angular/router';
 @Component({
 	selector: 'app-giangvien',
 	templateUrl: './giangvien.component.html',
@@ -17,12 +19,19 @@ export class GiangvienComponent implements OnInit {
 	giangvienByID: any;
 	fileSelected: File = null;
 	IDGiangVien: any;
+	parentRouter: any;
 	constructor(
+		private checkrouteService: CheckrouteService,
+		private router: Router,
 		private formBuilder: FormBuilder,
 		private dynamicScriptLoader: DynamicScriptLoaderServiceService,
 		private giangvienService: GiangvienService,
 		private uploadimage: UploadimageService
-	) { }
+	) {
+		this.parentRouter = this.checkrouteService.getParentRouter();
+		if (this.parentRouter != "admin")
+			this.router.navigate([this.parentRouter]);
+	}
 
 	ngOnInit() {
 		this.loadScripts();

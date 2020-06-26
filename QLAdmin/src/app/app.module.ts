@@ -21,6 +21,7 @@ import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.compone
 import { HocvienComponent } from './hocvien/hocvien.component';
 import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
 import { QuantrivienComponent } from './quantrivien/quantrivien.component';
+import { ThongtincanhanComponent } from './thongtincanhan/thongtincanhan.component';
 @NgModule({
    declarations: [
       AppComponent,
@@ -36,7 +37,8 @@ import { QuantrivienComponent } from './quantrivien/quantrivien.component';
       DanhsachlophocComponent,
       HocvienComponent,
       NotFoundComponentComponent,
-      QuantrivienComponent
+      QuantrivienComponent,
+      ThongtincanhanComponent
    ],
    imports: [
       BrowserModule,

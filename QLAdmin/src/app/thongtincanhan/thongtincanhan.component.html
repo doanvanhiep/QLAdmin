@@ -1,0 +1,69 @@
+<!-- src="https://scontent.fvca1-1.fna.fbcdn.net/v/t1.0-9/s960x960/103308365_625358728104089_8029068368571176216_o.jpg?_nc_cat=102&_nc_sid=85a577&_nc_ohc=lheDvKyUorEAX_m2yZb&_nc_ht=scontent.fvca1-1.fna&_nc_tp=7&oh=9401a72664c6767b592ae5f92447f5f9&oe=5F1A752D" -->
+<h1 style="margin-left: 60px;">Thông tin cá nhân</h1>
+<div class="row">
+<div class="col-4" style="margin-left: 50px;margin-top: 30px;">
+  <img style="width: 355px;height: 355px;" src={{imgURL}} alt="">
+  <input type="file" style="display: none" #fileInput accept="image/*"  (change)="onChangeFileInput($event)" />
+  <button [disabled]="disableButton? true:false" style="margin-top: 5px;" mat-raised-button color="primary" class="btn btn-success" (click)="onClickFileInputButton()">
+  Chọn ảnh
+  </button>
+</div>
+<div class="col-7">
+  <form [formGroup]="thongtincanhanForm">
+    <div class="form-group">
+      <label for="txt-hoten-name">Họ tên: </label>
+      <input type="text" class="form-control" name="txt-hoten-name" formControlName="HoTen">
+    </div>
+    <div class="form-group">
+      <label for="txt-sdt-name">Số điện thoại: </label>
+      <input type="text" class="form-control" name="txt-sdt-name" formControlName="SoDienThoai">
+    </div>
+    <div class="form-group">
+      <label for="txt-email-name">Email: </label>
+      <input type="text" class="form-control" name="txt-email-name" formControlName="Email">
+    </div>
+    <div class="form-group">
+      <label for="txt-diachi-name">Địa chỉ: </label>
+      <input type="text" class="form-control" name="txt-diachi-name" formControlName="DiaChi">
+    </div>
+  </form>
+  <button  [disabled]="disableButton? true:false" (click)="CapNhap()"class="btn btn-success" style="float: right;">Cập nhâp</button>
+  
+  <button data-toggle="modal" data-target="#doimatkhauModal"(click)="DoiMatKhau()"class="btn btn-warning" style="float: right;margin-right: 5px;">Đổi mật khẩu</button>
+</div>
+</div>
+<!-- đổi mật khẩu -->
+<!-- them lớp học phần Modal -->
+<div class="modal fade" id="doimatkhauModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Đổi mật khẩu</h5>
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="doimatkhauForm">
+          <div class="form-group">
+            <label for="txt-hoten-name">Mật khẩu cũ: </label>
+            <input type="password" class="form-control" name="txt-hoten-name" formControlName="MatKhauCu">
+          </div>
+          <div class="form-group">
+            <label for="txt-sdt-name">Mật khẩu mới: </label>
+            <input type="password" class="form-control" name="txt-sdt-name" formControlName="MatKhauMoi">
+          </div>
+          <div class="form-group">
+            <label for="txt-email-name">Xác nhận mật khẩu: </label>
+            <input type="password" class="form-control" name="txt-email-name" formControlName="MatKhauMoiXacNhan">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-primary" (click)="doiMK()">Đổi</button>
+      </div>
+    </div>
+  </div>
+</div>
