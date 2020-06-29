@@ -21,6 +21,9 @@ import { CackhoahocComponent } from "./ctthongke/cackhoahoc/cackhoahoc.component
 import { DoanhthuComponent } from "./ctthongke/doanhthu/doanhthu.component";
 import { NgxPaginationModule } from "ngx-pagination";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
+import { HocviendangkyComponent } from './ctthongke/hocviendangky/hocviendangky.component';
+import { HocvienthanhtoanComponent } from './ctthongke/hocvienthanhtoan/hocvienthanhtoan.component';
+import { DoanhthudangkyComponent } from './ctthongke/doanhthudangky/doanhthudangky.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +39,9 @@ import { Ng2SearchPipeModule } from "ng2-search-filter";
     ThongkeComponent,
     CackhoahocComponent,
     DoanhthuComponent,
+    HocviendangkyComponent,
+    HocvienthanhtoanComponent,
+    DoanhthudangkyComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,52 +4,52 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
-      <h1 class="h3 mb-2 text-gray-800 d-inline">Thống kê doanh thu</h1>
-      <button
-        class="btn btn-primary backBtn btn-md pull-left d-inline float-right"
-        type="button"
-        [routerLink]="['/nv/thongke']"
-        routerLinkActive="router-link-active"
-      >
-        <i class="fa fa-arrow-left"></i>
-        Back
-      </button>
-      <div class="row">
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Search Here"
-            [(ngModel)]="form"
-          />
-        </div>
-
-        <table class="table table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th *ngFor="let item of header">{{ item }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="
-                let item of filterData
-                  | filter: form
-                  | paginate: { itemsPerPage: 10, currentPage: p };
-                let i = index
-              "
+      <h1 class="h3 mb-2 text-gray-800">Danh sách liên hệ</h1>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              class="table table-bordered"
+              id="dataTable"
+              width="100%"
+              cellspacing="0"
             >
-              <td>{{ item.firstName }}</td>
-              <td>{{ item.lastName }}</td>
-              <td>{{ item.address }}</td>
-            </tr>
-          </tbody>
-          <pagination-controls
-            (pageChange)="p = $event"
-            class="float-right"
-          ></pagination-controls>
-        </table>
+              <thead>
+                <tr>
+                  <th>Họ Tên</th>
+                  <th>Email</th>
+                  <th>Số Điện Thoại</th>
+                  <th>Nội Dung</th>
+                  <th>Thời gian</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+              <!-- <tfoot>
+                                <tr>
+                                    <th>Họ Tên</th>
+                                    <th>Email</th>
+                                    <th>Số Điện Thoại</th>
+                                    <th>Nội Dung</th>
+                                    <th>Thời gian</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </tfoot> -->
+              <tbody>
+                <tr>
+                  <td>Tiger Nixonádasdasasdasd</td>
+                  <td>System Architect</td>
+                  <td>Edinburghádasdasd</td>
+                  <td>61ádasdasd</td>
+                  <td>61ádasd</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- /.container-fluid -->
   </div>
+  <!-- End of Main Content -->
 </div>

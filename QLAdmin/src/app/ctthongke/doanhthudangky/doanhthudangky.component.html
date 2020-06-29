@@ -1,0 +1,84 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Doanh Thu Đăng Ký</h1>
+      <div class="row">
+        <div class="col-xl-7 col-lg-5">
+          <div class="card shadow mb-4">
+            <div
+              class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+            >
+              <h6 class="m-0 font-weight-bold text-primary">
+                Thống kê doanh thu đăng ký
+              </h6>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="filterForm" (submit)="filter()">
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Tháng</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Tháng bắt đầu"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Năm</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Năm bắt đầu"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Tháng</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Tháng kết thúc"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Năm</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Năm kết thúc"
+                    />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Tìm</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-5">
+          <div class="card shadow mb-4">
+            <div class="card-body">
+              <div style="display: block;">
+                <canvas
+                  baseChart
+                  height="400"
+                  width="400"
+                  [data]="dtdkData"
+                  [labels]="dtdkLabels"
+                  [chartType]="dtdkType"
+                  [options]="dtdkOptions"
+                  [plugins]="dtdkPlugins"
+                  [legend]="dtdkLegend"
+                >
+                </canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
