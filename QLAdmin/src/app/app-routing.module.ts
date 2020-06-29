@@ -1,129 +1,136 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 // import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { NavigationComponent } from './navigation/navigation.component';
-import { DasboardComponent } from './dasboard/dasboard.component';
-import { LoginComponent } from './Login/Login.component';
-import { AuthGuardService } from './auth-guard.service';
-import { KhoahocComponent } from './khoahoc/khoahoc.component';
-import { LophocphanComponent } from './lophocphan/lophocphan.component';
-import { LophocComponent } from './lophoc/lophoc.component';
-import { GiangvienComponent } from './giangvien/giangvien.component';
-import { PhonghocComponent } from './phonghoc/phonghoc.component';
-import { ThoikhoabieuComponent } from './thoikhoabieu/thoikhoabieu.component';
-import { DanhsachlophocComponent } from './danhsachlophoc/danhsachlophoc.component';
-import { HocvienComponent } from './hocvien/hocvien.component';
-import { QuantrivienComponent } from './quantrivien/quantrivien.component';
-import { NotFoundComponentComponent } from './NotFoundComponent/NotFoundComponent.component';
-import { ThongtincanhanComponent } from './thongtincanhan/thongtincanhan.component';
+import { RouterModule, Routes } from "@angular/router";
+import { NavigationComponent } from "./navigation/navigation.component";
+import { DasboardComponent } from "./dasboard/dasboard.component";
+import { LoginComponent } from "./Login/Login.component";
+import { AuthGuardService } from "./auth-guard.service";
+import { KhoahocComponent } from "./khoahoc/khoahoc.component";
+import { LophocphanComponent } from "./lophocphan/lophocphan.component";
+import { LophocComponent } from "./lophoc/lophoc.component";
+import { GiangvienComponent } from "./giangvien/giangvien.component";
+import { PhonghocComponent } from "./phonghoc/phonghoc.component";
+import { ThoikhoabieuComponent } from "./thoikhoabieu/thoikhoabieu.component";
+import { DanhsachlophocComponent } from "./danhsachlophoc/danhsachlophoc.component";
+import { HocvienComponent } from "./hocvien/hocvien.component";
+import { QuantrivienComponent } from "./quantrivien/quantrivien.component";
+import { NotFoundComponentComponent } from "./NotFoundComponent/NotFoundComponent.component";
+import { ThongtincanhanComponent } from "./thongtincanhan/thongtincanhan.component";
+import { ThongkeComponent } from "./thongke/thongke.component";
 const routes: Routes = [
-  { path: '', redirectTo: 'dangnhap', pathMatch: 'full' },
-  { path: 'dangnhap', component: LoginComponent },
+  { path: "", redirectTo: "dangnhap", pathMatch: "full" },
+  { path: "dangnhap", component: LoginComponent },
   {
-    path: 'admin',
+    path: "admin",
     component: NavigationComponent,
     children: [
       {
-        path: '',
-        component: DasboardComponent
+        path: "",
+        component: DasboardComponent,
       },
       {
-        path: 'khoahoc',
-        component: KhoahocComponent
+        path: "khoahoc",
+        component: KhoahocComponent,
       },
       {
-        path: 'lophocphan',
-        component: LophocphanComponent
+        path: "lophocphan",
+        component: LophocphanComponent,
       },
       {
-        path: 'lophoc',
-        component: LophocComponent
+        path: "lophoc",
+        component: LophocComponent,
       },
       {
-        path: 'giangvien',
-        component: GiangvienComponent
+        path: "giangvien",
+        component: GiangvienComponent,
       },
       {
-        path: 'phonghoc',
-        component: PhonghocComponent
+        path: "phonghoc",
+        component: PhonghocComponent,
       },
       {
-        path: 'danhsachlophoc',
-        component: DanhsachlophocComponent
+        path: "danhsachlophoc",
+        component: DanhsachlophocComponent,
       },
       {
-        path: 'hocvien',
-        component: HocvienComponent
+        path: "hocvien",
+        component: HocvienComponent,
       },
       {
-        path: 'quantrivien',
-        component: QuantrivienComponent
+        path: "quantrivien",
+        component: QuantrivienComponent,
       },
       {
-        path: 'thongtincanhan',
-        component: ThongtincanhanComponent
-      }
+        path: "thongtincanhan",
+        component: ThongtincanhanComponent,
+      },
+      {
+        path: "thongke",
+        component: ThongkeComponent,
+      },
     ],
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
-    path: 'gv',
+    path: "gv",
     component: NavigationComponent,
     children: [
       {
-        path: '', redirectTo: 'thoikhoabieu', pathMatch: 'full'
+        path: "",
+        redirectTo: "thoikhoabieu",
+        pathMatch: "full",
       },
       {
-        path: 'thoikhoabieu',
-        component: ThoikhoabieuComponent
+        path: "thoikhoabieu",
+        component: ThoikhoabieuComponent,
       },
       {
-        path: 'danhsachlophoc',
-        component: DanhsachlophocComponent
+        path: "danhsachlophoc",
+        component: DanhsachlophocComponent,
       },
       {
-        path: 'hocvien',
-        component: HocvienComponent
+        path: "hocvien",
+        component: HocvienComponent,
       },
       {
-        path: 'thongtincanhan',
-        component: ThongtincanhanComponent
-      }
+        path: "thongtincanhan",
+        component: ThongtincanhanComponent,
+      },
     ],
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
-    path: 'nv',
+    path: "nv",
     component: NavigationComponent,
     children: [
       {
-        path: '',
-        component: DasboardComponent
+        path: "",
+        component: DasboardComponent,
       },
       {
-        path: 'danhsachlophoc',
-        component: DanhsachlophocComponent
+        path: "danhsachlophoc",
+        component: DanhsachlophocComponent,
       },
       {
-        path: 'hocvien',
-        component: HocvienComponent
+        path: "hocvien",
+        component: HocvienComponent,
       },
       {
-        path: 'thongtincanhan',
-        component: ThongtincanhanComponent
-      }
+        path: "thongtincanhan",
+        component: ThongtincanhanComponent,
+      },
     ],
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
-  { path: '404', component: NotFoundComponentComponent },
-  { path: '**', redirectTo: '/404' }
+  { path: "404", component: NotFoundComponentComponent },
+  { path: "**", redirectTo: "/404" },
 ];
 @NgModule({
   // declarations: [],
   imports: [
     // CommonModule
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
