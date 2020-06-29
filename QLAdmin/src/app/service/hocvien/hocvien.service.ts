@@ -54,4 +54,25 @@ export class HocvienService {
             return res;
         }));
     }
+    getThongKeDangKiHocVien(BatDau,KetThuc)
+    {
+      return this.http.get<any>(`${environment.apiUrl}/hocvien/getthongkedangkihocvien/${BatDau}/${KetThuc}`)
+      .pipe(map(res=>{
+          return res;
+      }));
+    }
+    getThongKeHinhThucThanhToanHocVien(BatDau,KetThuc)
+    {
+      return this.http.get<any>(`${environment.apiUrl}/hocvien/getthongkehinhthucthanhtoanhocvien/${BatDau}/${KetThuc}`)
+      .pipe(map(res=>{
+          return res;
+      }));
+    }
+    getThongKeDoanhThuTheoHinhThucThanhToan(BatDau,KetThuc)
+    {
+      return this.http.get<any>(`${environment.apiUrl}/hocvien/getthongkedoanhthutheohinhthucthanhtoan/${BatDau}/${KetThuc}`)
+      .pipe(map(res=>{
+          return res;
+      }));
+    }
 } 

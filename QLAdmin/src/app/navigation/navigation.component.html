@@ -1,15 +1,9 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
   <!-- Sidebar -->
-  <ul
-    class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-    id="accordionSidebar"
-  >
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a
-      [routerLink]="['/nv/a']"
-      class="sidebar-brand d-flex align-items-center justify-content-center"
-    >
+    <a [routerLink]="['/nv/a']" class="sidebar-brand d-flex align-items-center justify-content-center">
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fas fa-laugh-wink"></i>
       </div>
@@ -21,22 +15,14 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item" *ngIf="quyen == 'admin' || quyen == 'nv'">
-      <a
-        class="nav-link"
-        [routerLink]="['']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Danh sách chăm sóc KH</span>
       </a>
     </li>
     <!-- Nav Item - thời khóa biểu -->
     <li class="nav-item" *ngIf="quyen == 'gv'">
-      <a
-        class="nav-link"
-        [routerLink]="['thoikhoabieu']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['thoikhoabieu']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Thời khóa biểu</span>
       </a>
@@ -44,22 +30,14 @@
 
     <!-- Nav Item - danh sách lớp học -->
     <li class="nav-item">
-      <a
-        class="nav-link"
-        [routerLink]="['danhsachlophoc']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['danhsachlophoc']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-table"></i>
         <span>Danh sách lớp học</span>
       </a>
     </li>
     <!-- Nav Item - học viên -->
     <li class="nav-item" *ngIf="quyen == 'admin' || quyen == 'nv'">
-      <a
-        class="nav-link"
-        [routerLink]="['hocvien']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['hocvien']" routerLinkActive="router-link-active">
         <i class="fas fa-graduation-cap"></i>
         <span>Học viên</span>
       </a>
@@ -67,82 +45,47 @@
 
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['khoahoc']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['khoahoc']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-folder"></i>
-        <span>Khóa học</span></a
-      >
+        <span>Khóa học</span></a>
     </li>
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['lophocphan']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['lophocphan']" routerLinkActive="router-link-active">
         <i class="fas fa-folder-open"></i>
-        <span>Lớp học phần</span></a
-      >
+        <span>Lớp học phần</span></a>
     </li>
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['lophoc']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['lophoc']" routerLinkActive="router-link-active">
         <i class="fa fa-clipboard"></i>
-        <span>Lớp học</span></a
-      >
+        <span>Lớp học</span></a>
     </li>
 
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['giangvien']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['giangvien']" routerLinkActive="router-link-active">
         <i class="fas fa-book-reader"></i>
-        <span>Giảng viên</span></a
-      >
+        <span>Giảng viên</span></a>
     </li>
 
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['phonghoc']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['phonghoc']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-folder"></i>
-        <span>Phòng học</span></a
-      >
+        <span>Phòng học</span></a>
     </li>
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['quantrivien']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['quantrivien']" routerLinkActive="router-link-active">
         <i class="fas fa-chalkboard-teacher"></i>
-        <span>Quản trị viên</span></a
-      >
+        <span>Quản trị viên</span></a>
     </li>
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
-      <a
-        class="nav-link"
-        [routerLink]="['thongke']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="nav-link" [routerLink]="['thongke']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-chart-area"></i>
-        <span>Thống kê</span></a
-      >
+        <span>Thống kê</span></a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
@@ -157,14 +100,9 @@
   <!-- Content Wrapper -->
   <div id="content-wrapper" class="d-flex flex-column">
     <!-- Topbar -->
-    <nav
-      class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-    >
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <!-- Sidebar Toggle (Topbar) -->
-      <button
-        id="sidebarToggleTop"
-        class="btn btn-link d-md-none rounded-circle mr-3"
-      >
+      <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
       </button>
 
@@ -172,31 +110,16 @@
       <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="searchDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-search fa-fw"></i>
           </a>
           <!-- Dropdown - Messages -->
-          <div
-            class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-            aria-labelledby="searchDropdown"
-          >
+          <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
             <form class="form-inline mr-auto w-100 navbar-search">
               <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control bg-light border-0 small"
-                  placeholder="Search for..."
-                  aria-label="Search"
-                  aria-describedby="basic-addon2"
-                />
+                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                  aria-label="Search" aria-describedby="basic-addon2" />
                 <div class="input-group-append">
                   <button class="btn btn-primary" type="button">
                     <i class="fas fa-search fa-sm"></i>
@@ -208,41 +131,20 @@
         </li>
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="userDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{
               TenTaiKhoan
             }}</span>
-            <img
-              class="img-profile rounded-circle"
-              src="https://drive.google.com/uc?id={{ HinhAnh }}"
-            />
+            <img class="img-profile rounded-circle" src="https://drive.google.com/uc?id={{ HinhAnh }}" />
           </a>
           <!-- Dropdown - User Information -->
-          <div
-            class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-            aria-labelledby="userDropdown"
-          >
-            <a
-              class="dropdown-item"
-              [routerLink]="['thongtincanhan']"
-              routerLinkActive="router-link-active"
-            >
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" [routerLink]="['thongtincanhan']" routerLinkActive="router-link-active">
               <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
               Thông tin cá nhân
             </a>
-            <a
-              class="dropdown-item"
-              data-toggle="modal"
-              data-target="#logoutModal"
-            >
+            <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
               <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Đăng xuất
             </a>
@@ -263,26 +165,15 @@
 </a>
 
 <!-- Logout Modal-->
-<div
-  class="modal fade"
-  id="logoutModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">
           Bạn có muốn đăng xuất?
         </h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -291,9 +182,7 @@
         <button class="btn btn-secondary" type="button" data-dismiss="modal">
           Hủy
         </button>
-        <a class="btn btn-primary" (click)="logout()" href="/dangnhap"
-          >Đăng xuất</a
-        >
+        <a class="btn btn-primary" (click)="logout()" href="/dangnhap">Đăng xuất</a>
       </div>
     </div>
   </div>
