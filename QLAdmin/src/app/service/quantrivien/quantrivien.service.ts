@@ -35,6 +35,12 @@ export class QuantrivienService {
         return res;
       }));
   }
+  suaTrangThaiQuanTri(IDQuanTri, TrangThai) {
+    return this.http.put<any>(`${environment.apiUrl}/quantri/suatrangthai`, { IDQuanTri,TrangThai })
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   xoaQuanTriVien(IDQuanTri) {
     return this.http.delete<any>(`${environment.apiUrl}/quantri/xoa/${IDQuanTri}`)
       .pipe(map(res => {

@@ -20,6 +20,7 @@ export class GiangvienComponent implements OnInit {
 	fileSelected: File = null;
 	IDGiangVien: any;
 	parentRouter: any;
+	trangthaikichhoat: any = -1;
 	constructor(
 		private checkrouteService: CheckrouteService,
 		private router: Router,
@@ -66,14 +67,20 @@ export class GiangvienComponent implements OnInit {
 	}
 	get f() { return this.giangvienForm.controls; }
 	getListGiangVien() {
-		this.giangvienService.getListGiangVien()
+		this.giangvienService.getListAllGiangVien()
 			.pipe()
 			.subscribe(res => {
 				if (res.result.error === true) {
 					alert(res.result.message);
 					return;
 				}
-				this.listGiangVien = res.result.data;
+				if (this.trangthaikichhoat == -1) {
+					this.listGiangVien = res.result.data;
+				}
+				else {
+					let TrangThai = this.trangthaikichhoat;
+					this.listGiangVien = res.result.data.filter(gv => gv.TrangThai == TrangThai);
+				}
 			});
 	}
 	them() {
@@ -171,7 +178,21 @@ export class GiangvienComponent implements OnInit {
 		document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
 		this.fileSelected = null;
 	}
-
+	changeTrangThai(event) {
+		var target = event.target || event.srcElement || event.currentTarget;
+		var idAttr = target.attributes.id.value.split("-")[1];
+		this.getGiangVienByID(idAttr);
+		let TrangThai = target.checked ? 1 : 0;
+		this.giangvienService.suaTrangThaiGiangVien(+idAttr, TrangThai)
+		    .pipe()
+		    .subscribe(res => {
+		        //console.log(res);
+		    });
+	}
+	TrangThaiKichHoat(event) {
+		this.trangthaikichhoat = event.target.value;
+		this.getListGiangVien();
+	}
 	//load script
 	private loadScripts() {
 		// You can load multiple scripts by just providing the key as argument into load method of the service

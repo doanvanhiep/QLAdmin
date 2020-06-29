@@ -28,6 +28,12 @@ export class GiangvienService {
         return res;
       }));
   }
+  getListAllGiangVien() {
+    return this.http.get<any>(`${environment.apiUrl}/giangvien/listall`)
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   themGiangVien(HoTen, DiaChi, SoDienThoai, Email, MoTa, HinhAnh, GhiChu) {
     return this.http.post<any>(`${environment.apiUrl}/giangvien/them`, { HoTen, DiaChi, SoDienThoai, Email, MoTa, HinhAnh, GhiChu })
       .pipe(map(res => {
@@ -36,6 +42,13 @@ export class GiangvienService {
   }
   suaGiangVien(IDGiangVien, HoTen, DiaChi, SoDienThoai, Email, MoTa, HinhAnh, GhiChu) {
     return this.http.put<any>(`${environment.apiUrl}/giangvien/sua/${IDGiangVien}`, { HoTen, DiaChi, SoDienThoai, Email, MoTa, HinhAnh, GhiChu })
+      .pipe(map(res => {
+        return res;
+      }));
+  }
+  suaTrangThaiGiangVien(IDGiangVien,TrangThai)
+  {
+    return this.http.put<any>(`${environment.apiUrl}/giangvien/suatrangthai`, { IDGiangVien,TrangThai })
       .pipe(map(res => {
         return res;
       }));

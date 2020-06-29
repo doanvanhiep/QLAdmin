@@ -6,9 +6,25 @@
       <!-- Page Heading -->
       <h1 class="h3 mb-2 text-gray-800">Danh sách giảng viên
       </h1>
-      <pre>
-        coi lại status
-      </pre>
+      <div class="row">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="-1" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="1" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="0" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+          </div>
+        </div>
+      </div>
       <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#giangvienModal">Thêm
         giảng viên</button>
       <!-- DataTales Example -->
@@ -52,11 +68,12 @@
                   <td id="{{gv ? gv.IDGiangVien:-1}}"><img height="100px" width="100px"
                       src="https://drive.google.com/uc?id={{gv ? gv.HinhAnh:''}}">
                   <td id="{{gv ? gv.IDGiangVien:-1}}">{{gv ? gv.GhiChu:""}}</td>
-                  <td align="center">
+                  <td align="center" id="{{gv ? gv.IDGiangVien:-1}}">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="{{gv ? gv.IDGiangVien:-1}}"
-                        checked="true">
-                      <label class="custom-control-label" for="{{gv ? gv.IDGiangVien:-1}}"></label>
+                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+                        id="tt-{{gv ? gv.IDGiangVien:-1}}"
+                        [checked]="gv ? (gv.TrangThai==1?true:false):false">
+                      <label class="custom-control-label" for="tt-{{gv ? gv.IDGiangVien:-1}}"></label>
                     </div>
                   </td>
                   <td align="center" id="{{gv ? gv.IDGiangVien:-1}}">

@@ -18,6 +18,7 @@ export class PhonghocComponent implements OnInit {
   phonghocByID: any;
   IDPhongHoc: any;
   parentRouter: any;
+  trangthaikichhoat: any = -1;
   constructor(
     private checkrouteService: CheckrouteService,
     private router: Router,
@@ -60,7 +61,13 @@ export class PhonghocComponent implements OnInit {
           alert(res.result.message);
           return;
         }
-        this.listPhongHoc = res.result.data;
+        if (this.trangthaikichhoat == -1) {
+					this.listPhongHoc = res.result.data;
+				}
+				else {
+					let TrangThai = this.trangthaikichhoat;
+					this.listPhongHoc = res.result.data.filter(qtv => qtv.TrangThai == TrangThai);
+				}
       });
   }
   them() {
@@ -117,6 +124,21 @@ export class PhonghocComponent implements OnInit {
     var target = event.target || event.srcElement || event.currentTarget;
     var idAttr = target.attributes.id.value;
     this.IDPhongHoc = +idAttr;
+  }
+  changeTrangThai(event) {
+    var target = event.target || event.srcElement || event.currentTarget;
+    var idAttr = target.attributes.id.value.split("-")[1];
+    this.getPhongHocByID(idAttr);
+    let TrangThai = target.checked ? 1 : 0;
+    this.phonghocService.suaTrangThai(+idAttr, TrangThai)
+      .pipe()
+      .subscribe(res => {
+        //console.log(res);
+      });
+  }
+  TrangThaiKichHoat(event) {
+    this.trangthaikichhoat = event.target.value;
+    this.getListPhongHoc();
   }
   //load script
   private loadScripts() {

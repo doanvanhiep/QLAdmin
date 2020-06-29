@@ -28,6 +28,13 @@ export class PhonghocService {
         return res;
       }));
   }
+  suaTrangThai(IDPhongHoc,TrangThai)
+  {
+    return this.http.put<any>(`${environment.apiUrl}/phonghoc/suatrangthai`,{IDPhongHoc,TrangThai})
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   xoaPhongHoc(IDPhongHoc) {
     return this.http.delete<any>(`${environment.apiUrl}/phonghoc/xoa/${IDPhongHoc}`)
       .pipe(map(res => {

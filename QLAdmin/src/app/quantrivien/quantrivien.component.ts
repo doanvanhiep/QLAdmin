@@ -20,6 +20,7 @@ export class QuantrivienComponent implements OnInit {
   fileSelected: File = null;
   IDQuanTriVien: any;
   parentRouter: any;
+  trangthaikichhoat: any = -1;
   constructor(
     private checkrouteService: CheckrouteService,
     private router: Router,
@@ -70,7 +71,13 @@ export class QuantrivienComponent implements OnInit {
           alert(res.result.message);
           return;
         }
-        this.listQuanTriVien = res.result.data;
+        if (this.trangthaikichhoat == -1) {
+					this.listQuanTriVien = res.result.data;
+				}
+				else {
+					let TrangThai = this.trangthaikichhoat;
+					this.listQuanTriVien = res.result.data.filter(qtv => qtv.TrangThai == TrangThai);
+				}
       });
   }
   them() {
@@ -158,6 +165,21 @@ export class QuantrivienComponent implements OnInit {
   }
   getQuanTriVienByID(idQuanTriVien) {
     this.quantrivienByID = this.listQuanTriVien.filter(item => item.IDQuanTri === +idQuanTriVien)[0];
+  }
+  changeTrangThai(event) {
+    var target = event.target || event.srcElement || event.currentTarget;
+    var idAttr = target.attributes.id.value.split("-")[1];
+    this.getQuanTriVienByID(idAttr);
+    let TrangThai = target.checked ? 1 : 0;
+    this.quantrivienService.suaTrangThaiQuanTri(+idAttr, TrangThai)
+      .pipe()
+      .subscribe(res => {
+        //console.log(res);
+      });
+  }
+  TrangThaiKichHoat(event) {
+    this.trangthaikichhoat = event.target.value;
+    this.getListQuanTriVien();
   }
   onSelectedFile(event) {
     this.fileSelected = <File>event.target.files[0];

@@ -1,124 +1,142 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Danh sách phòng học
-            </h1>
-            <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#phonghocModal">Thêm
-                phòng học</button>
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Tên phòng học</th>
-                                    <th>Số chỗ ngồi</th>
-                                    <th>Ghi chú</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Tên phòng học</th>
-                                    <th>Số chỗ ngồi</th>
-                                    <th>Ghi chú</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr *ngFor="let ph of listPhongHoc">
-                                    <td>{{ph ? ph.TenPhong:""}}</td>
-                                    <td>{{ph ? ph.SoChoNgoi:""}}</td>
-                                    <td>{{ph ? ph.GhiChu:""}}</td>
-                                    <td align="center">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                name="{{ph ? ph.IDPhongHoc:-1}}" checked="true">
-                                            <label class="custom-control-label" for="{{ph ? ph.IDPhongHoc:-1}}"></label>
-                                        </div>
-                                    </td>
-                                    <td align="center" id="{{ph ? ph.IDPhongHoc:-1}}">
-                                        <div>
-                                            <a (click)="suaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}"
-                                                data-toggle="modal" data-target="#phonghocModal"
-                                                class="fas fa-edit marginicon"></a>
-                                            <a (click)="xoaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}"
-                                                data-toggle="modal" data-target="#xoaphonghocModal"
-                                                class="fas fa-trash-alt marginicon"></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Danh sách phòng học
+      </h1>
+      <div class="row">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="-1" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="1" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="0" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+          </div>
         </div>
-        <!-- /.container-fluid -->
+      </div>
+      <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#phonghocModal">Thêm
+        phòng học</button>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Tên phòng học</th>
+                  <th>Số chỗ ngồi</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Tên phòng học</th>
+                  <th>Số chỗ ngồi</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr *ngFor="let ph of listPhongHoc">
+                  <td>{{ph ? ph.TenPhong:""}}</td>
+                  <td>{{ph ? ph.SoChoNgoi:""}}</td>
+                  <td>{{ph ? ph.GhiChu:""}}</td>
+                  <td align="center" id="{{ph ? ph.IDPhongHoc:-1}}">
+                    <div class="custom-control custom-checkbox">
+                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+                        id="tt-{{ph ? ph.IDPhongHoc:-1}}" [checked]="ph ? (ph.TrangThai==1?true:false):false">
+                      <label class="custom-control-label" for="tt-{{ph ? ph.IDPhongHoc:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center" id="{{ph ? ph.IDPhongHoc:-1}}">
+                    <div>
+                      <a (click)="suaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}" data-toggle="modal"
+                        data-target="#phonghocModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaPhongHoc($event)" id="{{ph ? ph.IDPhongHoc:-1}}" data-toggle="modal"
+                        data-target="#xoaphonghocModal" class="fas fa-trash-alt marginicon"></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- End of Main Content -->
+    <!-- /.container-fluid -->
+  </div>
+  <!-- End of Main Content -->
 </div>
 <!-- them lớp học phần Modal -->
 <div class="modal fade" id="phonghocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Phòng học</h5>
-                <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="phonghocForm">
-                    <div class="form-group">
-                        <label for="txt-tenphong-name">Tên phòng học: </label>
-                        <input type="text" class="form-control" name="txt-tenphong-name" formControlName="TenPhong">
-                    </div>
-                    <div class="form-group">
-                        <label for="txt-sochongoi-name">Số chỗ ngồi: </label>
-                        <input type="number" class="form-control" name="txt-sochongoi-name" formControlName="SoChoNgoi">
-                    </div>
-                    <div class="form-group">
-                        <label for="txt-ghichu-name">Ghi chú: </label>
-                        <input type="text" class="form-control" name="txt-ghichu-name" formControlName="GhiChu">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
-                <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
-            </div>
-        </div>
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Phòng học</h5>
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="phonghocForm">
+          <div class="form-group">
+            <label for="txt-tenphong-name">Tên phòng học: </label>
+            <input type="text" class="form-control" name="txt-tenphong-name" formControlName="TenPhong">
+          </div>
+          <div class="form-group">
+            <label for="txt-sochongoi-name">Số chỗ ngồi: </label>
+            <input type="number" class="form-control" name="txt-sochongoi-name" formControlName="SoChoNgoi">
+          </div>
+          <div class="form-group">
+            <label for="txt-ghichu-name">Ghi chú: </label>
+            <input type="text" class="form-control" name="txt-ghichu-name" formControlName="GhiChu">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- xóa giang vien -->
 <div class="modal fade" id="xoaphonghocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Xóa phòng học</h5>
-                <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Bạn có thật sự muốn xóa phòng học này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến phòng học này sẽ bị xóa
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                <button class="btn btn-danger" (click)="xoa()">Xóa</button>
-            </div>
-        </div>
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa phòng học</h5>
+        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có thật sự muốn xóa phòng học này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến phòng học này sẽ bị
+          xóa
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-danger" (click)="xoa()">Xóa</button>
+      </div>
     </div>
+  </div>
 </div>
