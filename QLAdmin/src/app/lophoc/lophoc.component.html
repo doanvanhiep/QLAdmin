@@ -36,9 +36,6 @@
           </div>
         </div>
       </div>
-      <pre>
-          1. Chưa check điều kiện trùng lớp học khi sửa ca học
-        </pre>
       <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#lophocModal">Thêm
         lớp học</button>
       <!-- DataTales Example -->
@@ -197,7 +194,8 @@
                   </div>
                   <div class="form-group" class="col-1" >
                     <i *ngIf="btnedit===false" class="fas fa-trash-alt" style="margin-top: 42px;" (click)="removeCaHoc(i)"></i>
-                    <i class="fas fa-list" style="margin-top: 42px;margin-left: 5px;" (click)="recommendCaHoc(i)" data-toggle="modal" data-target="#recommendModal"></i>
+                    <i class="fas fa-list" style="margin-top: 42px;margin-left: 5px;" (click)="recommendCaHoc(i)" ></i>
+                    <i #btnShowRecommend data-toggle="modal" data-target="#recommendModal"></i>
                   </div>
                 </div>
               </div>

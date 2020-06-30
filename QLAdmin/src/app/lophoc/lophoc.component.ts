@@ -17,6 +17,7 @@ import { CheckrouteService } from '../service/checkroute/checkroute.service';
 export class LophocComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
+    @ViewChild('btnShowRecommend') btnShowRecommend;
     selectedLopHocPhan: any = -1;
     listLopHocPhan: any = [];
     btnedit: any = false;
@@ -36,10 +37,10 @@ export class LophocComponent implements OnInit {
     IDLopHoc: any;
     trangthaikichhoat: any = -1;
     parentRouter: any;
-    caRecommend:any;
-    thuRecommend:any;
-    bdRecommend:any;
-    ktRecommend:any;
+    caRecommend: any;
+    thuRecommend: any;
+    bdRecommend: any;
+    ktRecommend: any;
     constructor(
         private checkrouteService: CheckrouteService,
         private phonghocService: PhonghocService,
@@ -142,17 +143,41 @@ export class LophocComponent implements OnInit {
         }
     }
     sua() {
-        this.lophocservice.suaLopHoc(this.lophocByID.IDLopHoc, JSON.stringify(this.lophocForm.value, null, 4))
+        for (let i = 0; i < this.f.SoBuoiHoc.value; i++) {
+            var tempCaHoc = this.t.at(i);
+            if (this.isSuaTrungCaHocVaThu(tempCaHoc)) {
+                return;
+            }
+        }
+        this.lophocservice.checkArrayPHGV(this.t.value, this.f.NgayKhaiGiang.value, this.f.NgayBeGiang.value)
             .pipe()
             .subscribe(res => {
-                if (res.TrangThai.error === true) {
-                    alert(res.TrangThai.message);
-                    return;
+                if (!res.error) {
+                    this.lophocservice.suaLopHoc(this.lophocByID.IDLopHoc, JSON.stringify(this.lophocForm.value, null, 4))
+                        .pipe()
+                        .subscribe(res => {
+                            if (res.TrangThai.error === true) {
+                                alert(res.TrangThai.message);
+                                return;
+                            }
+                            alert("Sửa thành công");
+                            this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
+                            this.closebutton.nativeElement.click();
+                        });
+                } else {
+                    let loi = "";
+                    if (res.result.statusPH) {
+                        loi = "phòng học";
+                    }
+                    if (res.result.statusGV) {
+                        if(loi==="")
+                        loi = "giảng viên";
+                        else
+                        loi+=" và giảng viên";
+                    }
+                    alert("Buổi học vào: " + res.lh.thu + " " + res.lh.ca + " đã bị trùng "+loi);
                 }
-                alert("Sửa thành công");
-                this.getListLopHocByIDLopHocPhan(this.IDLopHocPhan);
-                this.closebutton.nativeElement.click();
-            });
+            })
     }
     suaLopHoc(event) {
         var target = event.target || event.srcElement || event.currentTarget;
@@ -217,37 +242,42 @@ export class LophocComponent implements OnInit {
             this.t.at(index - 1).enable();
         }
     }
-    getRecommendGiangVienPhongHoc(BatDau,KetThuc,CaHoc,Thu)
-    {
-        this.lophocservice.PhongHocGiangVien(BatDau,KetThuc,CaHoc,Thu)
-        .pipe()
-        .subscribe(res=>{
-            if (res.result.error === true) {
-                alert(res.TrangThai.message);
-                return;
-            }
-            this.rephonghocs=res.result.ListPhongHoc;
-            this.regiangviens=res.result.ListGiangVien;
-            console.log(this.rephonghocs);
-            console.log(this.regiangviens);
-        })
+    getRecommendGiangVienPhongHoc(BatDau, KetThuc, CaHoc, Thu) {
+        this.lophocservice.PhongHocGiangVien(BatDau, KetThuc, CaHoc, Thu)
+            .pipe()
+            .subscribe(res => {
+                if (res.result.error === true) {
+                    alert(res.TrangThai.message);
+                    return;
+                }
+                this.rephonghocs = res.result.ListPhongHoc;
+                this.regiangviens = res.result.ListGiangVien;
+            })
     }
     recommendCaHoc(index) {
         var tempCaHoc = this.t.at(index);
         if (!this.isFullCaHocThu(tempCaHoc)) {
             return false;
         }
-        if (this.isTrungCaHocVaThu(tempCaHoc)) {
-            return false;
+        if (!this.btnedit) {
+            if (this.isTrungCaHocVaThu(tempCaHoc)) {
+                return false;
+            }
+        }
+        else {
+            if (this.isSuaTrungCaHocVaThu(tempCaHoc)) {
+                return false;
+            }
         }
         if (!this.isFullNgayKhaiGiangNgayBeGiang()) {
             return false;
         }
-        this.bdRecommend=this.f.NgayKhaiGiang.value;
-        this.ktRecommend=this.f.NgayBeGiang.value;
-        this.thuRecommend=tempCaHoc.value.thu;
-        this.caRecommend=tempCaHoc.value.ca;
-        this.getRecommendGiangVienPhongHoc(this.bdRecommend,this.ktRecommend,this.caRecommend,this.thuRecommend)
+        this.bdRecommend = this.f.NgayKhaiGiang.value;
+        this.ktRecommend = this.f.NgayBeGiang.value;
+        this.thuRecommend = tempCaHoc.value.thu;
+        this.caRecommend = tempCaHoc.value.ca;
+        this.getRecommendGiangVienPhongHoc(this.bdRecommend, this.ktRecommend, this.caRecommend, this.thuRecommend)
+        this.btnShowRecommend.nativeElement.click();
         return;
     }
     isFullThongTinCaHoc(FormAt) {
@@ -268,6 +298,16 @@ export class LophocComponent implements OnInit {
         for (let i = 0; i < this.f.SoBuoiHoc.value - 1; i++) {
             var tempCaHoc = this.t.at(i)
             if (tempCaHoc.value.ca == FormAt.value.ca && tempCaHoc.value.thu == FormAt.value.thu) {
+                alert("Vui lòng kiểm tra lại. Một lớp không thể có 2 ca học trùng nhau!");
+                return true;
+            }
+        }
+        return false;
+    }
+    isSuaTrungCaHocVaThu(FormAt) {
+        for (let i = 0; i < this.f.SoBuoiHoc.value; i++) {
+            var tempCaHoc = this.t.at(i)
+            if (tempCaHoc.value.idTTLH != FormAt.value.idTTLH && tempCaHoc.value.ca == FormAt.value.ca && tempCaHoc.value.thu == FormAt.value.thu) {
                 alert("Vui lòng kiểm tra lại. Một lớp không thể có 2 ca học trùng nhau!");
                 return true;
             }

@@ -8,6 +8,13 @@ import { map } from 'rxjs/operators';
 export class LophocService {
 
   constructor(private http: HttpClient) { }
+  checkArrayPHGV(arrPHGV,BatDau,KetThuc)
+  {
+    return this.http.post<any>(`${environment.apiUrl}/lophoc/checkarrayphgv/`,{arrPHGV,BatDau,KetThuc})
+      .pipe(map(res => {
+        return res;
+      }));
+  }
   checkPhongHocGiangVien(BatDau, KetThuc, IDPhongHoc, IDGiangVien, CaHoc, Thu) {
     return this.http.post<any>(`${environment.apiUrl}/lophoc/checkphonghocgiangvien/`,{BatDau, KetThuc, IDPhongHoc, IDGiangVien, CaHoc, Thu})
       .pipe(map(res => {
