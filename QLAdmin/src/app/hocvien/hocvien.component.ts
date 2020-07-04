@@ -134,10 +134,13 @@ export class HocvienComponent implements OnInit {
     }
     changeIDKhoaHoc(IDKhoaHoc) {
         this.HocPhiLopHoc = "";
+        this.f.TenLopHoc.setValue("");
+        this.f.LopHoc.setValue("");
         this.listLopHoc = null;
         this.getListLopHocPhan(IDKhoaHoc);
     }
     changeIDLopHocPhan(IDLopHocPhan) {
+        this.f.LopHoc.setValue("");
         this.HocPhiLopHoc = this.listLopHocPhan.filter(lhp => lhp.IDLopHocPhan == IDLopHocPhan)[0].HocPhi;
         this.getListLopHoc(IDLopHocPhan);
     }
@@ -173,7 +176,7 @@ export class HocvienComponent implements OnInit {
             .pipe()
             .subscribe(res => {
                 if (res.result.error === true) {
-                    alert(res.result.message);
+                    alert(res.result.message); 
                     return;
                 }
                 let ttkh = this.trangthaikichhoat;
@@ -329,6 +332,10 @@ export class HocvienComponent implements OnInit {
     }
     get f() { return this.hocvienForm.controls; }
     them() {
+        if(!this.checkForm())
+        {
+            return;
+        }
         this.hocvienService.themHocVien(this.f.LopHoc.value, this.f.TenHocVien.value,
             this.f.Email.value, this.f.SoDienThoai.value, this.HocPhiLopHoc,
             this.loginService.getTenTaiKhoan())
@@ -347,6 +354,10 @@ export class HocvienComponent implements OnInit {
         this.closebutton.nativeElement.click();
     }
     sua() {
+        if(!this.checkForm())
+        {
+            return;
+        }
         this.hocvienService.suaHocVien(+this.idHocVien, +this.f.LopHoc.value, this.f.TenHocVien.value
             , this.f.SoDienThoai.value, this.f.Email.value, +this.idLopHocTemp)
             .pipe()
@@ -362,6 +373,49 @@ export class HocvienComponent implements OnInit {
                     this.getListHocVienByIDLopHoc();
             });
         this.closebutton.nativeElement.click();
+    }
+    checkForm()
+    {
+        if(this.f.TenHocVien.value=="")
+		{
+			alert("Vui lòng nhập tên của học viên")
+			return false;
+		}
+		if(this.f.SoDienThoai.value=="")
+		{
+			alert("Vui lòng nhập số điện thoại")
+			return false;
+		}
+        if(!this.f.SoDienThoai.value.match(/(0)+([0-9]{9})\b/g))
+        {
+            alert("Vui lòng nhập số điện thoại đúng định dạng");
+            return false;
+        }
+		if(this.f.Email.value=="")
+		{
+			alert("Vui lòng nhập email")
+			return false;
+		}
+		if (!this.f.Email.value.match(/[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?\.)+[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?/)) {
+            alert("Vui lòng nhập mail đúng định dạng");
+            return false;
+        }
+        if(this.f.KhoaHoc.value=="")
+        {
+            alert("Vui lòng chọn khóa học");
+            return false;
+        }
+        if(this.f.TenLopHoc.value=="")
+        {
+            alert("Vui lòng chọn tên lớp học");
+            return false;
+        }
+        if(this.f.LopHoc.value=="")
+        {
+            alert("Vui lòng chọn lớp học");
+            return false;
+        }
+		return true;
     }
     xoa() {
         this.hocvienService.xoaHocVien(this.idHocVien, this.idLopHocTemp)

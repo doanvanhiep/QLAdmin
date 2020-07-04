@@ -54,6 +54,10 @@ export class KhoahocComponent implements OnInit {
     }
     get f() { return this.khoahocForm.controls; }
     them() {
+        if(!this.checkForm())
+        {
+            return;
+        }
         this.khoahocService.themKhoaHoc(this.f.TenKhoaHoc.value, this.f.GhiChu.value)
             .pipe()
             .subscribe(res => {
@@ -67,6 +71,10 @@ export class KhoahocComponent implements OnInit {
         this.closebutton.nativeElement.click();
     }
     sua() {
+        if(!this.checkForm())
+        {
+            return;
+        }
         this.khoahocService.suaKhoaHoc(this.khoahocByID.IDKhoaHoc, this.f.TenKhoaHoc.value, this.f.GhiChu.value)
             .pipe()
             .subscribe(res => {
@@ -78,6 +86,15 @@ export class KhoahocComponent implements OnInit {
                 this.getListKhoaHoc();
             })
         this.closebutton.nativeElement.click();
+    }
+    checkForm()
+    {
+        if(this.f.TenKhoaHoc.value=="")
+        {
+            alert("Vui lòng nhập tên khóa học");
+            return false;
+        }
+        return true;
     }
     xoa() {
         this.khoahocService.xoaKhoaHoc(this.IDKhoaHoc)

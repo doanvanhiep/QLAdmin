@@ -15,7 +15,7 @@ import { CheckrouteService } from '../service/checkroute/checkroute.service';
 export class LophocphanComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
-    idFile:any=-1;
+    idFile: any = -1;
     trangthaikichhoat: any = -1;
     khoahoc: any;
     btnedit: boolean = true;
@@ -101,6 +101,9 @@ export class LophocphanComponent implements OnInit {
     }
     get f() { return this.lophocphanForm.controls; }
     them() {
+        if (!this.checkForm() || !this.checkFileHinh()) {
+            return;
+        }
         this.uploadimage.uploadimage(this.fileSelected)
             .pipe()
             .subscribe(res => {
@@ -121,6 +124,9 @@ export class LophocphanComponent implements OnInit {
         this.closebutton.nativeElement.click();
     }
     sua() {
+        if (!this.checkForm()) {
+            return;
+        }
         var idImg = document.getElementById('nameoffile').textContent;
         if (idImg === this.lophocphanByID.HinhAnh) {
             this.lophocphanservice.suaLopHocPhan(
@@ -158,6 +164,36 @@ export class LophocphanComponent implements OnInit {
                     this.closebutton.nativeElement.click();
                 });
         }
+    }
+    checkForm() {
+        if (this.f.MaLopHocPhan.value == "") {
+            alert("Vui lòng nhập mã lớp học phần")
+            return false;
+        }
+        if (this.f.TenLopHocPhan.value == "") {
+            alert("Vui lòng nhập tên lớp học phần")
+            return false;
+        }
+        if (this.f.SoBuoi.value == "" || this.f.SoBuoi.value == null) {
+            alert("Vui lòng nhập số buổi")
+            return false;
+        }
+        if (this.f.HocPhi.value == "" || this.f.HocPhi.value == null) {
+            alert("Vui lòng nhập học phí")
+            return false;
+        }
+        if (this.f.SiSo.value == "" || this.f.SiSo.value == null) {
+            alert("Vui lòng nhập sỉ số")
+            return false;
+        }
+        return true;
+    }
+    checkFileHinh() {
+        if (this.fileSelected == null) {
+            alert("Vui lòng chọn hình ảnh")
+            return false;
+        }
+        return true;
     }
     xoa() {
         this.lophocphanservice.xoaLopHocPhan(this.IDLopHocPhan)

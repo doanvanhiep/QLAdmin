@@ -143,6 +143,10 @@ export class LophocComponent implements OnInit {
         }
     }
     sua() {
+        if(!this.isFullNgayKhaiGiangNgayBeGiang())
+        {
+            return;
+        }
         for (let i = 0; i < this.f.SoBuoiHoc.value; i++) {
             var tempCaHoc = this.t.at(i);
             if (this.isSuaTrungCaHocVaThu(tempCaHoc)) {

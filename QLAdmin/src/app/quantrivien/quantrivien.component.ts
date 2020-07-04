@@ -72,15 +72,18 @@ export class QuantrivienComponent implements OnInit {
           return;
         }
         if (this.trangthaikichhoat == -1) {
-					this.listQuanTriVien = res.result.data;
-				}
-				else {
-					let TrangThai = this.trangthaikichhoat;
-					this.listQuanTriVien = res.result.data.filter(qtv => qtv.TrangThai == TrangThai);
-				}
+          this.listQuanTriVien = res.result.data;
+        }
+        else {
+          let TrangThai = this.trangthaikichhoat;
+          this.listQuanTriVien = res.result.data.filter(qtv => qtv.TrangThai == TrangThai);
+        }
       });
   }
   them() {
+    if (!this.checkForm() || !this.checkFileHinh()) {
+      return;
+    }
     this.uploadimage.uploadimage(this.fileSelected)
       .pipe()
       .subscribe(res => {
@@ -101,6 +104,9 @@ export class QuantrivienComponent implements OnInit {
       });
   }
   sua() {
+    if (!this.checkForm()) {
+      return;
+    }
     var idImg = document.getElementById('nameoffile').textContent;
     if (idImg === this.quantrivienByID.HinhAnh) {
       this.quantrivienService.suaQuanTriVien(this.quantrivienByID.IDQuanTri,
@@ -138,6 +144,36 @@ export class QuantrivienComponent implements OnInit {
             });
         });
     }
+  }
+  checkForm() {
+    if (this.f.HoTen.value == "") {
+      alert("Vui lòng nhập họ và tên của giảng viên")
+      return false;
+    }
+    if (this.f.SoDienThoai.value == "") {
+      alert("Vui lòng nhập số điện thoại")
+      return false;
+    }
+    if (!this.f.SoDienThoai.value.match(/(0)+([0-9]{9})\b/g)) {
+      alert("Vui lòng nhập số điện thoại đúng định dạng");
+      return false;
+    }
+    if (this.f.Email.value == "") {
+      alert("Vui lòng nhập email")
+      return false;
+    }
+    if (!this.f.Email.value.match(/[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?\.)+[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?/)) {
+      alert("Vui lòng nhập mail đúng định dạng");
+      return false;
+    }
+    return true;
+  }
+  checkFileHinh() {
+    if (this.fileSelected == null) {
+      alert("Vui lòng chọn hình ảnh")
+      return false;
+    }
+    return true;
   }
   xoa() {
     this.quantrivienService.xoaQuanTriVien(this.IDQuanTriVien)

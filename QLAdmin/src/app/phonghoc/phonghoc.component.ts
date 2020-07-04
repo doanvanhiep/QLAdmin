@@ -71,6 +71,10 @@ export class PhonghocComponent implements OnInit {
       });
   }
   them() {
+    if(!this.checkForm())
+    {
+      return;
+    }
     this.phonghocService.themPhongHoc(
       this.f.TenPhong.value, this.f.SoChoNgoi.value, this.f.GhiChu.value)
       .pipe()
@@ -85,6 +89,10 @@ export class PhonghocComponent implements OnInit {
     this.closebutton.nativeElement.click();
   }
   sua() {
+    if(!this.checkForm())
+    {
+      return;
+    }
     this.phonghocService.suaPhongHoc(this.phonghocByID.IDPhongHoc,
       this.f.TenPhong.value, this.f.SoChoNgoi.value, this.f.GhiChu.value)
       .pipe()
@@ -97,6 +105,20 @@ export class PhonghocComponent implements OnInit {
         this.getListPhongHoc();
       });
     this.closebutton.nativeElement.click();
+  }
+  checkForm()
+  {
+    if(this.f.TenPhong.value=="")
+    {
+      alert("Vui lòng nhập tên phòng học");
+      return false;
+    }
+    if(this.f.SoChoNgoi.value=="" || this.f.SoChoNgoi.value==null)
+    {
+      alert("Vui lòng nhập số chỗ ngồi");
+      return false;
+    }
+    return true;
   }
   xoa() {
     this.phonghocService.xoaPhongHoc(this.IDPhongHoc)
