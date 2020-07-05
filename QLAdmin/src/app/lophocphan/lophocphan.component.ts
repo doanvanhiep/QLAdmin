@@ -7,6 +7,7 @@ import { LophocphanService } from '../service/lophocphan/lophocphan.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { UploadimageService } from '../service/upload/uploadimage.service';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
     selector: 'app-lophocphan',
     templateUrl: './lophocphan.component.html',
@@ -29,6 +30,7 @@ export class LophocphanComponent implements OnInit {
     listKhoaHoc: any = [];
     parentRouter: any;
     constructor(
+        private spinner: NgxSpinnerService,
         private checkrouteService: CheckrouteService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private share: SharedataService,
@@ -104,6 +106,7 @@ export class LophocphanComponent implements OnInit {
         if (!this.checkForm() || !this.checkFileHinh()) {
             return;
         }
+        this.spinner.show();
         this.uploadimage.uploadimage(this.fileSelected)
             .pipe()
             .subscribe(res => {
@@ -113,11 +116,12 @@ export class LophocphanComponent implements OnInit {
                     this.f.MoTa.value, res.id, this.f.GhiChu.value)
                     .pipe()
                     .subscribe(res => {
+                        this.spinner.hide();
                         if (res.TrangThai.error === true) {
                             alert(res.TrangThai.message);
                             return;
                         }
-                        alert("Thêm thành công");
+                        // alert("Thêm thành công");
                         this.closebutton.nativeElement.click();
                         this.getListLopHocPhan(this.IDKhoaHoc);
                     });
@@ -127,6 +131,7 @@ export class LophocphanComponent implements OnInit {
         if (!this.checkForm()) {
             return;
         }
+        this.spinner.show();
         var idImg = document.getElementById('nameoffile').textContent;
         if (idImg === this.lophocphanByID.HinhAnh) {
             this.lophocphanservice.suaLopHocPhan(
@@ -135,11 +140,11 @@ export class LophocphanComponent implements OnInit {
                 this.f.MoTa.value, idImg, this.f.GhiChu.value)
                 .pipe()
                 .subscribe(res => {
+                    this.spinner.hide();
                     if (res.TrangThai.error === true) {
                         alert(res.TrangThai.message);
                         return;
                     }
-                    alert("Sửa thành công");
                     this.getListLopHocPhan(this.IDKhoaHoc);
                     this.closebutton.nativeElement.click();
                 });
@@ -154,11 +159,11 @@ export class LophocphanComponent implements OnInit {
                         this.f.MoTa.value, res.id, this.f.GhiChu.value)
                         .pipe()
                         .subscribe(res => {
+                            this.spinner.hide();
                             if (res.TrangThai.error === true) {
                                 alert(res.TrangThai.message);
                                 return;
                             }
-                            alert("Sửa thành công");
                             this.closebutton.nativeElement.click();
                             this.getListLopHocPhan(this.IDKhoaHoc);
                         });

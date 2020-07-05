@@ -5,6 +5,7 @@ import { UploadimageService } from '../service/upload/uploadimage.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
 	selector: 'app-giangvien',
 	templateUrl: './giangvien.component.html',
@@ -22,6 +23,7 @@ export class GiangvienComponent implements OnInit {
 	parentRouter: any;
 	trangthaikichhoat: any = -1;
 	constructor(
+		private spinner: NgxSpinnerService,
 		private checkrouteService: CheckrouteService,
 		private router: Router,
 		private formBuilder: FormBuilder,
@@ -125,6 +127,7 @@ export class GiangvienComponent implements OnInit {
 		{
 			return;
 		}
+        this.spinner.show();
 		this.uploadimage.uploadimage(this.fileSelected)
 			.pipe()
 			.subscribe(res => {
@@ -134,11 +137,11 @@ export class GiangvienComponent implements OnInit {
 					this.f.MoTa.value, res.id, this.f.GhiChu.value)
 					.pipe()
 					.subscribe(res => {
+						this.spinner.hide();
 						if (res.TrangThai.error === true) {
 							alert(res.TrangThai.message);
 							return;
 						}
-						alert("Thêm thành công");
 						this.getListGiangVien();
 					});
 				this.closebutton.nativeElement.click();
@@ -149,6 +152,7 @@ export class GiangvienComponent implements OnInit {
 		{
 			return;
 		}
+        this.spinner.show();
 		var idImg = document.getElementById('nameoffile').textContent;
 		if (idImg === this.giangvienByID.HinhAnh) {
 			this.giangvienService.suaGiangVien(this.giangvienByID.IDGiangVien,
@@ -157,11 +161,11 @@ export class GiangvienComponent implements OnInit {
 				this.f.MoTa.value, idImg, this.f.GhiChu.value)
 				.pipe()
 				.subscribe(res => {
+					this.spinner.hide();
 					if (res.TrangThai.error === true) {
 						alert(res.TrangThai.message);
 						return;
 					}
-					alert("Sửa thành công");
 					this.getListGiangVien();
 					this.closebutton.nativeElement.click();
 				});
@@ -176,11 +180,11 @@ export class GiangvienComponent implements OnInit {
 						this.f.MoTa.value, res.id, this.f.GhiChu.value)
 						.pipe()
 						.subscribe(res => {
+							this.spinner.hide();
 							if (res.TrangThai.error === true) {
 								alert(res.TrangThai.message);
 								return;
 							}
-							alert("Sửa thành công");
 							this.getListGiangVien();
 							this.closebutton.nativeElement.click();
 						});

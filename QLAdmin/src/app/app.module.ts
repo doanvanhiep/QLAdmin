@@ -23,6 +23,8 @@ import { NotFoundComponentComponent } from "./NotFoundComponent/NotFoundComponen
 import { QuantrivienComponent } from "./quantrivien/quantrivien.component";
 import { ThongtincanhanComponent } from "./thongtincanhan/thongtincanhan.component";
 import { ThongkeComponent } from './thongke/thongke.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +51,8 @@ import { ThongkeComponent } from './thongke/thongke.component';
     FormsModule,
     ReactiveFormsModule,
     ChartsModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

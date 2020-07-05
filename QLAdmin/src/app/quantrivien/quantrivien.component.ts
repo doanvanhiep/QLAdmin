@@ -5,6 +5,7 @@ import { UploadimageService } from '../service/upload/uploadimage.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-quantrivien',
   templateUrl: './quantrivien.component.html',
@@ -22,6 +23,7 @@ export class QuantrivienComponent implements OnInit {
   parentRouter: any;
   trangthaikichhoat: any = -1;
   constructor(
+    private spinner: NgxSpinnerService,
     private checkrouteService: CheckrouteService,
     private router: Router,
     private formBuilder: FormBuilder,
@@ -84,6 +86,7 @@ export class QuantrivienComponent implements OnInit {
     if (!this.checkForm() || !this.checkFileHinh()) {
       return;
     }
+    this.spinner.show();
     this.uploadimage.uploadimage(this.fileSelected)
       .pipe()
       .subscribe(res => {
@@ -93,11 +96,11 @@ export class QuantrivienComponent implements OnInit {
           res.id, this.f.GhiChu.value)
           .pipe()
           .subscribe(res => {
+            this.spinner.hide();
             if (res.TrangThai.error === true) {
               alert(res.TrangThai.message);
               return;
             }
-            alert("Thêm thành công");
             this.getListQuanTriVien();
           });
         this.closebutton.nativeElement.click();
@@ -107,6 +110,7 @@ export class QuantrivienComponent implements OnInit {
     if (!this.checkForm()) {
       return;
     }
+    this.spinner.show();
     var idImg = document.getElementById('nameoffile').textContent;
     if (idImg === this.quantrivienByID.HinhAnh) {
       this.quantrivienService.suaQuanTriVien(this.quantrivienByID.IDQuanTri,
@@ -115,11 +119,11 @@ export class QuantrivienComponent implements OnInit {
         idImg, this.f.GhiChu.value)
         .pipe()
         .subscribe(res => {
+          this.spinner.hide();
           if (res.TrangThai.error === true) {
             alert(res.TrangThai.message);
             return;
           }
-          alert("Sửa thành công");
           this.getListQuanTriVien();
           this.closebutton.nativeElement.click();
         });
@@ -134,11 +138,11 @@ export class QuantrivienComponent implements OnInit {
             res.id, this.f.GhiChu.value)
             .pipe()
             .subscribe(res => {
+              this.spinner.hide();
               if (res.TrangThai.error === true) {
                 alert(res.TrangThai.message);
                 return;
               }
-              alert("Sửa thành công");
               this.getListQuanTriVien();
               this.closebutton.nativeElement.click();
             });
