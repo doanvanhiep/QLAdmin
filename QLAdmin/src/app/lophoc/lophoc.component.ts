@@ -99,6 +99,11 @@ export class LophocComponent implements OnInit {
     get f() { return this.lophocForm.controls; }
     get t() { return this.f.buoihocs as FormArray; }
     them() {
+        if(this.f.MaLopHoc.value=="")
+        {
+            alert("Vui lòng nhập mã lớp học");
+            return;
+        }
         if (this.f.SoBuoiHoc.value <= 0) {
             alert("Vui lòng thêm ca học. Ít nhất là 1 ca");
             return;
@@ -143,6 +148,11 @@ export class LophocComponent implements OnInit {
         }
     }
     sua() {
+        if(this.f.MaLopHoc.value=="")
+        {
+            alert("Vui lòng nhập mã lớp học");
+            return;
+        }
         if(!this.isFullNgayKhaiGiangNgayBeGiang())
         {
             return;

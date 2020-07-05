@@ -40,7 +40,7 @@ export class HocvienComponent implements OnInit {
     trangthaithanhtoan: any = "-1";
     phuongthuc: any = "tatca";
     trangthaikichhoat: any = 'tatcakichhoat';
-    mailList:any=[];
+    mailList: any = [];
     constructor(
         private loginService: Login_serviceService,
         private sendMailService: SendmailService,
@@ -176,7 +176,7 @@ export class HocvienComponent implements OnInit {
             .pipe()
             .subscribe(res => {
                 if (res.result.error === true) {
-                    alert(res.result.message); 
+                    alert(res.result.message);
                     return;
                 }
                 let ttkh = this.trangthaikichhoat;
@@ -278,8 +278,15 @@ export class HocvienComponent implements OnInit {
     }
     get fSendMail() { return this.sendMailForm.controls; }
     sendMail() {
-        if(this.mailList.length<=0)
-        {
+        if (this.fSendMail.TieuDe.value == "") {
+            alert("Vui lòng nhập tiêu đề");
+            return;
+        }
+        if (this.fSendMail.NoiDung.value == "") {
+            alert("Vui lòng nhập nội dung");
+            return;
+        }
+        if (this.mailList.length <= 0) {
             alert("Không thể gửi mail vì danh sách học viên hiện tại trống");
             this.closebutton1.nativeElement.click();
             return;
@@ -297,16 +304,13 @@ export class HocvienComponent implements OnInit {
     }
 
     guiMailLop() {
-        this.mailList=[];
-        if(this.listHocVien.length>0)
-        {
-            for(let i =0;i<this.listHocVien.length;i++)
-            {
+        this.mailList = [];
+        if (this.listHocVien.length > 0) {
+            for (let i = 0; i < this.listHocVien.length; i++) {
                 this.mailList.push(this.listHocVien[i].Email);
             }
         }
-        else
-        {
+        else {
             alert("Hiện tại danh sách học viên trống");
             this.closebutton1.nativeElement.click();
             return;
@@ -319,7 +323,7 @@ export class HocvienComponent implements OnInit {
         this.hasFile = false;
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
-        this.mailList=[this.listHocVien.filter(hv=>hv.IDHocVien==+idAttr)[0].Email];
+        this.mailList = [this.listHocVien.filter(hv => hv.IDHocVien == +idAttr)[0].Email];
     }
     checkRoute() {
         this.parentRouter = this.checkrouteService.getParentRouter();
@@ -332,8 +336,7 @@ export class HocvienComponent implements OnInit {
     }
     get f() { return this.hocvienForm.controls; }
     them() {
-        if(!this.checkForm())
-        {
+        if (!this.checkForm()) {
             return;
         }
         this.hocvienService.themHocVien(this.f.LopHoc.value, this.f.TenHocVien.value,
@@ -354,8 +357,7 @@ export class HocvienComponent implements OnInit {
         this.closebutton.nativeElement.click();
     }
     sua() {
-        if(!this.checkForm())
-        {
+        if (!this.checkForm()) {
             return;
         }
         this.hocvienService.suaHocVien(+this.idHocVien, +this.f.LopHoc.value, this.f.TenHocVien.value
@@ -374,48 +376,40 @@ export class HocvienComponent implements OnInit {
             });
         this.closebutton.nativeElement.click();
     }
-    checkForm()
-    {
-        if(this.f.TenHocVien.value=="")
-		{
-			alert("Vui lòng nhập tên của học viên")
-			return false;
-		}
-		if(this.f.SoDienThoai.value=="")
-		{
-			alert("Vui lòng nhập số điện thoại")
-			return false;
-		}
-        if(!this.f.SoDienThoai.value.match(/(0)+([0-9]{9})\b/g))
-        {
+    checkForm() {
+        if (this.f.TenHocVien.value == "") {
+            alert("Vui lòng nhập tên của học viên")
+            return false;
+        }
+        if (this.f.SoDienThoai.value == "") {
+            alert("Vui lòng nhập số điện thoại")
+            return false;
+        }
+        if (!this.f.SoDienThoai.value.match(/(0)+([0-9]{9})\b/g)) {
             alert("Vui lòng nhập số điện thoại đúng định dạng");
             return false;
         }
-		if(this.f.Email.value=="")
-		{
-			alert("Vui lòng nhập email")
-			return false;
-		}
-		if (!this.f.Email.value.match(/[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?\.)+[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?/)) {
+        if (this.f.Email.value == "") {
+            alert("Vui lòng nhập email")
+            return false;
+        }
+        if (!this.f.Email.value.match(/[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?\.)+[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?/)) {
             alert("Vui lòng nhập mail đúng định dạng");
             return false;
         }
-        if(this.f.KhoaHoc.value=="")
-        {
+        if (this.f.KhoaHoc.value == "") {
             alert("Vui lòng chọn khóa học");
             return false;
         }
-        if(this.f.TenLopHoc.value=="")
-        {
+        if (this.f.TenLopHoc.value == "") {
             alert("Vui lòng chọn tên lớp học");
             return false;
         }
-        if(this.f.LopHoc.value=="")
-        {
+        if (this.f.LopHoc.value == "") {
             alert("Vui lòng chọn lớp học");
             return false;
         }
-		return true;
+        return true;
     }
     xoa() {
         this.hocvienService.xoaHocVien(this.idHocVien, this.idLopHocTemp)

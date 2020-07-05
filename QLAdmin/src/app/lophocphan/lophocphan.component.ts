@@ -118,10 +118,10 @@ export class LophocphanComponent implements OnInit {
                             return;
                         }
                         alert("Thêm thành công");
+                        this.closebutton.nativeElement.click();
                         this.getListLopHocPhan(this.IDKhoaHoc);
                     });
             });
-        this.closebutton.nativeElement.click();
     }
     sua() {
         if (!this.checkForm()) {
@@ -159,9 +159,9 @@ export class LophocphanComponent implements OnInit {
                                 return;
                             }
                             alert("Sửa thành công");
+                            this.closebutton.nativeElement.click();
                             this.getListLopHocPhan(this.IDKhoaHoc);
                         });
-                    this.closebutton.nativeElement.click();
                 });
         }
     }

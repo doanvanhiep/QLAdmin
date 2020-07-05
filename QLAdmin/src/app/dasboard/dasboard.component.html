@@ -102,7 +102,7 @@
           </div>
           <div class="form-group">
             <label for="txt-noidung-name">Nội dung: </label>
-            <input type="text" class="form-control" name="txt-noidung-name" formControlName="NoiDung">
+            <textarea  class="form-control" name="txt-noidung-name" formControlName="NoiDung"></textarea>
           </div>
           <button class="btn btn-primary" (click)="changeDinhKem($event)" id="btnDinhKem">Đính kèm</button>
           <div class="form-group" *ngIf="hasFile">

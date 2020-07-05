@@ -84,6 +84,16 @@ export class DasboardComponent implements OnInit {
   }
   get fSendMail() { return this.sendMailForm.controls; }
   sendMail() {
+    if(this.fSendMail.TieuDe.value=="")
+    {
+      alert("Vui lòng nhập tiêu đề");
+      return;
+    }
+    if(this.fSendMail.NoiDung.value=="")
+    {
+      alert("Vui lòng nhập nội dung");
+      return;
+    }
     this.sendMailService.sendMail(this.fSendMail.TieuDe.value, this.fSendMail.NoiDung.value, this.fileSelected, this.mailList)
       .pipe()
       .subscribe(res => {
