@@ -114,6 +114,7 @@ export class QuantrivienComponent implements OnInit {
               alert(res.TrangThai.message);
               return;
             }
+            this.toast.success("Thêm thành công!", "Thông báo");
             this.getListQuanTriVien();
           });
         this.closebutton.nativeElement.click();
@@ -143,6 +144,7 @@ export class QuantrivienComponent implements OnInit {
             alert(res.TrangThai.message);
             return;
           }
+          this.toast.success("Sửa thành công!", "Thông báo");
           this.getListQuanTriVien();
           this.closebutton.nativeElement.click();
         });

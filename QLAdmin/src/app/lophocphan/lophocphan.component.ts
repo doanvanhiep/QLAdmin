@@ -123,7 +123,7 @@ export class LophocphanComponent implements OnInit {
                             alert(res.TrangThai.message);
                             return;
                         }
-                        // alert("Thêm thành công");
+                        this.toast.success("Thêm thành công!", "Thông báo");
                         this.closebutton.nativeElement.click();
                         this.getListLopHocPhan(this.IDKhoaHoc);
                     });
@@ -147,6 +147,7 @@ export class LophocphanComponent implements OnInit {
                         alert(res.TrangThai.message);
                         return;
                     }
+                    this.toast.success("Sửa thành công!", "Thông báo");
                     this.getListLopHocPhan(this.IDKhoaHoc);
                     this.closebutton.nativeElement.click();
                 });
@@ -166,6 +167,7 @@ export class LophocphanComponent implements OnInit {
                                 alert(res.TrangThai.message);
                                 return;
                             }
+                            this.toast.success("Sửa thành công!", "Thông báo");
                             this.closebutton.nativeElement.click();
                             this.getListLopHocPhan(this.IDKhoaHoc);
                         });
@@ -174,30 +176,30 @@ export class LophocphanComponent implements OnInit {
     }
     checkForm() {
         if (this.f.MaLopHocPhan.value == "") {
-            alert("Vui lòng nhập mã lớp học phần")
+            this.toast.error("Vui lòng nhập mã lớp học phần")
             return false;
         }
         if (this.f.TenLopHocPhan.value == "") {
-            alert("Vui lòng nhập tên lớp học phần")
+            this.toast.error("Vui lòng nhập tên lớp học phần")
             return false;
         }
         if (this.f.SoBuoi.value == "" || this.f.SoBuoi.value == null) {
-            alert("Vui lòng nhập số buổi")
+            this.toast.error("Vui lòng nhập số buổi")
             return false;
         }
         if (this.f.HocPhi.value == "" || this.f.HocPhi.value == null) {
-            alert("Vui lòng nhập học phí")
+            this.toast.error("Vui lòng nhập học phí")
             return false;
         }
         if (this.f.SiSo.value == "" || this.f.SiSo.value == null) {
-            alert("Vui lòng nhập sỉ số")
+            this.toast.error("Vui lòng nhập sỉ số")
             return false;
         }
         return true;
     }
     checkFileHinh() {
         if (this.fileSelected == null) {
-            alert("Vui lòng chọn hình ảnh")
+            this.toast.error("Vui lòng chọn hình ảnh")
             return false;
         }
         return true;
@@ -210,7 +212,7 @@ export class LophocphanComponent implements OnInit {
                     alert(res.TrangThai.message);
                     return;
                 }
-                alert("Xóa thành công");
+                this.toast.success("Xóa thành công!", "Thông báo");
                 this.getListLopHocPhan(this.IDKhoaHoc);
             })
         this.closebuttondelete.nativeElement.click();

@@ -67,7 +67,7 @@ export class KhoahocComponent implements OnInit {
                     alert(res.TrangThai.message);
                     return;
                 }
-                this.toast.success("Thêm khóa học thành công!", "Thông báo");
+                this.toast.success("Thêm thành công!", "Thông báo");
                 this.getListKhoaHoc();
             });
         this.closebutton.nativeElement.click();
