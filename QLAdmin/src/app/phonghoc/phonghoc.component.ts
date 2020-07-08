@@ -7,6 +7,7 @@ import {
 } from "@angular/forms";
 import { DynamicScriptLoaderServiceService } from "../../app/dynamic-script-loader-service.service";
 import { PhonghocService } from "../service/phonghoc/phonghoc.service";
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-phonghoc",
   templateUrl: "./phonghoc.component.html",
@@ -23,7 +24,8 @@ export class PhonghocComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
-    private phonghocService: PhonghocService
+    private phonghocService: PhonghocService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit() {
@@ -76,7 +78,11 @@ export class PhonghocComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Thêm thành công");
+        this.toast.success("some messenge", "title", {
+          timeOut: 3000,
+          progressBar: false,
+        });
+
         this.getListPhongHoc();
       });
     this.closebutton.nativeElement.click();
@@ -109,7 +115,10 @@ export class PhonghocComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Xóa thành công");
+        this.toast.success("Đã xóa", "Thông báo", {
+          timeOut: 3000,
+          progressBar: false,
+        });
         this.getListPhongHoc();
       });
     this.closebuttondelete.nativeElement.click();

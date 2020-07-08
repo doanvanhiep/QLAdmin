@@ -21,9 +21,12 @@ import { CackhoahocComponent } from "./ctthongke/cackhoahoc/cackhoahoc.component
 import { DoanhthuComponent } from "./ctthongke/doanhthu/doanhthu.component";
 import { NgxPaginationModule } from "ngx-pagination";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
-import { HocviendangkyComponent } from './ctthongke/hocviendangky/hocviendangky.component';
-import { HocvienthanhtoanComponent } from './ctthongke/hocvienthanhtoan/hocvienthanhtoan.component';
-import { DoanhthudangkyComponent } from './ctthongke/doanhthudangky/doanhthudangky.component';
+import { HocviendangkyComponent } from "./ctthongke/hocviendangky/hocviendangky.component";
+import { HocvienthanhtoanComponent } from "./ctthongke/hocvienthanhtoan/hocvienthanhtoan.component";
+import { DoanhthudangkyComponent } from "./ctthongke/doanhthudangky/doanhthudangky.component";
+
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ToastrModule } from "ngx-toastr";
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +55,8 @@ import { DoanhthudangkyComponent } from './ctthongke/doanhthudangky/doanhthudang
     ChartsModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
