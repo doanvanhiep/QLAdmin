@@ -22,9 +22,10 @@ import { HocvienComponent } from "./hocvien/hocvien.component";
 import { NotFoundComponentComponent } from "./NotFoundComponent/NotFoundComponent.component";
 import { QuantrivienComponent } from "./quantrivien/quantrivien.component";
 import { ThongtincanhanComponent } from "./thongtincanhan/thongtincanhan.component";
-import { ThongkeComponent } from './thongke/thongke.component';
+import { ThongkeComponent } from "./thongke/thongke.component";
 import { NgxSpinnerModule } from "ngx-spinner";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ToastrModule } from "ngx-toastr";
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ChartsModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      preventDuplicates: true
+    }),
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

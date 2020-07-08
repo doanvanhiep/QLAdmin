@@ -4,6 +4,7 @@ import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-load
 import { Router, ActivatedRoute } from '@angular/router';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
 import { GiangvienService } from '../service/giangvien/giangvien.service';
+import { ToastrService } from "ngx-toastr";    
 @Component({
   selector: 'app-danhsachlophoc',
   templateUrl: './danhsachlophoc.component.html',
@@ -24,6 +25,7 @@ export class DanhsachlophocComponent implements OnInit {
     private router: Router,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
     private dsLopHocService: DanhsachlophocService,
+    private toast: ToastrService
   ) {
     this.checkRoute();
   }
@@ -34,7 +36,7 @@ export class DanhsachlophocComponent implements OnInit {
         .pipe()
         .subscribe(res => {
           if (res.result.error) {
-            alert("Hiện tại không thể truy cập danh sách lớp học.Liên hệ quản trị để được xử lý");
+            this.toast.show("Hiện tại không thể truy cập danh sách lớp học.Liên hệ quản trị để được xử lý!", "Thông báo");
             return;
           }
           else {

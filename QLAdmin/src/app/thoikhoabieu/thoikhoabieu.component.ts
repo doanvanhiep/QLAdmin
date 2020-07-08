@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
 import {GiangvienService} from '../service/giangvien/giangvien.service';
+import { ToastrService } from "ngx-toastr";   
 @Component({
     selector: 'app-thoikhoabieu',
     templateUrl: './thoikhoabieu.component.html',
@@ -26,6 +27,7 @@ export class ThoikhoabieuComponent implements OnInit {
         private datepipe: DatePipe,
         private thoikhoabieuServer: ThoikhoabieuService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
+        private toast: ToastrService
     ) { this.checkRoute(); }
 
     ngOnInit() {
@@ -37,7 +39,7 @@ export class ThoikhoabieuComponent implements OnInit {
         .subscribe(res=>{
             if(res.result.error)
             {
-                alert("Hiện tại không thể truy cập thời khóa biểu.Liên hệ quản trị để được xử lý");
+                this.toast.show("Hiện tại không thể truy cập thời khóa biểu.Liên hệ quản trị để được xử lý!", "Thông báo");
                 return;
             }
             else

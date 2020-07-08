@@ -8,6 +8,7 @@ import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-load
 import { UploadimageService } from '../service/upload/uploadimage.service';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";    
 @Component({
     selector: 'app-lophocphan',
     templateUrl: './lophocphan.component.html',
@@ -38,7 +39,8 @@ export class LophocphanComponent implements OnInit {
         private khoahocService: KhoahocService,
         private formBuilder: FormBuilder,
         private lophocphanservice: LophocphanService,
-        private uploadimage: UploadimageService
+        private uploadimage: UploadimageService,
+        private toast: ToastrService
     ) {
         this.parentRouter = this.checkrouteService.getParentRouter();
         if (this.parentRouter != "admin")

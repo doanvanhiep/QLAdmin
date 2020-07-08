@@ -8,6 +8,7 @@ import { PhonghocService } from "../service/phonghoc/phonghoc.service";
 import { GiangvienService } from "../service/giangvien/giangvien.service";
 import { QuantrivienService } from "../service/quantrivien/quantrivien.service";
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
+import { ToastrService } from "ngx-toastr";   
 @Component({
   selector: "app-thongke",
   templateUrl: "./thongke.component.html",
@@ -79,7 +80,8 @@ export class ThongkeComponent implements OnInit {
     private phonghocService: PhonghocService,
     private quantrivienService: QuantrivienService,
     private giangvienService: GiangvienService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toast: ToastrService
   ) {
     this.loadDataBanDau();
     this.createForm(this.monthStart, this.yearStart, this.monthEnd, this.yearEnd);
@@ -187,13 +189,13 @@ export class ThongkeComponent implements OnInit {
       return true;
     }
     if (yearEnd < yearStart) {
-      alert("Vui lòng xem lại. Ngày đến không thể sau ngày từ");
+      this.toast.error("Vui lòng xem lại. Năm đến không thể sau Năm từ!", "Thông báo");
       return false;
     }
     if (monthEnd >= monthStart) {
       return true;
     }
-    alert("Vui lòng xem lại. Ngày đến không thể sau ngày từ");
+    this.toast.error("Vui lòng xem lại. Tháng đến không thể sau Tháng từ!", "Thông báo");
     return false;
 
   }

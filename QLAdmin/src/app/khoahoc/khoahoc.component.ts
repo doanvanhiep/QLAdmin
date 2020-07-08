@@ -5,6 +5,7 @@ import { KhoahocService } from '../service/khoahoc/khoahoc.service';
 import { Router } from '@angular/router';
 import { SharedataService } from '../service/sharedata/sharedata.service';
 import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import { ToastrService } from "ngx-toastr";
 @Component({
     selector: 'app-khoahoc',
     templateUrl: './khoahoc.component.html',
@@ -26,7 +27,8 @@ export class KhoahocComponent implements OnInit {
         private router: Router,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private formBuilder: FormBuilder,
-        private khoahocService: KhoahocService
+        private khoahocService: KhoahocService,
+        private toast: ToastrService
     ) {
         this.parentRouter = this.checkrouteService.getParentRouter();
         if (this.parentRouter != "admin")
@@ -65,7 +67,7 @@ export class KhoahocComponent implements OnInit {
                     alert(res.TrangThai.message);
                     return;
                 }
-                alert("Thêm thành công");
+                this.toast.success("Thêm khóa học thành công!", "Thông báo");
                 this.getListKhoaHoc();
             });
         this.closebutton.nativeElement.click();
@@ -82,7 +84,7 @@ export class KhoahocComponent implements OnInit {
                     alert(res.TrangThai.message);
                     return;
                 }
-                alert("Sửa thành công");
+                this.toast.success("Sửa thành công!", "Thông báo");
                 this.getListKhoaHoc();
             })
         this.closebutton.nativeElement.click();
@@ -91,7 +93,7 @@ export class KhoahocComponent implements OnInit {
     {
         if(this.f.TenKhoaHoc.value=="")
         {
-            alert("Vui lòng nhập tên khóa học");
+            this.toast.error("Vui lòng nhập tên khóa học!", "Thông báo");
             return false;
         }
         return true;
@@ -104,7 +106,7 @@ export class KhoahocComponent implements OnInit {
                     alert(res.TrangThai.message);
                     return;
                 }
-                alert("Xóa thành công");
+                this.toast.success("Xóa thành công!", "Thông báo");
                 this.getListKhoaHoc();
             })
         this.closebuttondelete.nativeElement.click();

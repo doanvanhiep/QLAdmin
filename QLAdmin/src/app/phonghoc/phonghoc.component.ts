@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
-import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
-import { PhonghocService } from '../service/phonghoc/phonghoc.service';
-import { CheckrouteService } from '../service/checkroute/checkroute.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { DynamicScriptLoaderServiceService } from "../../app/dynamic-script-loader-service.service";
+import { PhonghocService } from "../service/phonghoc/phonghoc.service";
+import { CheckrouteService } from "../service/checkroute/checkroute.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 @Component({
-  selector: 'app-phonghoc',
-  templateUrl: './phonghoc.component.html',
-  styleUrls: ['./phonghoc.component.css']
+  selector: "app-phonghoc",
+  templateUrl: "./phonghoc.component.html",
+  styleUrls: ["./phonghoc.component.css"],
 })
 export class PhonghocComponent implements OnInit {
-  @ViewChild('closebutton') closebutton;
-  @ViewChild('closebuttonDelete') closebuttondelete;
+  @ViewChild("closebutton") closebutton;
+  @ViewChild("closebuttonDelete") closebuttondelete;
   btnedit: any = false;
   phonghocForm: FormGroup;
   listPhongHoc: any;
@@ -25,10 +26,10 @@ export class PhonghocComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
     private phonghocService: PhonghocService,
+    private toast: ToastrService
   ) {
     this.parentRouter = this.checkrouteService.getParentRouter();
-    if (this.parentRouter != "admin")
-      this.router.navigate([this.parentRouter]);
+    if (this.parentRouter != "admin") this.router.navigate([this.parentRouter]);
   }
 
   ngOnInit() {
@@ -41,7 +42,7 @@ export class PhonghocComponent implements OnInit {
     this.phonghocForm = this.formBuilder.group({
       TenPhong: "",
       SoChoNgoi: "",
-      GhiChu: ""
+      GhiChu: "",
     });
   }
   editForm(phonghocByID) {
@@ -49,88 +50,97 @@ export class PhonghocComponent implements OnInit {
     this.phonghocForm = this.formBuilder.group({
       TenPhong: phonghocByID.TenPhong,
       SoChoNgoi: phonghocByID.SoChoNgoi,
-      GhiChu: phonghocByID.GhiChu
+      GhiChu: phonghocByID.GhiChu,
     });
   }
-  get f() { return this.phonghocForm.controls; }
+  get f() {
+    return this.phonghocForm.controls;
+  }
   getListPhongHoc() {
-    this.phonghocService.getListPhongHoc()
+    this.phonghocService
+      .getListPhongHoc()
       .pipe()
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res.result.error === true) {
           alert(res.result.message);
           return;
         }
         if (this.trangthaikichhoat == -1) {
-					this.listPhongHoc = res.result.data;
-				}
-				else {
-					let TrangThai = this.trangthaikichhoat;
-					this.listPhongHoc = res.result.data.filter(qtv => qtv.TrangThai == TrangThai);
-				}
+          this.listPhongHoc = res.result.data;
+        } else {
+          let TrangThai = this.trangthaikichhoat;
+          this.listPhongHoc = res.result.data.filter(
+            (qtv) => qtv.TrangThai == TrangThai
+          );
+        }
       });
   }
   them() {
-    if(!this.checkForm())
-    {
+    if (!this.checkForm()) {
       return;
     }
-    this.phonghocService.themPhongHoc(
-      this.f.TenPhong.value, this.f.SoChoNgoi.value, this.f.GhiChu.value)
+    this.phonghocService
+      .themPhongHoc(
+        this.f.TenPhong.value,
+        this.f.SoChoNgoi.value,
+        this.f.GhiChu.value
+      )
       .pipe()
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res.TrangThai.error === true) {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Thêm thành công");
+        this.toast.success("Thêm thành công!", "Thông báo");
         this.getListPhongHoc();
       });
     this.closebutton.nativeElement.click();
   }
   sua() {
-    if(!this.checkForm())
-    {
+    if (!this.checkForm()) {
       return;
     }
-    this.phonghocService.suaPhongHoc(this.phonghocByID.IDPhongHoc,
-      this.f.TenPhong.value, this.f.SoChoNgoi.value, this.f.GhiChu.value)
+    this.phonghocService
+      .suaPhongHoc(
+        this.phonghocByID.IDPhongHoc,
+        this.f.TenPhong.value,
+        this.f.SoChoNgoi.value,
+        this.f.GhiChu.value
+      )
       .pipe()
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res.TrangThai.error === true) {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Sửa thành công");
+        this.toast.success("Sửa thành công!", "Thông báo");
         this.getListPhongHoc();
       });
     this.closebutton.nativeElement.click();
   }
-  checkForm()
-  {
-    if(this.f.TenPhong.value=="")
-    {
-      alert("Vui lòng nhập tên phòng học");
+  checkForm() {
+    if (this.f.TenPhong.value == "") {
+      this.toast.error("Vui lòng nhập tên phòng học!", "Thông báo");
       return false;
     }
-    if(this.f.SoChoNgoi.value=="" || this.f.SoChoNgoi.value==null)
-    {
-      alert("Vui lòng nhập số chỗ ngồi");
+    if (this.f.SoChoNgoi.value == "" || this.f.SoChoNgoi.value == null) {
+      this.toast.error("Vui lòng nhập số chỗ ngồi!", "Thông báo");
       return false;
     }
     return true;
   }
   xoa() {
-    this.phonghocService.xoaPhongHoc(this.IDPhongHoc)
+    this.phonghocService
+      .xoaPhongHoc(this.IDPhongHoc)
       .pipe()
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res.TrangThai.error === true) {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Xóa thành công");
+        this.toast.success("Xóa thành công!", "Thông báo");
         this.getListPhongHoc();
-      })
+      });
     this.closebuttondelete.nativeElement.click();
   }
   suaPhongHoc(event) {
@@ -140,7 +150,9 @@ export class PhonghocComponent implements OnInit {
     this.editForm(this.phonghocByID);
   }
   getPhongHocByID(idPhongHoc) {
-    this.phonghocByID = this.listPhongHoc.filter(item => item.IDPhongHoc === +idPhongHoc)[0];
+    this.phonghocByID = this.listPhongHoc.filter(
+      (item) => item.IDPhongHoc === +idPhongHoc
+    )[0];
   }
   xoaPhongHoc(event) {
     var target = event.target || event.srcElement || event.currentTarget;
@@ -152,9 +164,10 @@ export class PhonghocComponent implements OnInit {
     var idAttr = target.attributes.id.value.split("-")[1];
     this.getPhongHocByID(idAttr);
     let TrangThai = target.checked ? 1 : 0;
-    this.phonghocService.suaTrangThai(+idAttr, TrangThai)
+    this.phonghocService
+      .suaTrangThai(+idAttr, TrangThai)
       .pipe()
-      .subscribe(res => {
+      .subscribe((res) => {
         //console.log(res);
       });
   }
@@ -165,16 +178,26 @@ export class PhonghocComponent implements OnInit {
   //load script
   private loadScripts() {
     // You can load multiple scripts by just providing the key as argument into load method of the service
-    this.dynamicScriptLoader.load('jquerydataTablesminjs').then(data => {
-      // You can load multiple scripts by just providing the key as argument into load method of the service
-      this.dynamicScriptLoader.load('dataTablesbootstrap4minjs').then(data => {
+    this.dynamicScriptLoader
+      .load("jquerydataTablesminjs")
+      .then((data) => {
         // You can load multiple scripts by just providing the key as argument into load method of the service
-        this.dynamicScriptLoader.load('datatablesdemojs').then(data => {
-          this.dynamicScriptLoader.load('sbadmin2minjs').then(data => {
-          }).catch(error => console.log(error));
-        }).catch(error => console.log(error));
-      }).catch(error => console.log(error));
-    }).catch(error => console.log(error));
+        this.dynamicScriptLoader
+          .load("dataTablesbootstrap4minjs")
+          .then((data) => {
+            // You can load multiple scripts by just providing the key as argument into load method of the service
+            this.dynamicScriptLoader
+              .load("datatablesdemojs")
+              .then((data) => {
+                this.dynamicScriptLoader
+                  .load("sbadmin2minjs")
+                  .then((data) => {})
+                  .catch((error) => console.log(error));
+              })
+              .catch((error) => console.log(error));
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
   }
-
 }
