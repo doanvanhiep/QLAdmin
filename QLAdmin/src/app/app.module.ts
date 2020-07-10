@@ -26,6 +26,7 @@ import { ThongkeComponent } from "./thongke/thongke.component";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
+import { DataTablesModule } from 'angular-datatables';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { ToastrModule } from "ngx-toastr";
     ChartsModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
+    DataTablesModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       preventDuplicates: true

@@ -19,7 +19,8 @@ $(document).ready(function () {
                 "sPrevious": "Trước",
                 "sNext": "Tiếp",
                 "sLast": "Cuối"
-            }
+            },
+            "bDestroy": true
         }
         // , "bFilter": false
     });

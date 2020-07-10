@@ -70,13 +70,6 @@ export class DanhsachlophocComponent implements OnInit {
     this.router.navigate([this.parentRouter + '/hocvien'],
       { state: { IDLopHoc: idAttr, DSHV: lophoc.HV, IDLopHocPhan: lophoc.LHP.IDLopHocPhan, IDKhoaHoc: lophoc.LHP.IDKhoaHoc } });
     return;
-    // if (lophoc.HV.length <= 0) {
-    //   alert("Lớp học chưa có học viên nên không thể xem được.");
-    // }
-    // else {
-    //   this.router.navigate([this.parentRouter + '/hocvien'],
-    //     { state: { IDLopHoc: idAttr, DSHV: lophoc.HV, IDLopHocPhan: lophoc.LHP.IDLopHocPhan, IDKhoaHoc: lophoc.LHP.IDKhoaHoc } });
-    // }
   }
   getDSLopHoc() {
     this.dsLopHocService.danhsachlophoc()
@@ -86,11 +79,20 @@ export class DanhsachlophocComponent implements OnInit {
         this.ListLopHoc = res.result.data.filter(function (lh) {
           lh.HV = lh.HV.filter(function (hv) {
             if (ttkh == "tatcakichhoat")
+            {
+              lh.TongTien += +hv.SoTien
               return true;
+            }
             if (hv.TrangThai == 1 && ttkh == "kichhoat")
+            {
+              lh.TongTien += +hv.SoTien
               return true;
+            }
             if (hv.TrangThai == 0 && ttkh == "chuakichhoat")
+            {
+              lh.TongTien += +hv.SoTien
               return true;
+            }
             return false;
           });
           return true;
@@ -137,12 +139,15 @@ export class DanhsachlophocComponent implements OnInit {
     if (!(trangthaithanhtoan === "-1" && phuongthuc === "tatca")) {
       let tempTrangThaiThanhToan = -1 === +trangthaithanhtoan ? true : false;
       let tempPhuongThuc = "tatca" === phuongthuc ? true : false;
+      let a=0;
       this.ListLopHoc = this.ListLopHoc.filter(function (lh) {
+        a=0;
         lh.HV = lh.HV.filter(function (hv) {
           if ((hv.TrangThaiThanhToan === +trangthaithanhtoan || tempTrangThaiThanhToan) && (hv.HinhThucThanhToan === phuongthuc || tempPhuongThuc)) {
             return true;
           }
           else {
+            lh.TongTien -= +hv.SoTien
             return false;
           }
         });

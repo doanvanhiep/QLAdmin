@@ -71,6 +71,7 @@
                   <th>Ngày bế giảng</th>
                   <th>Thông tin lớp học</th>
                   <th>Sỉ số</th>
+                  <th *ngIf="!isGiangVien">Tổng tiền</th>
                   <th>Ghi chú</th>
                 </tr>
               </thead>
@@ -81,7 +82,8 @@
                   <th>Ngày khai giảng</th>
                   <th>Ngày bế giảng</th>
                   <th>Thông tin lớp học</th>
-                  <th>Sỉ số</th>
+                  <th *ngIf="!isGiangVien">Sỉ số</th>
+                  <th>Tổng tiền</th>
                   <th>Ghi chú</th>
                 </tr>
               </tfoot>
@@ -96,6 +98,7 @@
                       [innerHTML]="lophoc ? lophoc.ThongTinLopHoc:''"></p>
                   </td>
                   <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.HV.length:""}}</td>
+                  <td *ngIf="!isGiangVien" data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.TongTien:0}}</td>
                   <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.GhiChu:""}}</td>
                 </tr>
               </tbody>

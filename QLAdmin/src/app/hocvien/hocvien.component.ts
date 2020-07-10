@@ -10,12 +10,23 @@ import { CheckrouteService } from "../service/checkroute/checkroute.service";
 import { SendmailService } from "../service/sendmail/sendmail.service";
 import { Login_serviceService } from "../service_auth/login_service.service";
 import { ToastrService } from "ngx-toastr";
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 @Component({
   selector: "app-hocvien",
   templateUrl: "./hocvien.component.html",
   styleUrls: ["./hocvien.component.css"],
 })
 export class HocvienComponent implements OnInit {
+
+  //reload tb
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+
+  dtOptions: DataTables.Settings = {};
+
+  dtTrigger: Subject<any> = new Subject();
+  //
   @ViewChild("closebutton") closebutton;
   @ViewChild("closebutton1") closebutton1;
   @ViewChild("closebuttonDelete") closebuttondelete;
@@ -68,6 +79,7 @@ export class HocvienComponent implements OnInit {
       this.idLopHocPhan = +window.history.state.IDLopHocPhan;
       this.idKhoaHoc = +window.history.state.IDKhoaHoc;
     }
+    this.getListKhoaHoc();
   }
 
   ngOnInit() {
@@ -94,16 +106,16 @@ export class HocvienComponent implements OnInit {
     this.hasFile = false;
     document.getElementById("btnDinhKem").innerText = "Đính kèm";
   }
-  createForm() {
+  createForm(idkhoahoc = "", idlophocphan = "",idlophoc="", hocphi = "") {
     this.btnedit = false;
     this.hocvienForm = this.formBuilder.group({
       TenHocVien: "",
       SoDienThoai: "",
       Email: "",
-      KhoaHoc: "",
-      TenLopHoc: "",
-      LopHoc: "",
-      HocPhi: { value: "", disabled: true },
+      KhoaHoc: idkhoahoc,
+      TenLopHoc: idlophocphan,
+      LopHoc: idlophoc,
+      HocPhi: { value: hocphi, disabled: true },
     });
   }
   editForm(HocvienByID) {
@@ -120,6 +132,27 @@ export class HocvienComponent implements OnInit {
   changeAllHocVien() {
     this.allhocvien = false;
     this.getListHocVien();
+    /* this.dtOptions = {
+      "language": {
+        "sProcessing": "Đang xử lý...",
+        "sLengthMenu": "Xem _MENU_ mục",
+        "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+        "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+        "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+        "sInfoPostFix": "",
+        "sSearch": "Tìm:",
+        "sUrl": "",
+        "oPaginate": {
+          "sFirst": "Đầu",
+          "sPrevious": "Trước",
+          "sNext": "Tiếp",
+          "sLast": "Cuối"
+        },
+        "bDestroy": true
+      }
+    };
+    this.dtTrigger.next(); */
   }
   TrangThaiThanhToan(event) {
     this.trangthaithanhtoan = event.target.value;
@@ -227,6 +260,7 @@ export class HocvienComponent implements OnInit {
       });
   }
   getListKhoaHoc() {
+    this.listKhoaHoc = null;
     this.khoahocService
       .getListKhoaHoc()
       .pipe()
@@ -239,6 +273,7 @@ export class HocvienComponent implements OnInit {
       });
   }
   getListLopHocPhan(IDLopHocPhan) {
+    this.listLopHocPhan = null;
     this.lophocphanService
       .getListLopHocPhan(IDLopHocPhan)
       .pipe()
@@ -248,9 +283,13 @@ export class HocvienComponent implements OnInit {
           return;
         }
         this.listLopHocPhan = res.result.data;
+        if (this.allhocvien && this.hocvienByID == null) {
+          this.getListLopHoc(this.idLopHocPhan);
+        }
       });
   }
   getListLopHoc(IDLopHoc) {
+    this.listLopHoc = null
     this.lophocService
       .getListLopHocByID(IDLopHoc)
       .pipe()
@@ -260,6 +299,12 @@ export class HocvienComponent implements OnInit {
           return;
         }
         this.listLopHoc = res.result.data;
+        if (this.allhocvien && this.hocvienByID == null) {
+        this.HocPhiLopHoc = this.listLopHocPhan.filter(
+          (lhp) => lhp.IDLopHocPhan == this.idLopHocPhan
+        )[0].HocPhi;
+        this.createForm(this.idKhoaHoc, this.idLopHocPhan,this.idLopHoc, this.HocPhiLopHoc);
+        }
       });
   }
   onSelectedFile(event) {
@@ -365,9 +410,13 @@ export class HocvienComponent implements OnInit {
     if (!this.checkForm()) {
       return;
     }
+    if(!this.allhocvien)
+    {
+      this.idLopHoc=this.f.LopHoc.value;
+    }
     this.hocvienService
       .themHocVien(
-        this.f.LopHoc.value,
+        this.idLopHoc,
         this.f.TenHocVien.value,
         this.f.Email.value,
         this.f.SoDienThoai.value,
@@ -493,7 +542,7 @@ export class HocvienComponent implements OnInit {
     this.hocvienByID = this.listHocVien.filter(
       (hv) => hv.IDHocVien == IDHocVien
     )[0];
-    if (!this.idLopHocPhan) {
+    if (!this.allhocvien) {
       this.idLopHocPhan = this.hocvienByID.IDLopHocPhan;
       this.idKhoaHoc = this.hocvienByID.IDKhoaHoc;
     }
@@ -503,12 +552,23 @@ export class HocvienComponent implements OnInit {
     this.editForm(this.hocvienByID);
   }
   themHocVien() {
+    this.hocvienByID = null;
     this.hocvienForm.enable();
     this.f.HocPhi.disable();
-    this.createForm();
     this.getListKhoaHoc();
-    this.listLopHocPhan = null;
-    this.listLopHoc = null;
+    if (!this.allhocvien) {
+      this.listLopHocPhan = null;
+      this.listLopHoc = null;
+      this.createForm();
+    }
+    else {
+      this.getListLopHocPhan(this.idKhoaHoc);
+      this.getListLopHoc(this.idLopHocPhan);
+      this.f.KhoaHoc.disable();
+      this.f.TenLopHoc.disable();
+      this.f.LopHoc.disable();
+    }
+
   }
   xoaHocVien(event) {
     var target = event.target || event.srcElement || event.currentTarget;
@@ -534,7 +594,7 @@ export class HocvienComponent implements OnInit {
               .then((data) => {
                 this.dynamicScriptLoader
                   .load("sbadmin2minjs")
-                  .then((data) => {})
+                  .then((data) => { })
                   .catch((error) => console.log(error));
               })
               .catch((error) => console.log(error));
