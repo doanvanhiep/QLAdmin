@@ -106,7 +106,7 @@ export class HocvienComponent implements OnInit {
     this.hasFile = false;
     document.getElementById("btnDinhKem").innerText = "Đính kèm";
   }
-  createForm(idkhoahoc = "", idlophocphan = "",idlophoc="", hocphi = "") {
+  createForm(idkhoahoc = "", idlophocphan = "",idlophoc=-1, hocphi = "") {
     this.btnedit = false;
     this.hocvienForm = this.formBuilder.group({
       TenHocVien: "",
@@ -248,6 +248,7 @@ export class HocvienComponent implements OnInit {
     }
   }
   getListHocVienByIDLopHoc() {
+    this.listLopHoc=null;
     this.hocvienService
       .getListHocVienByIDLopHoc(this.idLopHoc)
       .pipe()
@@ -414,6 +415,8 @@ export class HocvienComponent implements OnInit {
     {
       this.idLopHoc=this.f.LopHoc.value;
     }
+    console.log(this.listLopHoc);
+    console.log(this.idLopHoc);
     this.hocvienService
       .themHocVien(
         this.idLopHoc,
@@ -563,7 +566,7 @@ export class HocvienComponent implements OnInit {
     }
     else {
       this.getListLopHocPhan(this.idKhoaHoc);
-      this.getListLopHoc(this.idLopHocPhan);
+      this.getListLopHoc(this.idLopHocPhan); 
       this.f.KhoaHoc.disable();
       this.f.TenLopHoc.disable();
       this.f.LopHoc.disable();

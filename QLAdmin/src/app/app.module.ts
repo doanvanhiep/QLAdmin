@@ -27,41 +27,48 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
 import { DataTablesModule } from 'angular-datatables';
+import { BaonghiComponent } from './baonghi/baonghi.component';
+import { BaobuComponent } from './baobu/baobu.component';
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavigationComponent,
-    DasboardComponent,
-    LoginComponent,
-    KhoahocComponent,
-    LophocphanComponent,
-    LophocComponent,
-    GiangvienComponent,
-    PhonghocComponent,
-    ThoikhoabieuComponent,
-    DanhsachlophocComponent,
-    HocvienComponent,
-    NotFoundComponentComponent,
-    QuantrivienComponent,
-    ThongtincanhanComponent,
-    ThongkeComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ChartsModule,
-    NgxSpinnerModule,
-    BrowserAnimationsModule,
-    DataTablesModule,
-    ToastrModule.forRoot({
-      timeOut: 2000,
-      preventDuplicates: true
-    }),
-  ],
-  providers: [DatePipe],
-  bootstrap: [AppComponent],
+   declarations: [
+      AppComponent,
+      NavigationComponent,
+      DasboardComponent,
+      LoginComponent,
+      KhoahocComponent,
+      LophocphanComponent,
+      LophocComponent,
+      GiangvienComponent,
+      PhonghocComponent,
+      ThoikhoabieuComponent,
+      DanhsachlophocComponent,
+      HocvienComponent,
+      NotFoundComponentComponent,
+      QuantrivienComponent,
+      ThongtincanhanComponent,
+      ThongkeComponent,
+      BaonghiComponent,
+      BaobuComponent
+   ],
+   imports: [
+      BrowserModule,
+      AppRoutingModule,
+      HttpClientModule,
+      FormsModule,
+      ReactiveFormsModule,
+      ChartsModule,
+      NgxSpinnerModule,
+      BrowserAnimationsModule,
+      ToastrModule.forRoot({
+         timeOut: 2000,
+         preventDuplicates: true
+      }),
+      DataTablesModule,
+   ],
+   providers: [
+      DatePipe,
+      { provide: HTTP_INTERCEPTORS, useClass: AuthorServiceService, multi: true }
+   ],
+   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

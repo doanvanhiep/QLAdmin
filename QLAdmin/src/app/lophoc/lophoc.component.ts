@@ -327,8 +327,8 @@ export class LophocComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        this.rephonghocs = res.result.ListPhongHoc;
-        this.regiangviens = res.result.ListGiangVien;
+        this.rephonghocs = res.result.ListPhongHoc.filter(ph=>ph.TrangThai==1);
+        this.regiangviens = res.result.ListGiangVien.filter(gv=>gv.TrangThai==1);
       });
   }
   recommendCaHoc(index) {
@@ -553,7 +553,7 @@ export class LophocComponent implements OnInit {
       .getListGiangVien()
       .pipe()
       .subscribe((res) => {
-        this.giangviens = res.result.data;
+        this.giangviens = res.result.data.filter(gv=>gv.TrangThai==1);
       });
   }
   getDanhSachPhongHoc() {
@@ -561,7 +561,7 @@ export class LophocComponent implements OnInit {
       .getListPhongHoc()
       .pipe()
       .subscribe((res) => {
-        this.phonghocs = res.result.data;
+        this.phonghocs = res.result.data.filter(ph=>ph.TrangThai==1);
       });
   }
   TrangThaiKichHoat(event) {

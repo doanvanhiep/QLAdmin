@@ -71,6 +71,20 @@
 
     <!-- Nav Item -  -->
     <li class="nav-item" *ngIf="quyen == 'admin'">
+      <a class="nav-link" [routerLink]="['baonghi']" routerLinkActive="router-link-active">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Báo nghỉ</span></a>
+    </li>
+
+    <!-- Nav Item -  -->
+    <li class="nav-item" *ngIf="quyen == 'admin'">
+      <a class="nav-link" [routerLink]="['baobu']" routerLinkActive="router-link-active">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Báo bù</span></a>
+    </li>
+
+    <!-- Nav Item -  -->
+    <li class="nav-item" *ngIf="quyen == 'admin'">
       <a class="nav-link" [routerLink]="['phonghoc']" routerLinkActive="router-link-active">
         <i class="fas fa-fw fa-folder"></i>
         <span>Phòng học</span></a>

@@ -17,6 +17,8 @@ import { QuantrivienComponent } from "./quantrivien/quantrivien.component";
 import { NotFoundComponentComponent } from "./NotFoundComponent/NotFoundComponent.component";
 import { ThongtincanhanComponent } from "./thongtincanhan/thongtincanhan.component";
 import { ThongkeComponent } from "./thongke/thongke.component";
+import { BaonghiComponent } from "./baonghi/baonghi.component";
+import { BaobuComponent } from "./baobu/baobu.component";
 const routes: Routes = [
   { path: "", redirectTo: "dangnhap", pathMatch: "full" },
   { path: "dangnhap", component: LoginComponent },
@@ -67,6 +69,14 @@ const routes: Routes = [
       {
         path: "thongke",
         component: ThongkeComponent,
+      },
+      {
+        path: "baonghi",
+        component: BaonghiComponent,
+      },
+      {
+        path: "baobu",
+        component: BaobuComponent,
       },
     ],
     canActivate: [AuthGuardService],
