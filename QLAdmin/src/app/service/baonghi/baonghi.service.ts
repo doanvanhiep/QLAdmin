@@ -20,12 +20,12 @@ export class BaonghiService {
         return res;
       }));
   }
- /*  suaGiangVien(IDGiangVien, HoTen, DiaChi, SoDienThoai, Email, MoTa, HinhAnh, GhiChu) {
-    return this.http.put<any>(`${environment.apiUrl}/giangvien/sua/${IDGiangVien}`, { HoTen, DiaChi, SoDienThoai, Email, MoTa, HinhAnh, GhiChu })
+  suaBaoNghi(IDBaoNghi, IDLopHoc, IDPhongHoc, IDThongTinLopHoc, NgayNghi, GhiChu) {
+    return this.http.put<any>(`${environment.apiUrl}/baonghi/sua/${IDBaoNghi}`, { IDLopHoc, IDPhongHoc, IDThongTinLopHoc, NgayNghi, GhiChu })
       .pipe(map(res => {
         return res;
       }));
-  }*/
+  }
   suaTrangThaiBaoNghi(IDBaoNghi,TrangThai)
   {
     return this.http.put<any>(`${environment.apiUrl}/baonghi/suatrangthai`, { IDBaoNghi,TrangThai })

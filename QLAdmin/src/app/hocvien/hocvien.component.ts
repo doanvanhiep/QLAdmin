@@ -167,9 +167,9 @@ export class HocvienComponent implements OnInit {
     this.getListHocVien();
   }
   changeIDKhoaHoc(IDKhoaHoc) {
-    this.HocPhiLopHoc = "";
     this.f.TenLopHoc.setValue("");
     this.f.LopHoc.setValue("");
+    this.HocPhiLopHoc = "";
     this.listLopHoc = null;
     this.getListLopHocPhan(IDKhoaHoc);
   }
@@ -566,7 +566,7 @@ export class HocvienComponent implements OnInit {
     }
     else {
       this.getListLopHocPhan(this.idKhoaHoc);
-      this.getListLopHoc(this.idLopHocPhan); 
+      //this.getListLopHoc(this.idLopHocPhan); 
       this.f.KhoaHoc.disable();
       this.f.TenLopHoc.disable();
       this.f.LopHoc.disable();

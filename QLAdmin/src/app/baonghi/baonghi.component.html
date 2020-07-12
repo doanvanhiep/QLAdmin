@@ -16,36 +16,36 @@
           <div class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
               value="1" name="trangthaihoatdong">
-            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+            <label class="custom-control-label" for="kichhoat">Đã hoàn thành</label>
           </div>
           <div class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
               value="0" name="trangthaihoatdong">
-            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+            <label class="custom-control-label" for="chuakichhoat">Chưa hoàn thành</label>
           </div>
         </div>
         <div class="col-4">
           <h5>Giảng viên</h5>
-          <select [(ngModel)]="selectedGiangVien" #giangvien (change)="changeIDGiangVien(giangvien.value)"
+          <select [(ngModel)]="selectedGiangVien" #giangvien (change)="changeIDGiangVien()"
             name="something" class="form-control input-lg" id="selectthongtin">
             <option value="-1">
               Tất cả
             </option>
-            <!-- <option *ngFor="let gv of listGiangVien" value="{{gv.IDGiangVien}}">
-              {{gv.TenGiangVien}}
-            </option> -->
+            <option *ngFor="let gv of listGVFilter" value="{{gv.IDGiangVien}}">
+              {{gv.HoTen}}
+            </option>
           </select>
         </div>
         <div class="col-6">
           <h5>Lớp học</h5>
-          <select [(ngModel)]="selectedLopHoc" #lophoc (change)="changeIDLopHoc(lophoc.value)" name="something"
+          <select [(ngModel)]="selectedLopHoc" #lophoc (change)="changeIDLopHoc()" name="something"
             class="form-control input-lg" id="selectthongtinlh">
             <option value="-1">
               Tất cả
             </option>
-            <!-- <option *ngFor="let lh of listLopHoc" value="{{lh.IDLopHoc}}">
-              {{lh.ThongTin}}
-            </option> -->
+            <option *ngFor="let lh of listLHFilter" value="{{lh.IDLopHoc}}">
+              {{lh.LHP.TenLopHocPhan }} ( {{lh.MaLopHoc}} )
+            </option>
           </select>
         </div>
       </div>
