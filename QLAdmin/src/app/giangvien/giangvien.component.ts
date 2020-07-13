@@ -105,7 +105,19 @@ export class GiangvienComponent implements OnInit {
           alert(res.result.message);
           return;
         }
+<<<<<<< Updated upstream
         this.listGiangVien = res.result.data;
+=======
+        if (this.trangthaikichhoat == -1) {
+          this.listGiangVien = res.result.data;
+        } else {
+          let TrangThai = this.trangthaikichhoat;
+          this.listGiangVien = res.result.data.filter(
+            (gv) => gv.TrangThai == TrangThai
+          );
+        }
+        console.log(this.listGiangVien);
+>>>>>>> Stashed changes
       });
   }
   them() {
