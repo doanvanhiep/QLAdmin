@@ -16,49 +16,59 @@ import { LophocComponent } from "./lophoc/lophoc.component";
 import { GiangvienComponent } from "./giangvien/giangvien.component";
 import { PhonghocComponent } from "./phonghoc/phonghoc.component";
 import { ThoikhoabieuComponent } from "./thoikhoabieu/thoikhoabieu.component";
+import { DatePipe } from "@angular/common";
+import { DanhsachlophocComponent } from "./danhsachlophoc/danhsachlophoc.component";
+import { HocvienComponent } from "./hocvien/hocvien.component";
+import { NotFoundComponentComponent } from "./NotFoundComponent/NotFoundComponent.component";
+import { QuantrivienComponent } from "./quantrivien/quantrivien.component";
+import { ThongtincanhanComponent } from "./thongtincanhan/thongtincanhan.component";
 import { ThongkeComponent } from "./thongke/thongke.component";
-import { CackhoahocComponent } from "./ctthongke/cackhoahoc/cackhoahoc.component";
-import { DoanhthuComponent } from "./ctthongke/doanhthu/doanhthu.component";
-import { NgxPaginationModule } from "ngx-pagination";
-import { Ng2SearchPipeModule } from "ng2-search-filter";
-import { HocviendangkyComponent } from "./ctthongke/hocviendangky/hocviendangky.component";
-import { HocvienthanhtoanComponent } from "./ctthongke/hocvienthanhtoan/hocvienthanhtoan.component";
-import { DoanhthudangkyComponent } from "./ctthongke/doanhthudangky/doanhthudangky.component";
-
+import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
+import { DataTablesModule } from 'angular-datatables';
+import { BaonghiComponent } from './baonghi/baonghi.component';
+import { BaobuComponent } from './baobu/baobu.component';
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavigationComponent,
-    DasboardComponent,
-    LoginComponent,
-    KhoahocComponent,
-    LophocphanComponent,
-    LophocComponent,
-    GiangvienComponent,
-    PhonghocComponent,
-    ThoikhoabieuComponent,
-    ThongkeComponent,
-    CackhoahocComponent,
-    DoanhthuComponent,
-    HocviendangkyComponent,
-    HocvienthanhtoanComponent,
-    DoanhthudangkyComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ChartsModule,
-    NgxPaginationModule,
-    Ng2SearchPipeModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+   declarations: [
+      AppComponent,
+      NavigationComponent,
+      DasboardComponent,
+      LoginComponent,
+      KhoahocComponent,
+      LophocphanComponent,
+      LophocComponent,
+      GiangvienComponent,
+      PhonghocComponent,
+      ThoikhoabieuComponent,
+      DanhsachlophocComponent,
+      HocvienComponent,
+      NotFoundComponentComponent,
+      QuantrivienComponent,
+      ThongtincanhanComponent,
+      ThongkeComponent,
+      BaonghiComponent,
+      BaobuComponent
+   ],
+   imports: [
+      BrowserModule,
+      AppRoutingModule,
+      HttpClientModule,
+      FormsModule,
+      ReactiveFormsModule,
+      ChartsModule,
+      NgxSpinnerModule,
+      BrowserAnimationsModule,
+      ToastrModule.forRoot({
+         timeOut: 2000,
+         preventDuplicates: true
+      }),
+      DataTablesModule,
+   ],
+   providers: [
+      DatePipe,
+      { provide: HTTP_INTERCEPTORS, useClass: AuthorServiceService, multi: true }
+   ],
+   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { GiangvienService } from "../service/giangvien/giangvien.service";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UploadimageService } from "../service/upload/uploadimage.service";
 import { DynamicScriptLoaderServiceService } from "../../app/dynamic-script-loader-service.service";
-import { CustomValidators } from "../custom-validators";
+import { CheckrouteService } from "../service/checkroute/checkroute.service";
+import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-giangvien",
   templateUrl: "./giangvien.component.html",
@@ -23,12 +21,21 @@ export class GiangvienComponent implements OnInit {
   giangvienByID: any;
   fileSelected: File = null;
   IDGiangVien: any;
+  parentRouter: any;
+  trangthaikichhoat: any = -1;
   constructor(
+    private spinner: NgxSpinnerService,
+    private checkrouteService: CheckrouteService,
+    private router: Router,
     private formBuilder: FormBuilder,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
     private giangvienService: GiangvienService,
-    private uploadimage: UploadimageService
-  ) {}
+    private uploadimage: UploadimageService,
+    private toast: ToastrService
+  ) {
+    this.parentRouter = this.checkrouteService.getParentRouter();
+    if (this.parentRouter != "admin") this.router.navigate([this.parentRouter]);
+  }
 
   ngOnInit() {
     this.loadScripts();
@@ -38,44 +45,13 @@ export class GiangvienComponent implements OnInit {
   createForm() {
     this.btnedit = false;
     this.giangvienForm = this.formBuilder.group({
-      HoTen: new FormControl(
-        "",
-        Validators.compose([
-          Validators.required,
-          CustomValidators.patternValidator(
-            /[^0-9]+[^!@#$%^&*():;{}}{|/+=_><.,-\\]/,
-            {
-              isName: true,
-            }
-          ),
-        ])
-      ),
-      DiaChi: new FormControl("", Validators.required),
-      SoDienThoai: new FormControl(
-        "",
-        Validators.compose([
-          Validators.required,
-          CustomValidators.patternValidator(/^[0a-zA-Z].{9}$/g, {
-            isPhoneNumber: true,
-          }),
-        ])
-      ),
-      Email: new FormControl(
-        "",
-        Validators.compose([
-          Validators.required,
-          CustomValidators.patternValidator(
-            /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/,
-            {
-              isEmail: true,
-            }
-          ),
-        ])
-      ),
+      HoTen: "",
+      DiaChi: "",
+      SoDienThoai: "",
+      Email: "",
       MoTa: "",
       HinhAnh: "",
       GhiChu: "",
-      TrangThai: "",
     });
     document.getElementById("nameoffile").innerHTML =
       "Không có tệp nào được chọn";
@@ -98,16 +74,13 @@ export class GiangvienComponent implements OnInit {
   }
   getListGiangVien() {
     this.giangvienService
-      .getListGiangVien()
+      .getListAllGiangVien()
       .pipe()
       .subscribe((res) => {
         if (res.result.error === true) {
           alert(res.result.message);
           return;
         }
-<<<<<<< Updated upstream
-        this.listGiangVien = res.result.data;
-=======
         if (this.trangthaikichhoat == -1) {
           this.listGiangVien = res.result.data;
         } else {
@@ -116,11 +89,50 @@ export class GiangvienComponent implements OnInit {
             (gv) => gv.TrangThai == TrangThai
           );
         }
-        console.log(this.listGiangVien);
->>>>>>> Stashed changes
       });
   }
+  checkForm() {
+    if (this.f.HoTen.value == "") {
+      this.toast.error("Vui lòng nhập họ và tên của giảng viên!", "Thông báo");
+      return false;
+    }
+    if (this.f.SoDienThoai.value == "") {
+      this.toast.error("Vui lòng nhập số điện thoại!", "Thông báo");
+      return false;
+    }
+    if (!this.f.SoDienThoai.value.match(/(0)+([0-9]{9})\b/g)) {
+      this.toast.error(
+        "Vui lòng nhập số điện thoại đúng định dạng!",
+        "Thông báo"
+      );
+      return false;
+    }
+    if (this.f.Email.value == "") {
+      this.toast.error("Vui lòng nhập email!", "Thông báo");
+      return false;
+    }
+    if (
+      !this.f.Email.value.match(
+        /[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?\.)+[a-z0-9A-Z](?:[a-z0-9A-Z]*[a-z0-9A-Z])?/
+      )
+    ) {
+      this.toast.error("Vui lòng nhập mail đúng định dạng!", "Thông báo");
+      return false;
+    }
+    return true;
+  }
+  checkFileHinh() {
+    if (this.fileSelected == null) {
+      this.toast.error("Vui lòng chọn hình ảnh!", "Thông báo");
+      return false;
+    }
+    return true;
+  }
   them() {
+    if (!this.checkForm() || !this.checkFileHinh()) {
+      return;
+    }
+    this.spinner.show();
     this.uploadimage
       .uploadimage(this.fileSelected)
       .pipe()
@@ -137,17 +149,22 @@ export class GiangvienComponent implements OnInit {
           )
           .pipe()
           .subscribe((res) => {
+            this.spinner.hide();
             if (res.TrangThai.error === true) {
               alert(res.TrangThai.message);
               return;
             }
-            alert("Thêm thành công");
             this.getListGiangVien();
           });
+        this.toast.success("Thêm thành công!", "Thông báo");
         this.closebutton.nativeElement.click();
       });
   }
   sua() {
+    if (!this.checkForm()) {
+      return;
+    }
+    this.spinner.show();
     var idImg = document.getElementById("nameoffile").textContent;
     if (idImg === this.giangvienByID.HinhAnh) {
       this.giangvienService
@@ -163,13 +180,14 @@ export class GiangvienComponent implements OnInit {
         )
         .pipe()
         .subscribe((res) => {
+          this.spinner.hide();
           if (res.TrangThai.error === true) {
             alert(res.TrangThai.message);
             return;
           }
-          alert("Sửa thành công");
           this.getListGiangVien();
           this.closebutton.nativeElement.click();
+          this.toast.success("Sửa thành công!", "Thông báo");
         });
     } else {
       this.uploadimage
@@ -189,11 +207,12 @@ export class GiangvienComponent implements OnInit {
             )
             .pipe()
             .subscribe((res) => {
+              this.spinner.hide();
               if (res.TrangThai.error === true) {
                 alert(res.TrangThai.message);
                 return;
               }
-              alert("Sửa thành công");
+              this.toast.success("Sửa thành công!", "Thông báo");
               this.getListGiangVien();
               this.closebutton.nativeElement.click();
             });
@@ -209,7 +228,7 @@ export class GiangvienComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Xóa thành công");
+        this.toast.success("Xóa thành công!", "Thông báo");
         this.getListGiangVien();
       });
     this.closebuttondelete.nativeElement.click();
@@ -240,7 +259,22 @@ export class GiangvienComponent implements OnInit {
       "Không có tệp nào được chọn";
     this.fileSelected = null;
   }
-
+  changeTrangThai(event) {
+    var target = event.target || event.srcElement || event.currentTarget;
+    var idAttr = target.attributes.id.value.split("-")[1];
+    this.getGiangVienByID(idAttr);
+    let TrangThai = target.checked ? 1 : 0;
+    this.giangvienService
+      .suaTrangThaiGiangVien(+idAttr, TrangThai)
+      .pipe()
+      .subscribe((res) => {
+        //console.log(res);
+      });
+  }
+  TrangThaiKichHoat(event) {
+    this.trangthaikichhoat = event.target.value;
+    this.getListGiangVien();
+  }
   //load script
   private loadScripts() {
     // You can load multiple scripts by just providing the key as argument into load method of the service
@@ -265,8 +299,5 @@ export class GiangvienComponent implements OnInit {
           .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
-  }
-  checkValue(value: any) {
-    alert(value.currentTarget.checked);
   }
 }

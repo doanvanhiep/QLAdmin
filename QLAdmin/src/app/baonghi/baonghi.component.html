@@ -1,0 +1,198 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Danh sách báo nghỉ
+      </h1>
+      <div class="row">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="-1" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="1" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đã hoàn thành</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="0" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa hoàn thành</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <h5>Giảng viên</h5>
+          <select [(ngModel)]="selectedGiangVien" #giangvien (change)="changeIDGiangVien()"
+            name="something" class="form-control input-lg" id="selectthongtin">
+            <option value="-1">
+              Tất cả
+            </option>
+            <option *ngFor="let gv of listGVFilter" value="{{gv.IDGiangVien}}">
+              {{gv.HoTen}}
+            </option>
+          </select>
+        </div>
+        <div class="col-6">
+          <h5>Lớp học</h5>
+          <select [(ngModel)]="selectedLopHoc" #lophoc (change)="changeIDLopHoc()" name="something"
+            class="form-control input-lg" id="selectthongtinlh">
+            <option value="-1">
+              Tất cả
+            </option>
+            <option *ngFor="let lh of listLHFilter" value="{{lh.IDLopHoc}}">
+              {{lh.LHP.TenLopHocPhan }} ( {{lh.MaLopHoc}} )
+            </option>
+          </select>
+        </div>
+      </div>
+      <button (click)="ThemBaoNghi()" class="btn btn-success" data-toggle="modal" data-target="#baonghiModal">Thêm
+        báo nghỉ</button>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Tên giảng viên</th>
+                  <th>Lớp học</th>
+                  <th>Buổi nghỉ</th>
+                  <th>Ngày nghỉ</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Tên giảng viên</th>
+                  <th>Lớp học</th>
+                  <th>Buổi nghỉ</th>
+                  <th>Ngày nghỉ</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              <tr *ngFor="let bn of listBaoNghi">
+              <td id="{{bn ? bn.IDBaoNghi:-1}}">{{bn ? bn.GiangVien:""}}</td>
+              <td id="{{bn ? bn.IDBaoNghi:-1}}">{{bn ? bn.TenLopHocPhan:""}} ({{bn ? bn.MaLopHoc:""}})</td>
+              <td id="{{bn ? bn.IDBaoNghi:-1}}">{{bn ? bn.Thu :""}} - {{bn ? bn.CaHoc:""}}</td>
+              <td id="{{bn ? bn.IDBaoNghi:-1}}">{{bn ? bn.NgayNghi:""}}</td>
+              <td id="{{bn ? bn.IDBaoNghi:-1}}">{{bn ? bn.GhiChu:""}}</td>
+              <td align="center" id="{{bn ? bn.IDBaoNghi:-1}}">
+              <div class="custom-control custom-checkbox">
+              <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+              id="tt-{{bn ? bn.IDBaoNghi:-1}}"
+              [checked]="bn ? (bn.TrangThai==1?true:false):false">
+              <label class="custom-control-label" for="tt-{{bn ? bn.IDBaoNghi:-1}}"></label>
+              </div>
+              </td>
+              <td align="center" id="{{bn ? bn.IDBaoNghi:-1}}">
+              <div>
+              <a (click)="suaBaoNghi($event)" id="{{bn ? bn.IDBaoNghi:-1}}" data-toggle="modal"
+              data-target="#baonghiModal" class="fas fa-edit marginicon"></a>
+              <a (click)="xoaBaoNghi($event)" id="{{bn ? bn.IDBaoNghi:-1}}" data-toggle="modal"
+              data-target="#xoabaonghiModal" class="fas fa-trash-alt marginicon"></a>
+              </div>
+              </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->
+</div>
+<!-- them buoi nghi Modal -->
+<div class="modal fade" id="baonghiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Báo nghỉ</h5>
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="baonghiForm">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="txt-hoten-name">Họ tên :</label>
+                <select #giangvienForm (change)="changeIDGiangVienForm(giangvienForm.value)"  class="form-control input-lg" formControlName="HoTen">
+                  <option *ngFor="let gv of listGiangVien" value="{{gv.IDGiangVien}}">
+                    {{gv.HoTen}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="txt-nn-name">Ngày nghỉ: </label>
+                <input type="date" class="form-control" name="txt-sdt-name" formControlName="NgayNghi">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt-lop-name">Lớp :</label>
+            <select #lophocForm (change)="changeIDLopHocForm(lophocForm.value)" class="form-control input-lg" formControlName="Lop">
+              <option *ngFor="let lh of listLopHoc" value="{{lh.IDLopHoc}}">
+                {{lh.LHP.TenLopHocPhan }} ( {{lh.MaLopHoc}} )
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txt-buoi-name">Buổi :</label>
+            <select class="form-control input-lg" formControlName="Buoi">
+              <option *ngFor="let buoi of listBuoi" value="{{buoi.IDThongTinLopHoc}}">
+                {{buoi.Thu}} - {{buoi.CaHoc}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txt-ghichulhp-name">Ghi chú: </label>
+            <textarea class="form-control" name="txt-ghichulhp-name" formControlName="GhiChu"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- xóa giang vien -->
+<div class="modal fade" id="xoabaonghiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa báo nghỉ</h5>
+        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có thật sự muốn xóa báo nghỉ này. Nếu xóa thì toàn bộ dữ liệu liên quan sẽ bị xóa</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-danger" (click)="xoa()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>

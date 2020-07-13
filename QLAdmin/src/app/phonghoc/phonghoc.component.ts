@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DynamicScriptLoaderServiceService } from "../../app/dynamic-script-loader-service.service";
 import { PhonghocService } from "../service/phonghoc/phonghoc.service";
+import { CheckrouteService } from "../service/checkroute/checkroute.service";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-phonghoc",
@@ -21,12 +18,19 @@ export class PhonghocComponent implements OnInit {
   listPhongHoc: any;
   phonghocByID: any;
   IDPhongHoc: any;
+  parentRouter: any;
+  trangthaikichhoat: any = -1;
   constructor(
+    private checkrouteService: CheckrouteService,
+    private router: Router,
     private formBuilder: FormBuilder,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
     private phonghocService: PhonghocService,
     private toast: ToastrService
-  ) {}
+  ) {
+    this.parentRouter = this.checkrouteService.getParentRouter();
+    if (this.parentRouter != "admin") this.router.navigate([this.parentRouter]);
+  }
 
   ngOnInit() {
     this.loadScripts();
@@ -36,10 +40,9 @@ export class PhonghocComponent implements OnInit {
   createForm() {
     this.btnedit = false;
     this.phonghocForm = this.formBuilder.group({
-      TenPhong: new FormControl("", Validators.required),
-      SoChoNgoi: new FormControl("", Validators.required),
+      TenPhong: "",
+      SoChoNgoi: "",
       GhiChu: "",
-      TrangThai: new FormControl("false"),
     });
   }
   editForm(phonghocByID) {
@@ -62,10 +65,20 @@ export class PhonghocComponent implements OnInit {
           alert(res.result.message);
           return;
         }
-        this.listPhongHoc = res.result.data;
+        if (this.trangthaikichhoat == -1) {
+          this.listPhongHoc = res.result.data;
+        } else {
+          let TrangThai = this.trangthaikichhoat;
+          this.listPhongHoc = res.result.data.filter(
+            (qtv) => qtv.TrangThai == TrangThai
+          );
+        }
       });
   }
   them() {
+    if (!this.checkForm()) {
+      return;
+    }
     this.phonghocService
       .themPhongHoc(
         this.f.TenPhong.value,
@@ -78,16 +91,15 @@ export class PhonghocComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        this.toast.success("some messenge", "title", {
-          timeOut: 3000,
-          progressBar: false,
-        });
-
+        this.toast.success("Thêm thành công!", "Thông báo");
         this.getListPhongHoc();
       });
     this.closebutton.nativeElement.click();
   }
   sua() {
+    if (!this.checkForm()) {
+      return;
+    }
     this.phonghocService
       .suaPhongHoc(
         this.phonghocByID.IDPhongHoc,
@@ -101,10 +113,21 @@ export class PhonghocComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        alert("Sửa thành công");
+        this.toast.success("Sửa thành công!", "Thông báo");
         this.getListPhongHoc();
       });
     this.closebutton.nativeElement.click();
+  }
+  checkForm() {
+    if (this.f.TenPhong.value == "") {
+      this.toast.error("Vui lòng nhập tên phòng học!", "Thông báo");
+      return false;
+    }
+    if (this.f.SoChoNgoi.value == "" || this.f.SoChoNgoi.value == null) {
+      this.toast.error("Vui lòng nhập số chỗ ngồi!", "Thông báo");
+      return false;
+    }
+    return true;
   }
   xoa() {
     this.phonghocService
@@ -115,10 +138,7 @@ export class PhonghocComponent implements OnInit {
           alert(res.TrangThai.message);
           return;
         }
-        this.toast.success("Đã xóa", "Thông báo", {
-          timeOut: 3000,
-          progressBar: false,
-        });
+        this.toast.success("Xóa thành công!", "Thông báo");
         this.getListPhongHoc();
       });
     this.closebuttondelete.nativeElement.click();
@@ -138,6 +158,22 @@ export class PhonghocComponent implements OnInit {
     var target = event.target || event.srcElement || event.currentTarget;
     var idAttr = target.attributes.id.value;
     this.IDPhongHoc = +idAttr;
+  }
+  changeTrangThai(event) {
+    var target = event.target || event.srcElement || event.currentTarget;
+    var idAttr = target.attributes.id.value.split("-")[1];
+    this.getPhongHocByID(idAttr);
+    let TrangThai = target.checked ? 1 : 0;
+    this.phonghocService
+      .suaTrangThai(+idAttr, TrangThai)
+      .pipe()
+      .subscribe((res) => {
+        //console.log(res);
+      });
+  }
+  TrangThaiKichHoat(event) {
+    this.trangthaikichhoat = event.target.value;
+    this.getListPhongHoc();
   }
   //load script
   private loadScripts() {
@@ -163,11 +199,5 @@ export class PhonghocComponent implements OnInit {
           .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
-  }
-  FieldsChange(values: any) {
-    console.log(values.currentTarget.checked);
-  }
-  checkValue(value: any) {
-    alert(value.currentTarget.checked);
   }
 }

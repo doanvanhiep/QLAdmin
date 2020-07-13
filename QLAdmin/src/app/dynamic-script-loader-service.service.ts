@@ -56,7 +56,6 @@ export class DynamicScriptLoaderServiceService {
         script.onerror = (error: any) => resolve({ script: name, loaded: false, status: 'Loaded' });
         document.getElementsByTagName('head')[0].appendChild(script);
       } else {
-        console.log("Đã load rồi");
         resolve({ script: name, loaded: true, status: 'Already Loaded' });
       }
     });

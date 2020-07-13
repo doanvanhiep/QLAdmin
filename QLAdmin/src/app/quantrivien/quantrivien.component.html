@@ -1,0 +1,173 @@
+<ngx-spinner bdColor = "rgba(0,0,0,0.8)" size = "medium" color = "#0a56d5" type = "ball-clip-rotate" [fullScreen] = "true"><p style="color: white" > Đang tải </p></ngx-spinner>
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Danh sách quản trị viên
+      </h1>
+      <div class="row">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="-1" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="1" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="0" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+          </div>
+        </div>
+      </div>
+      <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#quantrivienModal">Thêm
+        quản trị viên</button>
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Họ tên</th>
+                  <th>Địa chỉ</th>
+                  <th>Số điện thoại</th>
+                  <th>Email</th>
+                  <th>Hình ảnh</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Họ tên</th>
+                  <th>Địa chỉ</th>
+                  <th>Số điện thoại</th>
+                  <th>Email</th>
+                  <th>Hình ảnh</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr *ngFor="let qtv of listQuanTriVien">
+                  <td >{{qtv ? qtv.HoTen:""}}</td>
+                  <td >{{qtv ? qtv.DiaChi:""}}</td>
+                  <td >{{qtv ? qtv.SoDienThoai:""}}</td>
+                  <td >{{qtv ? qtv.Email:""}}</td>
+                  <td ><img height="100px" width="100px"
+                      src="https://drive.google.com/uc?id={{qtv ? qtv.HinhAnh:''}}">
+                  <td >{{qtv ? qtv.GhiChu:""}}</td>
+                  <td align="center" id="{{qtv ? qtv.IDQuanTri:-1}}">
+                    <div class="custom-control custom-checkbox">
+                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+                        id="tt-{{qtv ? qtv.IDQuanTri:-1}}"
+                        [checked]="qtv ? (qtv.TrangThai==1?true:false):false">
+                      <label class="custom-control-label" for="tt-{{qtv ? qtv.IDQuanTri:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center" >
+                    <div>
+                      <a (click)="suaQuanTriVien($event)" id="{{qtv ? qtv.IDQuanTri:-1}}" data-toggle="modal"
+                        data-target="#quantrivienModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaQuanTriVien($event)" id="{{qtv ? qtv.IDQuanTri:-1}}" data-toggle="modal"
+                        data-target="#xoaquantrivienModal" class="fas fa-trash-alt marginicon"></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- End of Main Content -->
+</div>
+<!-- them lớp học phần Modal -->
+<div class="modal fade" id="quantrivienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Quản trị viên</h5>
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="quantrivienForm">
+          <div class="form-group">
+            <label for="txt-hoten-name">Họ tên: </label>
+            <input type="text" class="form-control" name="txt-hoten-name" formControlName="HoTen">
+          </div>
+          <div class="form-group">
+            <label for="txt-sdt-name">Số điện thoại: </label>
+            <input type="text" class="form-control" name="txt-sdt-name" formControlName="SoDienThoai">
+          </div>
+          <div class="form-group">
+            <label for="txt-email-name">Email: </label>
+            <input type="text" class="form-control" name="txt-email-name" formControlName="Email">
+          </div>
+          <div class="form-group">
+            <label for="txt-diachi-name">Địa chỉ: </label>
+            <input type="text" class="form-control" name="txt-diachi-name" formControlName="DiaChi">
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Hình ảnh</span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)" accept="image/*">
+                <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
+                  có tệp nào được chọn</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt-ghichulhp-name">Ghi chú: </label>
+            <input type="text" class="form-control" name="txt-ghichulhp-name" formControlName="GhiChu">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- xóa giang vien -->
+<div class="modal fade" id="xoaquantrivienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa quản trị viên</h5>
+        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có thật sự muốn xóa quản trị viên này. Nếu bạn xóa thì toàn bộ những thông tin liên quan đến quản trị viên này
+          sẽ bị xóa</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-danger" (click)="xoa()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>

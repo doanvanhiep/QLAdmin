@@ -1,33 +1,59 @@
 import { Component, OnInit } from '@angular/core';
 import { ThoikhoabieuService } from '../service/thoikhoabieu/thoikhoabieu.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
+import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import {GiangvienService} from '../service/giangvien/giangvien.service';
+import { ToastrService } from "ngx-toastr";   
 @Component({
     selector: 'app-thoikhoabieu',
     templateUrl: './thoikhoabieu.component.html',
     styleUrls: ['./thoikhoabieu.component.css']
 })
 export class ThoikhoabieuComponent implements OnInit {
-
+    idGiangVien:any=-1;
+    parentRouter: any = "admin";
     numberweekofyear: any;
     numbercurrentofweek: any;
     begindate: any;
     enddate: any;
     thoikhoabieu: any;
     constructor(
+        private giangvienService:GiangvienService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private checkrouteService: CheckrouteService,
+        private datepipe: DatePipe,
         private thoikhoabieuServer: ThoikhoabieuService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
-    ) { }
+        private toast: ToastrService
+    ) { this.checkRoute(); }
 
     ngOnInit() {
         this.numberweekofyear = Array.from(Array(52).keys());
         this.getCurrentNumberofWeek();
         this.getBeginAndEndDate(this.numbercurrentofweek);
-        this.getThoiKhoaBieu(1);
+        this.giangvienService.getGiangVienByTenTaiKhoan()
+        .pipe()
+        .subscribe(res=>{
+            if(res.result.error)
+            {
+                this.toast.show("Hiện tại không thể truy cập thời khóa biểu.Liên hệ quản trị để được xử lý!", "Thông báo");
+                return;
+            }
+            else
+            {
+                this.idGiangVien=res.result.data[0].IDGiangVien;
+                this.getThoiKhoaBieu(this.idGiangVien, this.begindate, this.enddate);
+            }
+        });
         this.loadScripts();
     }
     getWeek(event) {
         this.numbercurrentofweek = +event;
         this.getBeginAndEndDate(this.numbercurrentofweek);
+        this.getThoiKhoaBieu(this.idGiangVien, this.begindate, this.enddate);
     }
     getCurrentNumberofWeek() {
         var date = new Date();
@@ -47,26 +73,26 @@ export class ThoikhoabieuComponent implements OnInit {
         beinDate.setDate(beinDate.getDate() - 6)
         this.begindate = beinDate;
     }
-    getThoiKhoaBieu(IDGiangVien) {
-        this.thoikhoabieuServer.getThoiKhoaBieu(IDGiangVien)
+    getThoiKhoaBieu(IDGiangVien, begindate, enddate) {
+        if(IDGiangVien<1)
+        return;
+        this.thoikhoabieuServer.getThoiKhoaBieu(IDGiangVien, this.datepipe.transform(begindate, "yyyy-MM-dd"), this.datepipe.transform(enddate, "yyyy-MM-dd"))
             .pipe()
             .subscribe(res => {
                 this.thoikhoabieu = res.result.data;
-                console.log(this.thoikhoabieu);
             })
+    }
+    checkRoute() {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        this.activatedRoute.parent.url.subscribe((urlPath) => {
+            const url = urlPath[urlPath.length - 1].path;
+            if (this.parentRouter != url)
+                this.router.navigate([this.parentRouter]);
+        })
     }
     //load script
     private loadScripts() {
-        // You can load multiple scripts by just providing the key as argument into load method of the service
-        this.dynamicScriptLoader.load('jquerydataTablesminjs').then(data => {
-            // You can load multiple scripts by just providing the key as argument into load method of the service
-            this.dynamicScriptLoader.load('dataTablesbootstrap4minjs').then(data => {
-                // You can load multiple scripts by just providing the key as argument into load method of the service
-                this.dynamicScriptLoader.load('datatablesdemojs').then(data => {
-                    this.dynamicScriptLoader.load('sbadmin2minjs').then(data => {
-                    }).catch(error => console.log(error));
-                }).catch(error => console.log(error));
-            }).catch(error => console.log(error));
+        this.dynamicScriptLoader.load('sbadmin2minjs').then(data => {
         }).catch(error => console.log(error));
     }
 }

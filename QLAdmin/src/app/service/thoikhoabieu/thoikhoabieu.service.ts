@@ -8,8 +8,8 @@ import { map } from 'rxjs/operators';
 export class ThoikhoabieuService {
 
 constructor(private http: HttpClient) { }
-getThoiKhoaBieu(IDGiangVien) {
-  return this.http.get<any>(`${environment.apiUrl}/thongtinlophoc/thoikhoabieu/${IDGiangVien}`)
+getThoiKhoaBieu(IDGiangVien,NgayDauTuan,NgayCuoiTuan) {
+  return this.http.get<any>(`${environment.apiUrl}/thongtinlophoc/thoikhoabieu/${IDGiangVien}/${NgayDauTuan}/${NgayCuoiTuan}`)
     .pipe(map(res => {
       return res;
     }));

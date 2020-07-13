@@ -4,6 +4,7 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
+<<<<<<< HEAD
       <h1 class="h3 mb-2 text-gray-800">Danh sách học viên</h1>
       <div class="row" *ngIf="!isGiangVien && !allhocvien">
         <div class="col-2">
@@ -46,10 +47,30 @@
             <label class="custom-control-label" for="chuakichhoat"
               >Chưa kích hoạt</label
             >
+=======
+      <h1 class="h3 mb-2 text-gray-800">Danh sách học viên </h1>
+      <div class="row" *ngIf="!isGiangVien && !allhocvien">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="tatcakichhoat" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="kichhoat" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="chuakichhoat" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+>>>>>>> master
           </div>
         </div>
         <div class="col-2">
           <div class="custom-control custom-radio">
+<<<<<<< HEAD
             <input
               type="radio"
               class="custom-control-input"
@@ -89,10 +110,26 @@
             <label class="custom-control-label" for="chuathanhtoan"
               >Chưa thanh toán</label
             >
+=======
+            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="-1"
+              id="trangthaitatca" name="trangthaithanhtoan" checked>
+            <label class="custom-control-label" for="trangthaitatca">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="0"
+              id="chuathanhtoan" name="trangthaithanhtoan">
+            <label class="custom-control-label" for="chuathanhtoan">Chưa thanh toán</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="1"
+              id="dathanhtoan" name="trangthaithanhtoan">
+            <label class="custom-control-label" for="dathanhtoan">Đã thanh toán</label>
+>>>>>>> master
           </div>
         </div>
         <div class="col-3">
           <div class="custom-control custom-radio">
+<<<<<<< HEAD
             <input
               type="radio"
               class="custom-control-input"
@@ -129,10 +166,26 @@
             <label class="custom-control-label" for="trungtam"
               >Thanh toán trung tâm</label
             >
+=======
+            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="tatca"
+              value="tatca" name="phuongthuc" checked>
+            <label class="custom-control-label" for="tatca">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="momo"
+              value="momo" name="phuongthuc">
+            <label class="custom-control-label" for="momo">Thanh toán momo</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="trungtam"
+              value="trungtam" name="phuongthuc">
+            <label class="custom-control-label" for="trungtam">Thanh toán trung tâm</label>
+>>>>>>> master
           </div>
         </div>
       </div>
       <div>
+<<<<<<< HEAD
         <button
           *ngIf="!isGiangVien"
           style="margin-right: 5px;"
@@ -161,11 +214,21 @@
           *ngIf="allhocvien"
         />
         <label for="allhv" *ngIf="allhocvien">Tất cả học viên</label>
+=======
+        <button *ngIf=!isGiangVien style="margin-right: 5px;" (click)="themHocVien()" class="btn btn-success"
+          data-toggle="modal" data-target="#hocvienModal">Thêm học viên</button>
+        <button (click)="guiMailLop()" class="btn btn-success" data-toggle="modal" data-target="#sendMailModal"
+          style="margin-right: 5px;">Gửi mail</button>
+        <input type="checkbox" name="allhv" id="" style="margin-right: 5px;" (change)="changeAllHocVien()"
+          *ngIf=allhocvien>
+        <label for="allhv" *ngIf=allhocvien>Tất cả học viên</label>
+>>>>>>> master
       </div>
       <!-- DataTales Example -->
       <div class="card shadow mb-4">
         <div class="card-body">
           <div class="table-responsive">
+<<<<<<< HEAD
             <table
               class="table table-bordered"
               id="dataTable"
@@ -175,17 +238,30 @@
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
             >
+=======
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+>>>>>>> master
               <thead>
                 <tr>
                   <th>Tên học viên</th>
                   <th>Số điện thoại</th>
                   <th>Email</th>
+<<<<<<< HEAD
                   <th *ngIf="!isGiangVien">Thời gian đăng kí</th>
                   <th *ngIf="!isGiangVien">Hình thức thanh toán</th>
                   <th *ngIf="!isGiangVien">Số tiền</th>
                   <th *ngIf="!isGiangVien">Trạng thái thanh toán</th>
                   <th *ngIf="!isGiangVien">Trạng thái</th>
                   <th *ngIf="!isGiangVien">Hành động</th>
+=======
+                  <th *ngIf=!isGiangVien>Thời gian đăng kí</th>
+                  <th *ngIf=!isGiangVien>Hình thức thanh toán</th>
+                  <th *ngIf=!isGiangVien>Số tiền</th>
+                  <th *ngIf=!isGiangVien>Trạng thái thanh toán</th>
+                  <th *ngIf=!isGiangVien>Trạng thái</th>
+                  <th *ngIf=!isGiangVien>Hành động</th>
+>>>>>>> master
                   <th>Gửi mail</th>
                 </tr>
               </thead>
@@ -194,17 +270,27 @@
                   <th>Tên học viên</th>
                   <th>Số điện thoại</th>
                   <th>Email</th>
+<<<<<<< HEAD
                   <th *ngIf="!isGiangVien">Thời gian đăng kí</th>
                   <th *ngIf="!isGiangVien">Hình thức thanh toán</th>
                   <th *ngIf="!isGiangVien">Số tiền</th>
                   <th *ngIf="!isGiangVien">Trạng thái thanh toán</th>
                   <th *ngIf="!isGiangVien">Trạng thái</th>
                   <th *ngIf="!isGiangVien">Hành động</th>
+=======
+                  <th *ngIf=!isGiangVien>Thời gian đăng kí</th>
+                  <th *ngIf=!isGiangVien>Hình thức thanh toán</th>
+                  <th *ngIf=!isGiangVien>Số tiền</th>
+                  <th *ngIf=!isGiangVien>Trạng thái thanh toán</th>
+                  <th *ngIf=!isGiangVien>Trạng thái</th>
+                  <th *ngIf=!isGiangVien>Hành động</th>
+>>>>>>> master
                   <th>Gửi mail</th>
                 </tr>
               </tfoot>
               <tbody>
                 <tr *ngFor="let hv of listHocVien">
+<<<<<<< HEAD
                   <td>{{ hv ? hv.TenHocVien : "" }}</td>
                   <td>{{ hv ? hv.SoDienThoai : "" }}</td>
                   <td>{{ hv ? hv.Email : "" }}</td>
@@ -296,6 +382,41 @@
                     >
                       Gửi mail
                     </button>
+=======
+                  <td>{{hv ? hv.TenHocVien:""}}</td>
+                  <td>{{hv ? hv.SoDienThoai:""}}</td>
+                  <td>{{hv ? hv.Email:""}}</td>
+                  <td *ngIf=!isGiangVien>{{hv ? hv.ThoiGianDangKi:""}}</td>
+                  <td *ngIf=!isGiangVien>{{hv ? hv.HinhThucThanhToan:""}}</td>
+                  <td *ngIf=!isGiangVien>{{hv ? hv.SoTien:""}}</td>
+                  <td align="center" *ngIf=!isGiangVien>
+                    <div class="custom-control custom-checkbox">
+                      <input (change)="changeTrangThaiThanhToan($event)" type="checkbox" class="custom-control-input"
+                        id="tttt-{{hv ? hv.IDHocVien:-1}}" [checked]="hv ? (hv.TrangThaiThanhToan==1?true:false):false">
+                      <label class="custom-control-label" for="tttt-{{hv ? hv.IDHocVien:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center" *ngIf=!isGiangVien>
+                    <div class="custom-control custom-checkbox">
+                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+                        id="tt-{{hv ? hv.IDHocVien:-1}}" [checked]="hv ? (hv.TrangThai==1?true:false):false">
+                      <label class="custom-control-label" for="tt-{{hv ? hv.IDHocVien:-1}}"></label>
+                    </div>
+                  </td>
+                  <td align="center" id="{{hv ? hv.IDHocVien:-1}}" *ngIf=!isGiangVien>
+                    <div>
+                      <a (click)="xemHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
+                        data-target="#hocvienModal" class="fas fa-clipboard marginicon"></a>
+                      <a (click)="suaHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
+                        data-target="#hocvienModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaHocVien($event)" id="{{hv ? hv.IDHocVien:-1}}" data-toggle="modal"
+                        data-target="#xoahocvienModal" class="fas fa-trash-alt marginicon"></a>
+                    </div>
+                  </td>
+                  <td align="center">
+                    <button id="{{hv ? hv.IDHocVien:-1}}" (click)="guiMailCaNhan($event)" class="btn btn-success"
+                      data-toggle="modal" data-target="#sendMailModal">Gửi mail</button>
+>>>>>>> master
                   </td>
                 </tr>
               </tbody>
@@ -305,11 +426,16 @@
       </div>
     </div>
     <!-- /.container-fluid -->
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
   </div>
   <!-- End of Main Content -->
 </div>
 
 <!-- them lớp học phần Modal -->
+<<<<<<< HEAD
 <div
   class="modal fade"
   id="hocvienModal"
@@ -318,10 +444,15 @@
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
+=======
+<div class="modal fade" id="hocvienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+>>>>>>> master
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Học viên</h5>
+<<<<<<< HEAD
         <button
           class="close"
           type="button"
@@ -329,6 +460,9 @@
           data-dismiss="modal"
           aria-label="Close"
         >
+=======
+        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+>>>>>>> master
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -336,6 +470,7 @@
         <form [formGroup]="hocvienForm">
           <div class="form-group">
             <label for="txt-tenhocvien-name">Tên học viên: </label>
+<<<<<<< HEAD
             <input
               type="text"
               class="form-control"
@@ -372,12 +507,30 @@
               name="something1"
             >
               <option *ngFor="let kh of listKhoaHoc" value="{{ kh.IDKhoaHoc }}">
+=======
+            <input type="text" class="form-control" name="txt-tenhocvien-name" formControlName="TenHocVien">
+          </div>
+          <div class="form-group">
+            <label for="txt-sdt-name">Số điện thoại: </label>
+            <input type="text" class="form-control" name="txt-sdt-name" formControlName="SoDienThoai">
+          </div>
+          <div class="form-group">
+            <label for="txt-email-name">Email: </label>
+            <input type="email" class="form-control" name="txt-email-name" formControlName="Email">
+          </div>
+          <div class="form-group">
+            <label for="txt-khoahoc-name">Khóa học: </label>
+            <select class="form-control" name="txt-khoahoc-name" formControlName="KhoaHoc" #t
+              (change)="changeIDKhoaHoc(t.value)" name="something1">
+              <option *ngFor="let kh of listKhoaHoc" value="{{kh.IDKhoaHoc}}">
+>>>>>>> master
                 {{ kh.TenKhoaHoc }}
               </option>
             </select>
           </div>
           <div class="form-group">
             <label for="txt-tenlophoc-name">Tên lớp học: </label>
+<<<<<<< HEAD
             <select
               class="form-control"
               name="txt-tenlophoc-name"
@@ -390,17 +543,26 @@
                 *ngFor="let lhp of listLopHocPhan"
                 value="{{ lhp.IDLopHocPhan }}"
               >
+=======
+            <select class="form-control" name="txt-tenlophoc-name" formControlName="TenLopHoc" #lhp
+              (change)="changeIDLopHocPhan(lhp.value)" name="something12">
+              <option *ngFor="let lhp of listLopHocPhan" value="{{ lhp.IDLopHocPhan }}">
+>>>>>>> master
                 {{ lhp.TenLopHocPhan }}
               </option>
             </select>
           </div>
           <div class="form-group" style="overflow-x: auto;">
             <label for="txt-lophoc-name">Lớp học: </label>
+<<<<<<< HEAD
             <select
               class="form-control"
               name="txt-lophoc-name"
               formControlName="LopHoc"
             >
+=======
+            <select class="form-control" name="txt-lophoc-name" formControlName="LopHoc">
+>>>>>>> master
               <option *ngFor="let lh of listLopHoc" value="{{ lh.IDLopHoc }}">
                 {{ lh.ThongTinLopHoc }}
               </option>
@@ -408,6 +570,7 @@
           </div>
           <div class="form-group">
             <label for="txt-hocphi-name">Học phí: </label>
+<<<<<<< HEAD
             <input
               type="text"
               class="form-control"
@@ -415,10 +578,15 @@
               formControlName="HocPhi"
               value="{{ HocPhiLopHoc }}"
             />
+=======
+            <input type="text" class="form-control" name="txt-hocphi-name" formControlName="HocPhi"
+              value={{HocPhiLopHoc}}>
+>>>>>>> master
           </div>
         </form>
       </div>
       <div class="modal-footer">
+<<<<<<< HEAD
         <button class="btn btn-secondary" type="button" data-dismiss="modal">
           Hủy
         </button>
@@ -436,12 +604,18 @@
         >
           Sửa
         </button>
+=======
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
+        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+>>>>>>> master
       </div>
     </div>
   </div>
 </div>
 
 <!-- xóa giang vien -->
+<<<<<<< HEAD
 <div
   class="modal fade"
   id="xoahocvienModal"
@@ -450,10 +624,15 @@
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
+=======
+<div class="modal fade" id="xoahocvienModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+>>>>>>> master
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Xóa học viên</h5>
+<<<<<<< HEAD
         <button
           class="close"
           type="button"
@@ -461,10 +640,14 @@
           data-dismiss="modal"
           aria-label="Close"
         >
+=======
+        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+>>>>>>> master
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
+<<<<<<< HEAD
         <p>
           Bạn có thật sự muốn xóa học viên này. Nếu bạn xóa thì toàn bộ thông
           tin liên quan đến học viên này sẽ bị xóa.
@@ -474,10 +657,19 @@
         <button class="btn btn-secondary" type="button" data-dismiss="modal">
           Hủy
         </button>
+=======
+        <p>Bạn có thật sự muốn xóa học viên này. Nếu bạn xóa thì toàn bộ thông tin liên quan đến học viên này sẽ bị
+          xóa
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+>>>>>>> master
         <button class="btn btn-danger" (click)="xoa()">Xóa</button>
       </div>
     </div>
   </div>
+<<<<<<< HEAD
 </div>
 
 <!-- sendmail -->
@@ -489,10 +681,18 @@
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
+=======
+</div> 
+
+<!-- sendmail -->
+<div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+>>>>>>> master
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Gửi mail</h5>
+<<<<<<< HEAD
         <button
           class="close"
           type="button"
@@ -500,6 +700,9 @@
           data-dismiss="modal"
           aria-label="Close"
         >
+=======
+        <button class="close" type="button" #closebutton1 data-dismiss="modal" aria-label="Close">
+>>>>>>> master
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -507,6 +710,7 @@
         <form [formGroup]="sendMailForm">
           <div class="form-group">
             <label for="txt-tieude-name">Tiêu đề: </label>
+<<<<<<< HEAD
             <input
               type="text"
               class="form-control"
@@ -553,17 +757,44 @@
                   data-browse="Chọn tệp"
                   >Không có tệp nào được chọn</label
                 >
+=======
+            <input type="text" class="form-control" name="txt-tieude-name" formControlName="TieuDe">
+          </div>
+          <div class="form-group">
+            <label for="txt-noidung-name">Nội dung: </label>
+            <textarea class="form-control" name="txt-noidung-name" formControlName="NoiDung"></textarea>
+          </div>
+          <button class="btn btn-primary" (click)="changeDinhKem($event)" id="btnDinhKem">Đính kèm</button>
+          <div class="form-group" *ngIf="hasFile">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Tệp đính kèm</span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)"
+                  formControlName="File" multiple>
+                <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
+                  có tệp nào được chọn</label>
+>>>>>>> master
               </div>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
+<<<<<<< HEAD
         <button class="btn btn-secondary" type="button" data-dismiss="modal">
           Hủy
         </button>
+=======
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+>>>>>>> master
         <button class="btn btn-primary" (click)="sendMail()">Gửi</button>
       </div>
     </div>
   </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> master

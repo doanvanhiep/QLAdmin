@@ -66,7 +66,7 @@ body {
   line-height: 1.5;
   color: #858796;
   text-align: left;
-  background-color: #fff;
+  background-color: #2349b9 !important;
 }
 
 [tabindex="-1"]:focus {
@@ -10586,9 +10586,12 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("https://drive.google.com/uc?id=1OuUVnSnGesi9Ozpmmz7hAOlEuBLNENf3" );
   background-position: center;
   background-size: cover;
+  width: 116px;
+  height: 265px;
+  margin-top: 110px;
 }
 
 .bg-register-image {

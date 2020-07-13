@@ -45,5 +45,18 @@ export class KhoahocService {
             return res;
         }));
     }
-
+    getAllKhoaHocKichHoat()
+    {
+        return this.http.get<any>(`${environment.apiUrl}/khoahoc/getallkhoahockichhoat`)
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
+    suaTrangThaiKhoaHoc(IDKhoaHoc,TrangThai)
+    {
+        return this.http.put<any>(`${environment.apiUrl}/khoahoc/suatrangthai`,{IDKhoaHoc,TrangThai})
+        .pipe(map(res=>{
+            return res;
+        }));
+    }
 }

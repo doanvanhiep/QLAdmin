@@ -10,14 +10,23 @@ import { CheckrouteService } from "../service/checkroute/checkroute.service";
 import { SendmailService } from "../service/sendmail/sendmail.service";
 import { Login_serviceService } from "../service_auth/login_service.service";
 import { ToastrService } from "ngx-toastr";
+<<<<<<< HEAD
 import { DataTableDirective } from "angular-datatables";
 import { Subject } from "rxjs";
+=======
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
+>>>>>>> master
 @Component({
   selector: "app-hocvien",
   templateUrl: "./hocvien.component.html",
   styleUrls: ["./hocvien.component.css"],
 })
 export class HocvienComponent implements OnInit {
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
   //reload tb
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
@@ -105,7 +114,11 @@ export class HocvienComponent implements OnInit {
     this.hasFile = false;
     document.getElementById("btnDinhKem").innerText = "Đính kèm";
   }
+<<<<<<< HEAD
   createForm(idkhoahoc = "", idlophocphan = "", idlophoc = "", hocphi = "") {
+=======
+  createForm(idkhoahoc = "", idlophocphan = "",idlophoc=-1, hocphi = "") {
+>>>>>>> master
     this.btnedit = false;
     this.hocvienForm = this.formBuilder.group({
       TenHocVien: "",
@@ -166,9 +179,15 @@ export class HocvienComponent implements OnInit {
     this.getListHocVien();
   }
   changeIDKhoaHoc(IDKhoaHoc) {
+<<<<<<< HEAD
     this.HocPhiLopHoc = "";
     this.f.TenLopHoc.setValue("");
     this.f.LopHoc.setValue("");
+=======
+    this.f.TenLopHoc.setValue("");
+    this.f.LopHoc.setValue("");
+    this.HocPhiLopHoc = "";
+>>>>>>> master
     this.listLopHoc = null;
     this.getListLopHocPhan(IDKhoaHoc);
   }
@@ -247,6 +266,10 @@ export class HocvienComponent implements OnInit {
     }
   }
   getListHocVienByIDLopHoc() {
+<<<<<<< HEAD
+=======
+    this.listLopHoc=null;
+>>>>>>> master
     this.hocvienService
       .getListHocVienByIDLopHoc(this.idLopHoc)
       .pipe()
@@ -288,7 +311,11 @@ export class HocvienComponent implements OnInit {
       });
   }
   getListLopHoc(IDLopHoc) {
+<<<<<<< HEAD
     this.listLopHoc = null;
+=======
+    this.listLopHoc = null
+>>>>>>> master
     this.lophocService
       .getListLopHocByID(IDLopHoc)
       .pipe()
@@ -299,6 +326,7 @@ export class HocvienComponent implements OnInit {
         }
         this.listLopHoc = res.result.data;
         if (this.allhocvien && this.hocvienByID == null) {
+<<<<<<< HEAD
           this.HocPhiLopHoc = this.listLopHocPhan.filter(
             (lhp) => lhp.IDLopHocPhan == this.idLopHocPhan
           )[0].HocPhi;
@@ -308,6 +336,12 @@ export class HocvienComponent implements OnInit {
             this.idLopHoc,
             this.HocPhiLopHoc
           );
+=======
+        this.HocPhiLopHoc = this.listLopHocPhan.filter(
+          (lhp) => lhp.IDLopHocPhan == this.idLopHocPhan
+        )[0].HocPhi;
+        this.createForm(this.idKhoaHoc, this.idLopHocPhan,this.idLopHoc, this.HocPhiLopHoc);
+>>>>>>> master
         }
       });
   }
@@ -342,6 +376,7 @@ export class HocvienComponent implements OnInit {
     return this.sendMailForm.controls;
   }
   sendMail() {
+<<<<<<< HEAD
     let title = this.fSendMail.TieuDe.value.trim();
     let content = this.fSendMail.NoiDung.value.trim();
     if (title == "") {
@@ -349,6 +384,13 @@ export class HocvienComponent implements OnInit {
       return;
     }
     if (content == "") {
+=======
+    if (this.fSendMail.TieuDe.value == "") {
+      this.toast.error("ui lòng nhập tiêu đề!", "Thông báo");
+      return;
+    }
+    if (this.fSendMail.NoiDung.value == "") {
+>>>>>>> master
       this.toast.error("Vui lòng nhập nội dung!", "Thông báo");
       return;
     }
@@ -416,9 +458,18 @@ export class HocvienComponent implements OnInit {
     if (!this.checkForm()) {
       return;
     }
+<<<<<<< HEAD
     if (!this.allhocvien) {
       this.idLopHoc = this.f.LopHoc.value;
     }
+=======
+    if(!this.allhocvien)
+    {
+      this.idLopHoc=this.f.LopHoc.value;
+    }
+    console.log(this.listLopHoc);
+    console.log(this.idLopHoc);
+>>>>>>> master
     this.hocvienService
       .themHocVien(
         this.idLopHoc,
@@ -481,8 +532,12 @@ export class HocvienComponent implements OnInit {
       );
       return false;
     }
+<<<<<<< HEAD
     let email = this.f.Email.value.trim();
     if (email == "") {
+=======
+    if (this.f.Email.value == "") {
+>>>>>>> master
       this.toast.error("Vui lòng nhập email!", "Thông báo");
       return false;
     }
@@ -566,13 +621,24 @@ export class HocvienComponent implements OnInit {
       this.listLopHocPhan = null;
       this.listLopHoc = null;
       this.createForm();
+<<<<<<< HEAD
     } else {
       this.getListLopHocPhan(this.idKhoaHoc);
       this.getListLopHoc(this.idLopHocPhan);
+=======
+    }
+    else {
+      this.getListLopHocPhan(this.idKhoaHoc);
+      //this.getListLopHoc(this.idLopHocPhan); 
+>>>>>>> master
       this.f.KhoaHoc.disable();
       this.f.TenLopHoc.disable();
       this.f.LopHoc.disable();
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
   }
   xoaHocVien(event) {
     var target = event.target || event.srcElement || event.currentTarget;
@@ -598,7 +664,11 @@ export class HocvienComponent implements OnInit {
               .then((data) => {
                 this.dynamicScriptLoader
                   .load("sbadmin2minjs")
+<<<<<<< HEAD
                   .then((data) => {})
+=======
+                  .then((data) => { })
+>>>>>>> master
                   .catch((error) => console.log(error));
               })
               .catch((error) => console.log(error));

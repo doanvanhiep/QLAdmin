@@ -1,27 +1,47 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 // Service
 import { DynamicScriptLoaderServiceService } from "../../app/dynamic-script-loader-service.service";
 import { DasboardService } from "../service/dasboard/dasboard.service";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { CheckrouteService } from "../service/checkroute/checkroute.service";
+import { Login_serviceService } from "../service_auth/login_service.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SendmailService } from "../service/sendmail/sendmail.service";
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-dasboard",
   templateUrl: "./dasboard.component.html",
   styleUrls: ["./dasboard.component.css"],
 })
 export class DasboardComponent implements OnInit {
+  @ViewChild("closebutton1") closebutton1;
+  hasFile: any = false;
+  parentRouter: any = "admin";
+  listLienHe: any = [];
+  trangthaikichhoat: any = -1;
+  sendMailForm: FormGroup;
+  fileSelected: File = null;
+  mailList: any = [];
   constructor(
+    private sendMailService: SendmailService,
+    private formBuilder: FormBuilder,
+    private loginService: Login_serviceService,
+    private checkrouteService: CheckrouteService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dynamicScriptLoader: DynamicScriptLoaderServiceService,
-    private dasboardService: DasboardService
+    private dasboardService: DasboardService,
+    private toast: ToastrService
   ) {
-    TrangThai: new FormControl(false);
+    this.checkRoute();
   }
 
   ngOnInit() {
+    this.getListLienHe();
+    this.createSendMailForm();
     // Just call your load scripts function with scripts you want to load
     this.loadScripts();
   }
-<<<<<<< Updated upstream
-=======
   createSendMailForm() {
     this.sendMailForm = this.formBuilder.group({
       TieuDe: "",
@@ -71,13 +91,11 @@ export class DasboardComponent implements OnInit {
     return this.sendMailForm.controls;
   }
   sendMail() {
-    let TieuDe = this.fSendMail.TieuDe.value.trim();
-    let NoiDung = this.fSendMail.NoiDung.value.trim();
-    if (!TieuDe) {
+    if (this.fSendMail.TieuDe.value == "") {
       this.toast.error("Vui lòng nhập tiêu đề!", "Thông báo");
       return;
     }
-    if (!NoiDung) {
+    if (this.fSendMail.NoiDung.value == "") {
       this.toast.error("Vui lòng nhập nội dung!", "Thông báo");
       return;
     }
@@ -132,7 +150,6 @@ export class DasboardComponent implements OnInit {
       if (this.parentRouter != url) this.router.navigate([this.parentRouter]);
     });
   }
->>>>>>> Stashed changes
   private loadScripts() {
     // You can load multiple scripts by just providing the key as argument into load method of the service
     this.dynamicScriptLoader
@@ -157,17 +174,13 @@ export class DasboardComponent implements OnInit {
       })
       .catch((error) => console.log(error));
   }
-  // checkValue(a: any, n: number) {
-  //   this.dasboardService.test()
-  //   .pipe()
-  //   .subscribe(data=>{
-  //     console.log(data);
-  //   });
-  //   console.log(a.target.id, n);
-  //   console.log(a, n);
-  // }
-
-  checkValue(values: any) {
-    alert(values.currentTarget.checked);
+  checkValue(a: any, n: number) {
+    /* this.dasboardService.test()
+    .pipe()
+    .subscribe(data=>{
+      console.log(data);
+    }); */
+    console.log(a.target.id, n);
+    console.log(a, n);
   }
 }

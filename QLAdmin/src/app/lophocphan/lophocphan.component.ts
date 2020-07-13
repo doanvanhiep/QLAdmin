@@ -3,10 +3,12 @@ import { SharedataService } from '../service/sharedata/sharedata.service';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KhoahocService } from '../service/khoahoc/khoahoc.service';
-import { from } from 'rxjs';
 import { LophocphanService } from '../service/lophocphan/lophocphan.service';
 import { DynamicScriptLoaderServiceService } from '../../app/dynamic-script-loader-service.service';
 import { UploadimageService } from '../service/upload/uploadimage.service';
+import { CheckrouteService } from '../service/checkroute/checkroute.service';
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";    
 @Component({
     selector: 'app-lophocphan',
     templateUrl: './lophocphan.component.html',
@@ -15,45 +17,46 @@ import { UploadimageService } from '../service/upload/uploadimage.service';
 export class LophocphanComponent implements OnInit {
     @ViewChild('closebutton') closebutton;
     @ViewChild('closebuttonDelete') closebuttondelete;
+    idFile: any = -1;
+    trangthaikichhoat: any = -1;
     khoahoc: any;
     btnedit: boolean = true;
     lophocphanForm: FormGroup;
     listLopHocPhan: any;
-    IDKhoaHoc: any;
+    IDKhoaHoc: any = -1;
     fileSelected: File = null;
-    lophocphanByID:any;
-    IDLopHocPhan:any;
+    lophocphanByID: any;
+    IDLopHocPhan: any;
+    selectedKhoaHoc: any = -1;
+    listKhoaHoc: any = [];
+    parentRouter: any;
     constructor(
+        private spinner: NgxSpinnerService,
+        private checkrouteService: CheckrouteService,
         private dynamicScriptLoader: DynamicScriptLoaderServiceService,
         private share: SharedataService,
         private router: Router,
         private khoahocService: KhoahocService,
         private formBuilder: FormBuilder,
         private lophocphanservice: LophocphanService,
-        private uploadimage: UploadimageService
-    ) { }
+        private uploadimage: UploadimageService,
+        private toast: ToastrService
+    ) {
+        this.parentRouter = this.checkrouteService.getParentRouter();
+        if (this.parentRouter != "admin")
+            this.router.navigate([this.parentRouter]);
+    }
 
     ngOnInit() {
-        this.IDKhoaHoc = localStorage.getItem("idKhoaHoc");
-        if (!this.IDKhoaHoc) {
-            this.router.navigate(['nv/khoahoc']);
-            return;
-        }
-
         this.getDataKhoaHoc();
-        if (this.khoahoc == null) {
-            this.khoahocService.getKhoaHocByID(this.IDKhoaHoc)
-                .pipe()
-                .subscribe(res => {
-                    if (res.result.error === true) {
-                        alert(res.result.message);
-                        return;
-                    }
-                    this.khoahoc = res.result.data[0];
-                });
+        if (this.khoahoc != null) {
+            this.IDKhoaHoc = this.khoahoc.IDKhoaHoc;
+            this.selectedKhoaHoc = this.IDKhoaHoc;
         }
+        this.getListKhoaHoc();
+        if (this.IDKhoaHoc != -1)
+            this.getListLopHocPhan(this.IDKhoaHoc);
         this.createForm();
-        this.getListLopHocPhan(this.IDKhoaHoc);
         this.loadScripts();
     }
     createForm() {
@@ -91,13 +94,23 @@ export class LophocphanComponent implements OnInit {
         this.lophocphanservice.getListLopHocPhan(IDKhoaHoc)
             .pipe()
             .subscribe(res => {
-                this.listLopHocPhan = res.result.data;
+                if (this.trangthaikichhoat == -1) {
+                    this.listLopHocPhan = res.result.data;
+                }
+                else {
+                    let TrangThai = this.trangthaikichhoat;
+                    this.listLopHocPhan = res.result.data.filter(lh => lh.TrangThai == TrangThai);
+                }
             });
     }
     get f() { return this.lophocphanForm.controls; }
     them() {
+        if (!this.checkForm() || !this.checkFileHinh()) {
+            return;
+        }
+        this.spinner.show();
         this.uploadimage.uploadimage(this.fileSelected)
-            .pipe() 
+            .pipe()
             .subscribe(res => {
                 this.lophocphanservice.themLopHocPhan(
                     this.IDKhoaHoc, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
@@ -105,65 +118,101 @@ export class LophocphanComponent implements OnInit {
                     this.f.MoTa.value, res.id, this.f.GhiChu.value)
                     .pipe()
                     .subscribe(res => {
+                        this.spinner.hide();
                         if (res.TrangThai.error === true) {
                             alert(res.TrangThai.message);
                             return;
                         }
-                        alert("Thêm thành công");
+                        this.toast.success("Thêm thành công!", "Thông báo");
+                        this.closebutton.nativeElement.click();
                         this.getListLopHocPhan(this.IDKhoaHoc);
                     });
-                this.closebutton.nativeElement.click();
             });
     }
     sua() {
-        var idImg=document.getElementById('nameoffile').textContent;
-        if(idImg===this.lophocphanByID.HinhAnh)
-        {
+        if (!this.checkForm()) {
+            return;
+        }
+        this.spinner.show();
+        var idImg = document.getElementById('nameoffile').textContent;
+        if (idImg === this.lophocphanByID.HinhAnh) {
             this.lophocphanservice.suaLopHocPhan(
                 this.lophocphanByID.IDLopHocPhan, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
                 +this.f.HocPhi.value, +this.f.SoBuoi.value, +this.f.SiSo.value,
                 this.f.MoTa.value, idImg, this.f.GhiChu.value)
                 .pipe()
                 .subscribe(res => {
+                    this.spinner.hide();
                     if (res.TrangThai.error === true) {
                         alert(res.TrangThai.message);
                         return;
                     }
-                    alert("Sửa thành công");
+                    this.toast.success("Sửa thành công!", "Thông báo");
                     this.getListLopHocPhan(this.IDKhoaHoc);
                     this.closebutton.nativeElement.click();
                 });
         }
-        else{
+        else {
             this.uploadimage.uploadimage(this.fileSelected)
-            .pipe()
-            .subscribe(res => {
-                this.lophocphanservice.suaLopHocPhan(
-                    this.lophocphanByID.IDLopHocPhan, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
-                    +this.f.HocPhi.value, +this.f.SoBuoi.value, +this.f.SiSo.value,
-                    this.f.MoTa.value, res.id, this.f.GhiChu.value)
-                    .pipe()
-                    .subscribe(res => {
-                        if (res.TrangThai.error === true) {
-                            alert(res.TrangThai.message);
-                            return;
-                        }
-                        alert("Sửa thành công");
-                        this.getListLopHocPhan(this.IDKhoaHoc);
-                    });
-                this.closebutton.nativeElement.click();
-            });
+                .pipe()
+                .subscribe(res => {
+                    this.lophocphanservice.suaLopHocPhan(
+                        this.lophocphanByID.IDLopHocPhan, this.f.MaLopHocPhan.value, this.f.TenLopHocPhan.value,
+                        +this.f.HocPhi.value, +this.f.SoBuoi.value, +this.f.SiSo.value,
+                        this.f.MoTa.value, res.id, this.f.GhiChu.value)
+                        .pipe()
+                        .subscribe(res => {
+                            this.spinner.hide();
+                            if (res.TrangThai.error === true) {
+                                alert(res.TrangThai.message);
+                                return;
+                            }
+                            this.toast.success("Sửa thành công!", "Thông báo");
+                            this.closebutton.nativeElement.click();
+                            this.getListLopHocPhan(this.IDKhoaHoc);
+                        });
+                });
         }
+    }
+    checkForm() {
+        if (this.f.MaLopHocPhan.value == "") {
+            this.toast.error("Vui lòng nhập mã lớp học phần")
+            return false;
+        }
+        if (this.f.TenLopHocPhan.value == "") {
+            this.toast.error("Vui lòng nhập tên lớp học phần")
+            return false;
+        }
+        if (this.f.SoBuoi.value == "" || this.f.SoBuoi.value == null) {
+            this.toast.error("Vui lòng nhập số buổi")
+            return false;
+        }
+        if (this.f.HocPhi.value == "" || this.f.HocPhi.value == null) {
+            this.toast.error("Vui lòng nhập học phí")
+            return false;
+        }
+        if (this.f.SiSo.value == "" || this.f.SiSo.value == null) {
+            this.toast.error("Vui lòng nhập sỉ số")
+            return false;
+        }
+        return true;
+    }
+    checkFileHinh() {
+        if (this.fileSelected == null) {
+            this.toast.error("Vui lòng chọn hình ảnh")
+            return false;
+        }
+        return true;
     }
     xoa() {
         this.lophocphanservice.xoaLopHocPhan(this.IDLopHocPhan)
-        .pipe()
+            .pipe()
             .subscribe(res => {
                 if (res.TrangThai.error === true) {
                     alert(res.TrangThai.message);
                     return;
                 }
-                alert("Xóa thành công");
+                this.toast.success("Xóa thành công!", "Thông báo");
                 this.getListLopHocPhan(this.IDKhoaHoc);
             })
         this.closebuttondelete.nativeElement.click();
@@ -171,7 +220,7 @@ export class LophocphanComponent implements OnInit {
     xoaLopHocPhan(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
-        this.IDLopHocPhan=+idAttr;
+        this.IDLopHocPhan = +idAttr;
     }
     suaLopHocPhan(event) {
         var target = event.target || event.srcElement || event.currentTarget;
@@ -179,19 +228,17 @@ export class LophocphanComponent implements OnInit {
         this.getLopHocPhanByID(+idAttr);
         this.editForm(this.lophocphanByID);
     }
-    getLopHocPhanByID(idLopHocPhan)
-    {
-        this.lophocphanByID=this.listLopHocPhan.filter(item=>item.IDLopHocPhan===+idLopHocPhan)[0];
+    getLopHocPhanByID(idLopHocPhan) {
+        this.lophocphanByID = this.listLopHocPhan.filter(item => item.IDLopHocPhan === +idLopHocPhan)[0];
     }
     dbClick(event) {
         var target = event.target || event.srcElement || event.currentTarget;
         var idAttr = target.attributes.id.value;
         this.shareData(+idAttr);
-        this.router.navigate(['nv/lophoc']);
+        this.router.navigate(['admin/lophoc']);
     }
-    shareData(IDLopHocPhan)
-    {
-        this.share.shareDataLopHocPhan(IDLopHocPhan,this.listLopHocPhan.filter(item=>item.IDLopHocPhan===IDLopHocPhan)[0]);
+    shareData(IDLopHocPhan) {
+        this.share.shareDataLopHocPhan(IDLopHocPhan, this.listLopHocPhan.filter(item => item.IDLopHocPhan === IDLopHocPhan)[0]);
     }
     onSelectedFile(event) {
         this.fileSelected = <File>event.target.files[0];
@@ -201,6 +248,37 @@ export class LophocphanComponent implements OnInit {
         }
         document.getElementById('nameoffile').innerHTML = "Không có tệp nào được chọn";
         this.fileSelected = null;
+    }
+    TrangThaiKichHoat(event) {
+        this.trangthaikichhoat = event.target.value;
+        this.getListLopHocPhan(this.IDKhoaHoc);
+    }
+    changeTrangThai(event) {
+        var target = event.target || event.srcElement || event.currentTarget;
+        var idAttr = target.attributes.id.value.split("-")[1];
+        let TrangThai = target.checked ? 1 : 0;
+        this.lophocphanservice.suaTrangThaiLopHocPhan(+idAttr, TrangThai)
+            .pipe()
+            .subscribe(res => {
+                //console.log(res);
+            });
+    }
+    changeIDKhoaHoc(IDKhoaHoc) {
+        this.IDKhoaHoc = IDKhoaHoc;
+        this.getListLopHocPhan(this.IDKhoaHoc);
+    }
+    getListKhoaHoc() {
+        this.khoahocService.getAllKhoaHocKichHoat()
+            .pipe()
+            .subscribe(res => {
+                this.listKhoaHoc = res.result.data;
+                if (this.IDKhoaHoc == -1 && this.listKhoaHoc.length > 0) {
+                    this.khoahoc = this.listKhoaHoc[0];
+                    this.IDKhoaHoc = this.khoahoc.IDKhoaHoc;
+                    this.selectedKhoaHoc = this.IDKhoaHoc;
+                    this.changeIDKhoaHoc(this.IDKhoaHoc);
+                }
+            });
     }
     //load script
     private loadScripts() {

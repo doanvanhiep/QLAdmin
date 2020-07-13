@@ -1,11 +1,43 @@
+
+  <ngx-spinner bdColor = "rgba(0,0,0,0.8)" size = "medium" color = "#0a56d5" type = "ball-clip-rotate" [fullScreen] = "true"><p style="color: white" > Đang tải </p></ngx-spinner>
 <!-- Page Wrapper -->
 <div id="wrapper">
   <div id="content-wrapper" class="d-flex flex-column">
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
-      <h1 class="h3 mb-2 text-gray-800">Danh sách lớp học phần của khóa học: {{khoahoc ? khoahoc.TenKhoaHoc:""}}
-      </h1>
+      <div class="row">
+        <div class="col-5">
+          <h3 class="text-gray-800" style="font-size: 25px;margin-top: 4px">Danh sách lớp học phần của khóa học:</h3>
+        </div>
+        <div class="col-3">
+          <select [(ngModel)]="selectedKhoaHoc" #khoaHoc (change)="changeIDKhoaHoc(khoaHoc.value)" name="something"
+            class="form-control input-lg" id="selectthongtin">
+            <option *ngFor="let kh of listKhoaHoc" value="{{kh.IDKhoaHoc}}">
+              {{kh.TenKhoaHoc}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
+              value="-1" name="trangthaihoatdong" checked>
+            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
+              value="1" name="trangthaihoatdong">
+            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
+              value="0" name="trangthaihoatdong">
+            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+          </div>
+        </div>
+      </div>
       <button (click)="createForm()" class="btn btn-success" data-toggle="modal" data-target="#lophocphanModal">Thêm lớp
         học phần</button>
       <!-- DataTales Example -->
@@ -45,21 +77,25 @@
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.TenLopHocPhan:""}}</td>
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.HocPhi:""}}</td>
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.SoBuoi:""}}</td>
-                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.MoTa:""}}</td>
-                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}"><img height="100px" width="100px" src="https://drive.google.com/uc?id={{lhp ? lhp.HinhAnh:''}}">
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? (lhp.MoTa.length>15)? (lhp.MoTa | slice:0:15)+'..':(lhp.MoTa):""}}</td>
+                  <td id="{{lhp ? lhp.IDLopHocPhan:-1}}"><img height="100px" width="100px"
+                      src="https://drive.google.com/uc?id={{lhp ? lhp.HinhAnh:''}}">
                   </td>
                   <td id="{{lhp ? lhp.IDLopHocPhan:-1}}">{{lhp ? lhp.GhiChu:""}}</td>
                   <td align="center">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="{{lhp ? lhp.IDLopHocPhan:-1}}">
-                      <label class="custom-control-label" for="{{lhp ? lhp.IDLopHocPhan:-1}}"></label>
+                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
+                        id="tt-{{lhp ? lhp.IDLopHocPhan:-1}}"
+                        [checked]="lhp ? (lhp.TrangThai==1?true:false):false">
+                      <label class="custom-control-label" for="tt-{{lhp ? lhp.IDLopHocPhan:-1}}"></label>
                     </div>
                   </td>
-                  <td align="center">
+                  <td align="center" id="{{lhp ? lhp.IDLopHocPhan:-1}}">
                     <div>
                       <a (click)="suaLopHocPhan($event)" id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal"
-                        data-target="#lophocphanModal">sửa</a> / <a (click)="xoaLopHocPhan($event)"
-                        id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal" data-target="#xoalophocphanModal">xóa</a>
+                        data-target="#lophocphanModal" class="fas fa-edit marginicon"></a>
+                      <a (click)="xoaLopHocPhan($event)" id="{{lhp ? lhp.IDLopHocPhan:-1}}" data-toggle="modal"
+                        data-target="#xoalophocphanModal" class="fas fa-trash-alt marginicon"></a>
                     </div>
                   </td>
                 </tr>
@@ -99,28 +135,28 @@
           <div class="row">
             <div class="form-group" class="col">
               <label for="txt-hocphilhp-name">Học phí: </label>
-              <input type="number" class="form-control" name="txt-hocphilhp-name" formControlName="HocPhi">
+              <input type="number" class="form-control" name="txt-hocphilhp-name" min=1 formControlName="HocPhi">
             </div>
             <div class="form-group" class="col">
               <label for="txt-sobuoilhp-name">Số buổi: </label>
-              <input type="number" class="form-control" name="txt-sobuoilhp-name" formControlName="SoBuoi">
+              <input type="number" class="form-control" name="txt-sobuoilhp-name" min=1 formControlName="SoBuoi">
             </div>
             <div class="form-group" class="col">
               <label for="txt-siso-name">Sỉ số: </label>
-              <input type="number" class="form-control" name="txt-siso-name" formControlName="SiSo">
+              <input type="number" class="form-control" name="txt-siso-name" min=1 formControlName="SiSo">
             </div>
           </div>
           <div class="form-group">
             <label for="txt-motalhp-name">Mô tả: </label>
-            <input type="text" class="form-control" name="txt-motalhp-name" formControlName="MoTa">
+            <textarea class="form-control" name="txt-motalhp-name" formControlName="MoTa"></textarea>
           </div>
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01">Hình ảnh</span>
+                <span class="input-group-text" id="inputGroupFileAddon01" >Hình ảnh</span>
               </div>
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)">
+                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)" accept="image/*">
                 <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
                   có tệp nào được chọn</label>
               </div>
