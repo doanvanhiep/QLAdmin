@@ -415,8 +415,6 @@ export class HocvienComponent implements OnInit {
     {
       this.idLopHoc=this.f.LopHoc.value;
     }
-    console.log(this.listLopHoc);
-    console.log(this.idLopHoc);
     this.hocvienService
       .themHocVien(
         this.idLopHoc,

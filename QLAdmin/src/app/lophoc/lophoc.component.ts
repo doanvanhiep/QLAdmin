@@ -42,7 +42,7 @@ export class LophocComponent implements OnInit {
     "Ca 3": "Ca 3",
     "Ca 4": "Ca 4",
     "Ca 5": "Ca 5",
-  };
+  }; 
   giangviens: any;
   phonghocs: any;
   regiangviens: any;
@@ -142,6 +142,7 @@ export class LophocComponent implements OnInit {
         )
         .pipe()
         .subscribe((res) => {
+          console.log(res)
           if (res.result.error) {
             alert(res.result.message);
             return;
@@ -170,7 +171,6 @@ export class LophocComponent implements OnInit {
               return;
             }
           }
-
           this.t.enable();
           this.lophocservice
             .themLopHoc(
