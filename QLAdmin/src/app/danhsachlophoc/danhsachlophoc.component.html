@@ -5,56 +5,129 @@
     <div class="container-fluid">
       <!-- Page Heading -->
       <h1 class="h3 mb-2 text-gray-800">Danh sách lớp học</h1>
-      <div class="row" *ngIf=!isGiangVien>
+      <div class="row" *ngIf="!isGiangVien">
         <div class="col-2">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
-              value="tatcakichhoat" name="trangthaihoatdong" checked>
-            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="tatcakichhoat"
+              value="tatcakichhoat"
+              name="trangthaihoatdong"
+              checked
+            />
+            <label class="custom-control-label" for="tatcakichhoat"
+              >Tất cả</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
-              value="kichhoat" name="trangthaihoatdong">
-            <label class="custom-control-label" for="kichhoat">Đang kích hoạt</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="kichhoat"
+              value="kichhoat"
+              name="trangthaihoatdong"
+            />
+            <label class="custom-control-label" for="kichhoat"
+              >Đang kích hoạt</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
-              value="chuakichhoat" name="trangthaihoatdong">
-            <label class="custom-control-label" for="chuakichhoat">Chưa kích hoạt</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="chuakichhoat"
+              value="chuakichhoat"
+              name="trangthaihoatdong"
+            />
+            <label class="custom-control-label" for="chuakichhoat"
+              >Chưa kích hoạt</label
+            >
           </div>
         </div>
         <div class="col-2">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="-1"
-              id="trangthaitatca" name="trangthaithanhtoan" checked>
-            <label class="custom-control-label" for="trangthaitatca">Tất cả</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiThanhToan($event)"
+              value="-1"
+              id="trangthaitatca"
+              name="trangthaithanhtoan"
+              checked
+            />
+            <label class="custom-control-label" for="trangthaitatca"
+              >Tất cả</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="0"
-              id="chuathanhtoan" name="trangthaithanhtoan">
-            <label class="custom-control-label" for="chuathanhtoan">Chưa thanh toán</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiThanhToan($event)"
+              value="0"
+              id="chuathanhtoan"
+              name="trangthaithanhtoan"
+            />
+            <label class="custom-control-label" for="chuathanhtoan"
+              >Chưa thanh toán</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiThanhToan($event)" value="1"
-              id="dathanhtoan" name="trangthaithanhtoan">
-            <label class="custom-control-label" for="dathanhtoan">Đã thanh toán</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiThanhToan($event)"
+              value="1"
+              id="dathanhtoan"
+              name="trangthaithanhtoan"
+            />
+            <label class="custom-control-label" for="dathanhtoan"
+              >Đã thanh toán</label
+            >
           </div>
         </div>
         <div class="col-3">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="tatca"
-              value="tatca" name="phuongthuc" checked>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="PhuongThucThanhToan($event)"
+              id="tatca"
+              value="tatca"
+              name="phuongthuc"
+              checked
+            />
             <label class="custom-control-label" for="tatca">Tất cả</label>
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="momo"
-              value="momo" name="phuongthuc">
-            <label class="custom-control-label" for="momo">Thanh toán momo</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="PhuongThucThanhToan($event)"
+              id="momo"
+              value="momo"
+              name="phuongthuc"
+            />
+            <label class="custom-control-label" for="momo"
+              >Thanh toán momo</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="PhuongThucThanhToan($event)" id="trungtam"
-              value="trungtam" name="phuongthuc">
-            <label class="custom-control-label" for="trungtam">Thanh toán trung tâm</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="PhuongThucThanhToan($event)"
+              id="trungtam"
+              value="trungtam"
+              name="phuongthuc"
+            />
+            <label class="custom-control-label" for="trungtam"
+              >Thanh toán trung tâm</label
+            >
           </div>
         </div>
       </div>
@@ -62,7 +135,12 @@
       <div class="card shadow mb-4">
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table
+              class="table table-bordered"
+              id="dataTable"
+              width="100%"
+              cellspacing="0"
+            >
               <thead>
                 <tr>
                   <th>Lớp học phần</th>
@@ -88,18 +166,45 @@
                 </tr>
               </tfoot>
               <tbody>
-                <tr *ngFor="let lophoc of ListLopHoc" (dblclick)="getDsHocVien($event)">
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.LHP.TenLopHocPhan:""}}</td>
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.MaLopHoc:""}}</td>
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.NgayKhaiGiang:""}}</td>
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.NgayBeGiang:""}}</td>
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">
-                    <p data-id="{{lophoc ? lophoc.IDLopHoc:-1}}" class="multi_lines_text"
-                      [innerHTML]="lophoc ? lophoc.ThongTinLopHoc:''"></p>
+                <tr
+                  *ngFor="let lophoc of ListLopHoc"
+                  (dblclick)="getDsHocVien($event)"
+                >
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    {{ lophoc ? lophoc.LHP.TenLopHocPhan : "" }}
                   </td>
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.HV.length:""}}</td>
-                  <td *ngIf="!isGiangVien" data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.TongTien:0}}</td>
-                  <td data-id="{{lophoc ? lophoc.IDLopHoc:-1}}">{{lophoc ? lophoc.GhiChu:""}}</td>
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    {{ lophoc ? lophoc.MaLopHoc : "" }}
+                  </td>
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    {{
+                      lophoc ? (lophoc.NgayKhaiGiang | date: "dd/MM/yyyy") : ""
+                    }}
+                  </td>
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    {{
+                      lophoc ? (lophoc.NgayBeGiang | date: "dd/MM/yyyy") : ""
+                    }}
+                  </td>
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    <p
+                      data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}"
+                      class="multi_lines_text"
+                      [innerHTML]="lophoc ? lophoc.ThongTinLopHoc : ''"
+                    ></p>
+                  </td>
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    {{ lophoc ? lophoc.HV.length : "" }}
+                  </td>
+                  <td
+                    *ngIf="!isGiangVien"
+                    data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}"
+                  >
+                    {{ lophoc ? (lophoc.TongTien | number) : 0 }} VNĐ
+                  </td>
+                  <td data-id="{{ lophoc ? lophoc.IDLopHoc : -1 }}">
+                    {{ lophoc ? lophoc.GhiChu : "" }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -108,6 +213,6 @@
       </div>
     </div>
     <!-- /.container-fluid -->
-
   </div>
   <!-- End of Main Content -->
+</div>

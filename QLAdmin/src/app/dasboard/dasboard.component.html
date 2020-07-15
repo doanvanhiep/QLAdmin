@@ -3,25 +3,47 @@
   <div id="content-wrapper" class="d-flex flex-column">
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
       <!-- Page Heading -->
       <h1 class="h3 mb-2 text-gray-800">Danh sách liên hệ</h1>
       <div class="row">
         <div class="col-2">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
-              value="-1" name="trangthaihoatdong" checked>
-            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="tatcakichhoat"
+              value="-1"
+              name="trangthaihoatdong"
+              checked
+            />
+            <label class="custom-control-label" for="tatcakichhoat"
+              >Tất cả</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
-              value="1" name="trangthaihoatdong">
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="kichhoat"
+              value="1"
+              name="trangthaihoatdong"
+            />
             <label class="custom-control-label" for="kichhoat">Đã xử lý</label>
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
-              value="0" name="trangthaihoatdong">
-            <label class="custom-control-label" for="chuakichhoat">Chưa xử lý</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="chuakichhoat"
+              value="0"
+              name="trangthaihoatdong"
+            />
+            <label class="custom-control-label" for="chuakichhoat"
+              >Chưa xử lý</label
+            >
           </div>
         </div>
       </div>
@@ -29,7 +51,12 @@
       <div class="card shadow mb-4">
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table
+              class="table table-bordered"
+              id="dataTable"
+              width="100%"
+              cellspacing="0"
+            >
               <thead>
                 <tr>
                   <th>Họ Tên</th>
@@ -52,21 +79,47 @@
               </tfoot>
               <tbody>
                 <tr *ngFor="let lienhe of listLienHe">
-                  <td>{{lienhe ? lienhe.HoTen:""}}</td>
-                  <td (click)="SendMail(lienhe ? lienhe.Email:'')"
-                    style="text-decoration: underline;color: blue;cursor: pointer;"
-                    data-toggle="modal" data-target="#sendMailModal">
-                    {{lienhe ? lienhe.Email:""}}
+                  <td>{{ lienhe ? lienhe.HoTen : "" }}</td>
+                  <td
+                    (click)="SendMail(lienhe ? lienhe.Email : '')"
+                    style="
+                      text-decoration: underline;
+                      color: blue;
+                      cursor: pointer;
+                    "
+                    data-toggle="modal"
+                    data-target="#sendMailModal"
+                  >
+                    {{ lienhe ? lienhe.Email : "" }}
                   </td>
-                  <td>{{lienhe ? lienhe.SoDienThoai:""}}</td>
-                  <td>{{lienhe ? lienhe.NoiDung:""}}</td>
-                  <td>{{lienhe ? lienhe.ThoiGian:""}}</td>
-                  <td align="center" id="{{lienhe ? lienhe.IDLienHe:-1}}">
+                  <td>{{ lienhe ? lienhe.SoDienThoai : "" }}</td>
+                  <td>{{ lienhe ? lienhe.NoiDung : "" }}</td>
+                  <td>
+                    {{
+                      lienhe
+                        ? (lienhe.ThoiGian | date: "hh:mm a dd/MM/yyyy")
+                        : ""
+                    }}
+                  </td>
+                  <td align="center" id="{{ lienhe ? lienhe.IDLienHe : -1 }}">
                     <div class="custom-control custom-checkbox">
-                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
-                        id="tt-{{lienhe ? lienhe.IDLienHe:-1}}"
-                        [checked]="lienhe ? (lienhe.TrangThai==1?true:false):false">
-                      <label class="custom-control-label" for="tt-{{lienhe ? lienhe.IDLienHe:-1}}"></label>
+                      <input
+                        (change)="changeTrangThai($event)"
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="tt-{{ lienhe ? lienhe.IDLienHe : -1 }}"
+                        [checked]="
+                          lienhe
+                            ? lienhe.TrangThai == 1
+                              ? true
+                              : false
+                            : false
+                        "
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="tt-{{ lienhe ? lienhe.IDLienHe : -1 }}"
+                      ></label>
                     </div>
                   </td>
                 </tr>
@@ -75,22 +128,31 @@
           </div>
         </div>
       </div>
-
     </div>
     <!-- /.container-fluid -->
-
   </div>
   <!-- End of Main Content -->
-
 </div>
 <!-- sendmail -->
-<div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="sendMailModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Gửi mail</h5>
-        <button class="close" type="button" #closebutton1 data-dismiss="modal" aria-label="Close">
+        <button
+          class="close"
+          type="button"
+          #closebutton1
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -98,30 +160,60 @@
         <form [formGroup]="sendMailForm">
           <div class="form-group">
             <label for="txt-tieude-name">Tiêu đề: </label>
-            <input type="text" class="form-control" name="txt-tieude-name" formControlName="TieuDe">
+            <input
+              type="text"
+              class="form-control"
+              name="txt-tieude-name"
+              formControlName="TieuDe"
+            />
           </div>
           <div class="form-group">
             <label for="txt-noidung-name">Nội dung: </label>
-            <textarea  class="form-control" name="txt-noidung-name" formControlName="NoiDung"></textarea>
+            <textarea
+              class="form-control"
+              name="txt-noidung-name"
+              formControlName="NoiDung"
+            ></textarea>
           </div>
-          <button class="btn btn-primary" (click)="changeDinhKem($event)" id="btnDinhKem">Đính kèm</button>
+          <button
+            class="btn btn-primary"
+            (click)="changeDinhKem($event)"
+            id="btnDinhKem"
+          >
+            Đính kèm
+          </button>
           <div class="form-group" *ngIf="hasFile">
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01">Tệp đính kèm</span>
+                <span class="input-group-text" id="inputGroupFileAddon01"
+                  >Tệp đính kèm</span
+                >
               </div>
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFileLangHTML" (change)="onSelectedFile($event)"
-                  formControlName="File" multiple>
-                <label id="nameoffile" class="custom-file-label" for="customFileLangHTML" data-browse="Chọn tệp">Không
-                  có tệp nào được chọn</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="customFileLangHTML"
+                  (change)="onSelectedFile($event)"
+                  formControlName="File"
+                  multiple
+                />
+                <label
+                  id="nameoffile"
+                  class="custom-file-label"
+                  for="customFileLangHTML"
+                  data-browse="Chọn tệp"
+                  >Không có tệp nào được chọn</label
+                >
               </div>
             </div>
-          </div> 
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          Hủy
+        </button>
         <button class="btn btn-primary" (click)="sendMail()">Gửi</button>
       </div>
     </div>

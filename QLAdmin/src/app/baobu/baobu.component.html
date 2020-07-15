@@ -4,58 +4,108 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
-      <h1 class="h3 mb-2 text-gray-800">Danh sách báo bù
-      </h1>
+      <h1 class="h3 mb-2 text-gray-800">Danh sách báo bù</h1>
       <div class="row">
         <div class="col-2">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="tatcakichhoat"
-              value="-1" name="trangthaihoatdong" checked>
-            <label class="custom-control-label" for="tatcakichhoat">Tất cả</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="tatcakichhoat"
+              value="-1"
+              name="trangthaihoatdong"
+              checked
+            />
+            <label class="custom-control-label" for="tatcakichhoat"
+              >Tất cả</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="kichhoat"
-              value="1" name="trangthaihoatdong">
-            <label class="custom-control-label" for="kichhoat">Đã hoàn thành</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="kichhoat"
+              value="1"
+              name="trangthaihoatdong"
+            />
+            <label class="custom-control-label" for="kichhoat"
+              >Đã hoàn thành</label
+            >
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" (change)="TrangThaiKichHoat($event)" id="chuakichhoat"
-              value="0" name="trangthaihoatdong">
-            <label class="custom-control-label" for="chuakichhoat">Chưa hoàn thành</label>
+            <input
+              type="radio"
+              class="custom-control-input"
+              (change)="TrangThaiKichHoat($event)"
+              id="chuakichhoat"
+              value="0"
+              name="trangthaihoatdong"
+            />
+            <label class="custom-control-label" for="chuakichhoat"
+              >Chưa hoàn thành</label
+            >
           </div>
         </div>
         <div class="col-4">
           <h5>Giảng viên</h5>
-          <select [(ngModel)]="selectedGiangVien" #giangvien (change)="changeIDGiangVien()" name="something"
-            class="form-control input-lg" id="selectthongtin">
+          <select
+            [(ngModel)]="selectedGiangVien"
+            #giangvien
+            (change)="changeIDGiangVien()"
+            name="something"
+            class="form-control input-lg"
+            id="selectthongtin"
+          >
             <option value="-1">
               Tất cả
             </option>
-            <option *ngFor="let gv of listGVFilter" value="{{gv.IDGiangVien}}">
-              {{gv.HoTen}}
+            <option
+              *ngFor="let gv of listGVFilter"
+              value="{{ gv.IDGiangVien }}"
+            >
+              {{ gv.HoTen }}
             </option>
           </select>
         </div>
         <div class="col-6">
           <h5>Lớp học</h5>
-          <select [(ngModel)]="selectedLopHoc" #lophoc (change)="changeIDLopHoc()" name="something"
-            class="form-control input-lg" id="selectthongtinlh">
+          <select
+            [(ngModel)]="selectedLopHoc"
+            #lophoc
+            (change)="changeIDLopHoc()"
+            name="something"
+            class="form-control input-lg"
+            id="selectthongtinlh"
+          >
             <option value="-1">
               Tất cả
             </option>
-            <option *ngFor="let lh of listLHFilter" value="{{lh.IDLopHoc}}">
-              {{lh.LHP.TenLopHocPhan }} ( {{lh.MaLopHoc}} )
+            <option *ngFor="let lh of listLHFilter" value="{{ lh.IDLopHoc }}">
+              {{ lh.LHP.TenLopHocPhan }} ( {{ lh.MaLopHoc }} )
             </option>
           </select>
         </div>
       </div>
-      <button (click)="ThemBaoBu()" class="btn btn-success" data-toggle="modal" data-target="#baobuModal">Thêm
-        báo bù</button>
+      <button
+        (click)="ThemBaoBu()"
+        class="btn btn-success"
+        data-toggle="modal"
+        data-target="#baobuModal"
+      >
+        Thêm báo bù
+      </button>
       <!-- DataTales Example -->
       <div class="card shadow mb-4">
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table
+              class="table table-bordered"
+              id="dataTable"
+              width="100%"
+              cellspacing="0"
+            >
               <thead>
                 <tr>
                   <th>Tên giảng viên</th>
@@ -80,25 +130,57 @@
               </tfoot>
               <tbody>
                 <tr *ngFor="let bb of listBaoBu">
-                  <td id="{{bb ? bb.IDBaoBu:-1}}">{{bb ? bb.GiangVien:""}}</td>
-                  <td id="{{bb ? bb.IDBaoBu:-1}}">{{bb ? bb.TenLopHocPhan:""}} ({{bb ? bb.MaLopHoc:""}})</td>
-                  <td id="{{bb ? bb.IDBaoBu:-1}}">{{bb ? bb.Thu :""}} - {{bb ? bb.CaHoc:""}} - {{bb ? bb.PhongHoc:""}}
+                  <td id="{{ bb ? bb.IDBaoBu : -1 }}">
+                    {{ bb ? bb.GiangVien : "" }}
                   </td>
-                  <td id="{{bb ? bb.IDBaoBu:-1}}">{{bb ? bb.NgayBu:""}}</td>
-                  <td id="{{bb ? bb.IDBaoBu:-1}}">{{bb ? bb.GhiChu:""}}</td>
-                  <td align="center" id="{{bb ? bb.IDBaoBu:-1}}">
+                  <td id="{{ bb ? bb.IDBaoBu : -1 }}">
+                    {{ bb ? bb.TenLopHocPhan : "" }} ({{
+                      bb ? bb.MaLopHoc : ""
+                    }})
+                  </td>
+                  <td id="{{ bb ? bb.IDBaoBu : -1 }}">
+                    {{ bb ? bb.Thu : "" }} - {{ bb ? bb.CaHoc : "" }} -
+                    {{ bb ? bb.PhongHoc : "" }}
+                  </td>
+                  <td id="{{ bb ? bb.IDBaoBu : -1 }}">
+                    {{ bb ? (bb.NgayBu | date: "dd/MM/yyyy") : "" }}
+                  </td>
+                  <td id="{{ bb ? bb.IDBaoBu : -1 }}">
+                    {{ bb ? bb.GhiChu : "" }}
+                  </td>
+                  <td align="center" id="{{ bb ? bb.IDBaoBu : -1 }}">
                     <div class="custom-control custom-checkbox">
-                      <input (change)="changeTrangThai($event)" type="checkbox" class="custom-control-input"
-                        id="tt-{{bb ? bb.IDBaoBu:-1}}" [checked]="bb ? (bb.TrangThai==1?true:false):false">
-                      <label class="custom-control-label" for="tt-{{bb ? bb.IDBaoBu:-1}}"></label>
+                      <input
+                        (change)="changeTrangThai($event)"
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="tt-{{ bb ? bb.IDBaoBu : -1 }}"
+                        [checked]="
+                          bb ? (bb.TrangThai == 1 ? true : false) : false
+                        "
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="tt-{{ bb ? bb.IDBaoBu : -1 }}"
+                      ></label>
                     </div>
                   </td>
-                  <td align="center" id="{{bb ? bb.IDBaoBu:-1}}">
+                  <td align="center" id="{{ bb ? bb.IDBaoBu : -1 }}">
                     <div>
-                      <a (click)="suaBaoBu($event)" id="{{bb ? bb.IDBaoBu:-1}}" data-toggle="modal"
-                        data-target="#baobuModal" class="fas fa-edit marginicon"></a>
-                      <a (click)="xoaBaoBu($event)" id="{{bb ? bb.IDBaoBu:-1}}" data-toggle="modal"
-                        data-target="#xoabaobuModal" class="fas fa-trash-alt marginicon"></a>
+                      <a
+                        (click)="suaBaoBu($event)"
+                        id="{{ bb ? bb.IDBaoBu : -1 }}"
+                        data-toggle="modal"
+                        data-target="#baobuModal"
+                        class="fas fa-edit marginicon"
+                      ></a>
+                      <a
+                        (click)="xoaBaoBu($event)"
+                        id="{{ bb ? bb.IDBaoBu : -1 }}"
+                        data-toggle="modal"
+                        data-target="#xoabaobuModal"
+                        class="fas fa-trash-alt marginicon"
+                      ></a>
                     </div>
                   </td>
                 </tr>
@@ -109,18 +191,29 @@
       </div>
     </div>
     <!-- /.container-fluid -->
-
   </div>
   <!-- End of Main Content -->
 </div>
 <!-- them buoi nghi Modal -->
-<div class="modal fade" id="baobuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="baobuModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Báo bù</h5>
-        <button class="close" type="button" #closebutton data-dismiss="modal" aria-label="Close">
+        <button
+          class="close"
+          type="button"
+          #closebutton
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -130,10 +223,17 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="txt-hoten-name">Họ tên :</label>
-                <select #giangvienForm (change)="changeIDGiangVienForm(giangvienForm.value)"
-                  class="form-control input-lg" formControlName="HoTen">
-                  <option *ngFor="let gv of listGiangVien" value="{{gv.IDGiangVien}}">
-                    {{gv.HoTen}}
+                <select
+                  #giangvienForm
+                  (change)="changeIDGiangVienForm(giangvienForm.value)"
+                  class="form-control input-lg"
+                  formControlName="HoTen"
+                >
+                  <option
+                    *ngFor="let gv of listGiangVien"
+                    value="{{ gv.IDGiangVien }}"
+                  >
+                    {{ gv.HoTen }}
                   </option>
                 </select>
               </div>
@@ -141,81 +241,131 @@
 
             <div class="form-group col-3">
               <label for="txt-thu-name">Thứ </label>
-              <select class="form-control input-lg" formControlName="Thu" (change)="ChangeThuBu($event)">
-                <option *ngFor="let thu of thus | keyvalue" value="{{thu.key}}">
-                  {{thu.value}}
+              <select
+                class="form-control input-lg"
+                formControlName="Thu"
+                (change)="ChangeThuBu($event)"
+              >
+                <option
+                  *ngFor="let thu of thus | keyvalue"
+                  value="{{ thu.key }}"
+                >
+                  {{ thu.value }}
                 </option>
               </select>
             </div>
 
             <div class="form-group col-3">
               <label for="txt-ca-name">Ca</label>
-              <select class="form-control input-lg" formControlName="Ca" (change)="ChangeCaBu($event)">
-                <option *ngFor="let ca of cas | keyvalue" value="{{ca.key}}">
-                  {{ca.value}}
+              <select
+                class="form-control input-lg"
+                formControlName="Ca"
+                (change)="ChangeCaBu($event)"
+              >
+                <option *ngFor="let ca of cas | keyvalue" value="{{ ca.key }}">
+                  {{ ca.value }}
                 </option>
               </select>
             </div>
-
           </div>
           <div class="row">
             <div class="form-group col-6">
               <label for="txt-lop-name">Lớp :</label>
               <select class="form-control input-lg" formControlName="Lop">
-                <option *ngFor="let lh of listLopHoc" value="{{lh.IDLopHoc}}">
-                  {{lh.LHP.TenLopHocPhan }} ( {{lh.MaLopHoc}} )
+                <option *ngFor="let lh of listLopHoc" value="{{ lh.IDLopHoc }}">
+                  {{ lh.LHP.TenLopHocPhan }} ( {{ lh.MaLopHoc }} )
                 </option>
               </select>
             </div>
 
             <div class="form-group col-3">
               <label for="txt-nn-name">Ngày bù: </label>
-              <input type="date" class="form-control" (change)="ChangeNgayBu($event)" name="txt-sdt-name"
-                formControlName="NgayBu">
+              <input
+                type="date"
+                class="form-control"
+                (change)="ChangeNgayBu($event)"
+                name="txt-sdt-name"
+                formControlName="NgayBu"
+              />
             </div>
 
             <div class="form-group col-3">
               <label for="txt-ca-name">Phòng</label>
               <select class="form-control input-lg" formControlName="Phong">
-                <option *ngFor="let ph of listPhong" value="{{ph.IDPhongHoc}}">
-                  {{ph.TenPhong}}
+                <option
+                  *ngFor="let ph of listPhong"
+                  value="{{ ph.IDPhongHoc }}"
+                >
+                  {{ ph.TenPhong }}
                 </option>
               </select>
             </div>
-
-
-
           </div>
           <div class="form-group">
             <label for="txt-ghichulhp-name">Ghi chú: </label>
-            <textarea class="form-control" name="txt-ghichulhp-name" formControlName="GhiChu"></textarea>
+            <textarea
+              class="form-control"
+              name="txt-ghichulhp-name"
+              formControlName="GhiChu"
+            ></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-        <button *ngIf="btnedit===false" class="btn btn-primary" (click)="them()">Thêm</button>
-        <button *ngIf="btnedit===true" class="btn btn-primary" (click)="sua()">Sửa</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          Hủy
+        </button>
+        <button
+          *ngIf="btnedit === false"
+          class="btn btn-primary"
+          (click)="them()"
+        >
+          Thêm
+        </button>
+        <button
+          *ngIf="btnedit === true"
+          class="btn btn-primary"
+          (click)="sua()"
+        >
+          Sửa
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="xoabaobuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="xoabaobuModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Xóa báo bù</h5>
-        <button class="close" type="button" #closebuttonDelete data-dismiss="modal" aria-label="Close">
+        <button
+          class="close"
+          type="button"
+          #closebuttonDelete
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Bạn có thật sự muốn xóa báo bù này. Nếu xóa thì toàn bộ dữ liệu liên quan sẽ bị xóa</p>
+        <p>
+          Bạn có thật sự muốn xóa báo bù này. Nếu xóa thì toàn bộ dữ liệu liên
+          quan sẽ bị xóa
+        </p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          Hủy
+        </button>
         <button class="btn btn-danger" (click)="xoa()">Xóa</button>
       </div>
     </div>

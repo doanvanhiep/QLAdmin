@@ -10,15 +10,14 @@ import { CheckrouteService } from "../service/checkroute/checkroute.service";
 import { SendmailService } from "../service/sendmail/sendmail.service";
 import { Login_serviceService } from "../service_auth/login_service.service";
 import { ToastrService } from "ngx-toastr";
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
+import { DataTableDirective } from "angular-datatables";
+import { Subject } from "rxjs";
 @Component({
   selector: "app-hocvien",
   templateUrl: "./hocvien.component.html",
   styleUrls: ["./hocvien.component.css"],
 })
 export class HocvienComponent implements OnInit {
-
   //reload tb
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
@@ -106,7 +105,7 @@ export class HocvienComponent implements OnInit {
     this.hasFile = false;
     document.getElementById("btnDinhKem").innerText = "Đính kèm";
   }
-  createForm(idkhoahoc = "", idlophocphan = "",idlophoc=-1, hocphi = "") {
+  createForm(idkhoahoc = "", idlophocphan = "", idlophoc = -1, hocphi = "") {
     this.btnedit = false;
     this.hocvienForm = this.formBuilder.group({
       TenHocVien: "",
@@ -248,7 +247,7 @@ export class HocvienComponent implements OnInit {
     }
   }
   getListHocVienByIDLopHoc() {
-    this.listLopHoc=null;
+    this.listLopHoc = null;
     this.hocvienService
       .getListHocVienByIDLopHoc(this.idLopHoc)
       .pipe()
@@ -290,7 +289,7 @@ export class HocvienComponent implements OnInit {
       });
   }
   getListLopHoc(IDLopHoc) {
-    this.listLopHoc = null
+    this.listLopHoc = null;
     this.lophocService
       .getListLopHocByID(IDLopHoc)
       .pipe()
@@ -301,10 +300,15 @@ export class HocvienComponent implements OnInit {
         }
         this.listLopHoc = res.result.data;
         if (this.allhocvien && this.hocvienByID == null) {
-        this.HocPhiLopHoc = this.listLopHocPhan.filter(
-          (lhp) => lhp.IDLopHocPhan == this.idLopHocPhan
-        )[0].HocPhi;
-        this.createForm(this.idKhoaHoc, this.idLopHocPhan,this.idLopHoc, this.HocPhiLopHoc);
+          this.HocPhiLopHoc = this.listLopHocPhan.filter(
+            (lhp) => lhp.IDLopHocPhan == this.idLopHocPhan
+          )[0].HocPhi;
+          this.createForm(
+            this.idKhoaHoc,
+            this.idLopHocPhan,
+            this.idLopHoc,
+            this.HocPhiLopHoc
+          );
         }
       });
   }
@@ -339,11 +343,13 @@ export class HocvienComponent implements OnInit {
     return this.sendMailForm.controls;
   }
   sendMail() {
-    if (this.fSendMail.TieuDe.value == "") {
-      this.toast.error("ui lòng nhập tiêu đề!", "Thông báo");
+    let mail = this.fSendMail.TieuDe.value.trim();
+    let noidung = this.fSendMail.NoiDung.value.trim();
+    if (mail == "") {
+      this.toast.error("Vui lòng nhập tiêu đề!", "Thông báo");
       return;
     }
-    if (this.fSendMail.NoiDung.value == "") {
+    if (noidung == "") {
       this.toast.error("Vui lòng nhập nội dung!", "Thông báo");
       return;
     }
@@ -411,9 +417,8 @@ export class HocvienComponent implements OnInit {
     if (!this.checkForm()) {
       return;
     }
-    if(!this.allhocvien)
-    {
-      this.idLopHoc=this.f.LopHoc.value;
+    if (!this.allhocvien) {
+      this.idLopHoc = this.f.LopHoc.value;
     }
     this.hocvienService
       .themHocVien(
@@ -561,15 +566,13 @@ export class HocvienComponent implements OnInit {
       this.listLopHocPhan = null;
       this.listLopHoc = null;
       this.createForm();
-    }
-    else {
+    } else {
       this.getListLopHocPhan(this.idKhoaHoc);
-      //this.getListLopHoc(this.idLopHocPhan); 
+      //this.getListLopHoc(this.idLopHocPhan);
       this.f.KhoaHoc.disable();
       this.f.TenLopHoc.disable();
       this.f.LopHoc.disable();
     }
-
   }
   xoaHocVien(event) {
     var target = event.target || event.srcElement || event.currentTarget;
@@ -595,7 +598,7 @@ export class HocvienComponent implements OnInit {
               .then((data) => {
                 this.dynamicScriptLoader
                   .load("sbadmin2minjs")
-                  .then((data) => { })
+                  .then((data) => {})
                   .catch((error) => console.log(error));
               })
               .catch((error) => console.log(error));

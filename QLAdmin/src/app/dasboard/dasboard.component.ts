@@ -91,11 +91,13 @@ export class DasboardComponent implements OnInit {
     return this.sendMailForm.controls;
   }
   sendMail() {
-    if (this.fSendMail.TieuDe.value == "") {
+    let mail = this.fSendMail.TieuDe.value.trim();
+    let noidung = this.fSendMail.NoiDung.value.trim();
+    if (mail == "") {
       this.toast.error("Vui lòng nhập tiêu đề!", "Thông báo");
       return;
     }
-    if (this.fSendMail.NoiDung.value == "") {
+    if (noidung == "") {
       this.toast.error("Vui lòng nhập nội dung!", "Thông báo");
       return;
     }
