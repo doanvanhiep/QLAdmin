@@ -24,7 +24,7 @@
     "datatables.net": "^1.10.21",
     "datatables.net-dt": "^1.10.21",
     "jquery": "^3.5.1",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.2",
     "ng2-charts": "^2.2.3",
     "ngx-spinner": "^9.0.2",
     "ngx-toastr": "^11.3.3",
